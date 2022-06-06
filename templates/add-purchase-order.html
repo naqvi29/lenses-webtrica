@@ -1,0 +1,96 @@
+{% extends 'layout.html' %} 
+{% block title %}Add Purchase Order{% endblock %}
+{% block content %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Add Purchase Order</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">Add Purchase Order</li>
+        </ol>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <h3 class="m-4 mb-0">Purchase Order</h3>
+                        <form class="py-4 px-5" action="https://gosvision.pk/form-pricing-qty" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">                            <div class="row g-4">
+                            
+                            <div class="col-md-12 mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Product Order No.</label>
+                                <input type="text" class="form-control" name="product_order_no" placeholder="Enter Product Order No." value="">
+                                                            </div>
+
+                                
+                            <div class="col-md-12 mb-2 ">
+                                <label class="form-label">Select Supplier Name</label>
+                                <select name="customer_name" class="form-control">
+                                    <option value="">Select Supplier Name</option>
+                                                                            <option value="1">Supplier 1</option>
+                                                                    </select>
+                                                            </div>
+                                
+                            <div class="col-md-12 mb-2">
+                                <label for="exampleFormControlInput1" class="form-label">Description</label>
+                                <textarea class="form-control" name="sale_order_description" id="" cols="30" rows="4" placeholder="Purchase Order Description"></textarea>
+                                                            </div>
+                            <div class="col-md-12 mt-4 mb-2">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th>ACCOUNTS</th>
+                                                <th>DESCRIPTION</th>
+                                                <th>QTY</th>
+                                                <th>UNIT PRICE</th>
+                                                <th>AMOUNT</th>
+                                                <th>DISCOUNT</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="text-center">
+                                                <td><input type="text" class="my-order-inp1" name=""></td>
+                                                <td><input type="text" class="my-order-inp1" name=""></td>
+                                                <td><input type="number" class="my-order-inp" name=""></td>
+                                                <td><input type="number" class="my-order-inp" name=""></td>
+                                                <td><input type="number" class="my-order-inp" name=""></td>
+                                                <td><input type="number" class="my-order-inp" name=""></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button class="btn btn-secondary">Add Line</button>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 col-md-12 mb-2">
+                                <button type="submit" class="btn my_btn01 w-100" style="background:purple; color:white">Save Order</button>
+                            </div>
+                        
+                    </div></form>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <a href="https://gosvision.pk/all-pricing-qty" class="btn btn-danger">View Quotation</a>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</section>
+<!-- /.content -->
+
+{% endblock %}
