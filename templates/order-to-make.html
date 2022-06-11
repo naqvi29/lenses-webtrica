@@ -26,15 +26,15 @@
                 <div class="card mb-4">
                     <div class="card-body px-0 pt-0 pb-2">
                         <h3 class="m-4 mb-0">Order To Make</h3>
-                        <form class="py-4 px-5 row" action="https://gosvision.pk/order-make-form" method="POST" enctype="multipart/form-data">
+                        <form class="py-4 px-5 row" action="/order-to-make" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">                            
                             <div class="col-md-12 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Select Customer</label>
                                 <select name="customer" class="form-control" id="">
                                     <option value="">Select Customer</option>
-                                                                            <option value="2">Riaz</option>
-                                        
-                                                                            <option value="1">Zohaib Ahmed</option>
+                                    {% for i in customers %}
+                                                                            <option value="{{i[1]}}">{{i[1]}}</option>
+                                    {% endfor %}
                                         
                                                                     </select>
                                                             </div>
@@ -44,10 +44,9 @@
                                 <label for="exampleFormControlInput1" class="form-label">Select Lense Type</label>
                                 <select name="lense_type" class="form-control" id="">
                                     <option value="">Select Lense Type</option>
-                                                                            <option value="5">NEW Lense</option>
-                                                                            <option value="4">CLARION HD 1.54</option>
-                                                                            <option value="3">testing 001</option>
-                                                                            <option value="1">Test 1</option>
+                                    {% for i in lense_types %}
+                                                                            <option value="{{i[1]}}">{{i[1]}}</option>
+                                    {% endfor %}
                                                                     </select>
                                                             </div>
 
@@ -195,7 +194,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <a href="https://gosvision.pk/all-category" class="btn btn-danger">View All Category</a>
+                <a href="#" class="btn btn-danger">View All Orders</a>
             </div>
         </div>
     </div>

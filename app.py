@@ -14,7 +14,7 @@ app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
 app.config['MYSQL_DATABASE_DB'] = 'lenses'
 app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
-# app.config['MYSQL_DATABASE_PORT'] = 3307
+app.config['MYSQL_DATABASE_PORT'] = 3307
 mysql.init_app(app)
 
 # configure secret key for session protection)
@@ -234,9 +234,61 @@ def delete_customers(id):
     conn.commit()
     return redirect(url_for("all_customers"))
 
-@app.route("/order-to-make")
+@app.route("/order-to-make", methods=['GET','POST'])
 def order_to_make():
-    return render_template("order-to-make.html")
+    if request.method == "POST":
+        customer = request.form.get("customer")
+        lense_type = request.form.get("lense_type")
+        treatment = request.form.get("treatment")
+        tint_service = request.form.get("tint_service")
+        
+        od_sph = request.form.get("od_sph")
+        od_cyl = request.form.get("od_cyl")
+        od_axis = request.form.get("od_axis")
+        od_add = request.form.get("od_add")
+        od_base = request.form.get("od_base")
+        od_fh = request.form.get("od_fh")
+        od_prism_no = request.form.get("od_prism_no")
+        od_prism_detail = request.form.get("od_prism_detail")
+        
+        os_sph = request.form.get("os_sph")
+        os_cyl = request.form.get("os_cyl")
+        os_axis = request.form.get("os_axis")
+        os_add = request.form.get("os_add")
+        os_base = request.form.get("os_base")
+        os_fh = request.form.get("os_fh")
+        os_prism_no = request.form.get("os_prism_no")
+        os_prism_detail = request.form.get("os_prism_detail")
+        
+        bvd_mm = request.form.get("bvd_mm")
+        face_angle = request.form.get("face_angle")
+        pantoscopic_Angle = request.form.get("pantoscopic_Angle")
+        nrd = request.form.get("nrd")
+        decentration = request.form.get("decentration")
+        center_edge = request.form.get("center_edge")
+        frame_size_h = request.form.get("frame_size_h")
+        oc_height = request.form.get("oc_height")
+        od1 = request.form.get("od1")
+        os1 = request.form.get("os1")
+        occupation = request.form.get("occupation")
+        driving = request.form.get("driving")
+        computer = request.form.get("computer")
+        reading = request.form.get("reading")
+        mobile = request.form.get("mobile")
+        gaming = request.form.get("gaming")
+
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("INSERT INTO orders (customer,lense_type,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(customer,lense_type,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming))
+        conn.commit()
+        return redirect(url_for("order_to_make"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers;")
+    customers = cursor.fetchall()
+    cursor.execute("SELECT * from lense_types;")
+    lense_types = cursor.fetchall()
+    return render_template("order-to-make.html",customers=customers,lense_types=lense_types)
 
 @app.route("/add-supplier")
 def add_supplier():
