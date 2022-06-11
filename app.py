@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request
+from click import confirm, password_option
+from flask import Flask, render_template, request, session
 from flask.helpers import url_for
 from flaskext.mysql import MySQL
 import os
 from os.path import join, dirname, realpath
+from importlib_metadata import method_cache
 from werkzeug.utils import redirect, secure_filename
 from PIL import Image
 
@@ -12,14 +14,54 @@ app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
 app.config['MYSQL_DATABASE_DB'] = 'lenses'
 app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
+# app.config['MYSQL_DATABASE_PORT'] = 3307
 mysql.init_app(app)
 
 # configure secret key for session protection)
 app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
 
+@app.route("/login",methods=['GET','POST'])
+def login():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        if not email or not password:
+            return render_template("login.html",error="Missing username or password!")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("SELECT * from users where email=%s and type='admin'",(email))
+        data = cursor.fetchone()
+        if data:
+            if data[4] == password:                
+                session['loggedin'] = True
+                session['userid'] = data[0]
+                session['name'] = data[1]
+                session['type'] = data[6]
+                return redirect(url_for("index"))
+            else:
+                return render_template("login.html",error="Invalid Password!")
+        else:
+                return render_template("login.html",error="Invalid Email!")
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop('loggedin', None)
+    session.pop('userid', None)
+    session.pop('name', None)
+    session.pop('type', None)
+    # Redirect to index page
+    return redirect(url_for('login'))
+
 @app.route("/")
-def index():
-    return render_template("index.html")
+def index():        
+    if 'loggedin' in session:
+        if session['type'] == 'admin':
+             return render_template("index.html")
+        else:
+             return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
 
 @app.route("/add-category", methods=['GET','POST'])
 def add_category():
@@ -123,16 +165,74 @@ def delete_lense_type(id):
 @app.route("/add-pricing-qty",methods=['GET','POST'])
 def add_pricing_qty():
     if request.method=='POST':
-        pass 
+        lense_name= request.form.get("lense_name")
+        cylinder= request.form.get("cylinder")
+        spherical= request.form.get("spherical")
+        quantity_left= request.form.get("quantity_left")
+        quantity_right= request.form.get("quantity_right")
+        price= request.form.get("price")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("INSERT INTO pricing (lense_name, cylinder,spherical,quantity_left,quantity_right,price) VALUES (%s,%s,%s,%s,%s,%s);",(lense_name,cylinder,spherical,quantity_left,quantity_right,price))
+        conn.commit()
+        return redirect(url_for("add_pricing_qty"))
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT * from lense_types")
     lense = cursor.fetchall()
     return render_template("add-pricing-qty.html",lense=lense)
 
-@app.route("/add-customer")
+@app.route("/view-all-pricing")
+def all_pricing():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from pricing;")
+    pricing = cursor.fetchall()
+    return render_template("all-pricing.html", pricing= pricing)
+
+@app.route("/delete-pricing/<string:id>")
+def delete_pricing(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from pricing where id=%s",(id))
+    conn.commit()
+    return redirect(url_for("all_pricing"))
+
+@app.route("/add-customer", methods=['GET','POST'])
 def add_customer():
-    return render_template("add-customer.html")
+    if request.method=='POST':
+        customer_name= request.form.get("customer_name")
+        customer_email= request.form.get("customer_email")
+        customer_phone= request.form.get("customer_phone")
+        customer_address= request.form.get("customer_address")
+        customer_description= request.form.get("customer_description")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("INSERT INTO customers (name, email,phone,address,description) VALUES (%s,%s,%s,%s,%s);",(customer_name,customer_email,customer_phone,customer_address,customer_description))
+        conn.commit()
+        return redirect(url_for("add_customer"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers")
+    customers = cursor.fetchall()
+    return render_template("add-customer.html",customers=customers)
+
+@app.route("/view-all-customers")
+def all_customers():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers;")
+    customers = cursor.fetchall()
+    return render_template("all-customers.html", customers= customers)
+
+
+@app.route("/delete-customer/<string:id>")
+def delete_customers(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from customers where id=%s",(id))
+    conn.commit()
+    return redirect(url_for("all_customers"))
 
 @app.route("/order-to-make")
 def order_to_make():
@@ -154,13 +254,94 @@ def add_sale_order():
 def add_purchase_order():
     return render_template("add-purchase-order.html")
 
-@app.route("/add-branch")
+@app.route("/add-branch",methods=['GET','POST'])
 def add_branch():
-    return render_template("add-branch.html")
+    if request.method=='POST':
+        name= request.form.get("name")
+        phone= request.form.get("phone")
+        address= request.form.get("address")
+        security_code= request.form.get("security_code")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("INSERT INTO branch (name, phone,address,security_code) VALUES (%s,%s,%s,%s);",(name,phone,address,security_code))
+        conn.commit()
+        return redirect(url_for("add_branch"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from branch")
+    branch = cursor.fetchall()
+    return render_template("add-branch.html",branch=branch)
 
-@app.route("/add-user")
+@app.route("/all-branch")
+def all_branch():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from branch;")
+    branch = cursor.fetchall()
+    return render_template("all-branch.html", branch= branch)
+
+@app.route("/delete-branch/<string:id>")
+def delete_branch(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from branch where id=%s",(id))
+    conn.commit()
+    return redirect(url_for("all_branch"))
+
+@app.route("/add-user",methods=['GET','POST'])
 def add_user():
-    return render_template("add-user.html")
+    if request.method=='POST':
+        name= request.form.get("name")
+        email= request.form.get("email")
+        branch= request.form.get("branch")
+        password= request.form.get("password")
+        confirm_password= request.form.get("confirm_password")
+        security_code= request.form.get("security_code")
+        type = "user"
+        
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("SELECT * from users where email=%s",(email))
+        exist = cursor.fetchone()
+        if exist:            
+            conn = mysql.connect()
+            cursor =conn.cursor()
+            cursor.execute("SELECT * from branch")
+            branch = cursor.fetchall()
+            return render_template("add-user.html",error="Email Address Already Exists",branch=branch)
+        if password != confirm_password:            
+            conn = mysql.connect()
+            cursor =conn.cursor()
+            cursor.execute("SELECT * from branch")
+            branch = cursor.fetchall()
+            return render_template("add-user.html",error="Passwords doesn't match",branch=branch)
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("INSERT INTO users (name, email,branch,password,security_code,type) VALUES (%s,%s,%s,%s,%s,%s);",(name,email,branch,password,security_code,type))
+        conn.commit()
+        return redirect(url_for("add_user"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from branch")
+    branch = cursor.fetchall()
+    return render_template("add-user.html",branch=branch)
+
+
+@app.route("/all-users")
+def all_users():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from users;")
+    users = cursor.fetchall()
+    return render_template("all-users.html", users= users)
+
+@app.route("/delete-user/<string:id>")
+def delete_user(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from users where id=%s",(id))
+    conn.commit()
+    return redirect(url_for("all_users"))
 
 if __name__ == '__main__':
     app.run(debug=True)

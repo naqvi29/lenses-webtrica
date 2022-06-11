@@ -19,6 +19,13 @@
 <!-- /.content-header -->
 
 <!-- Main content -->
+<!-- alert -->
+{% if error %}
+<div class="alert alert-success">
+  <strong>Oops!</strong>{{error}}.
+</div>
+{% endif %}
+<!-- alert  -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -26,37 +33,38 @@
                 <div class="card mb-4">
                     <div class="card-body px-0 pt-0 pb-2">
                         <h3 class="m-4 mb-0">Add User</h3>
-                        <form class="py-4 px-5" action="https://gosvision.pk/form-user" method="POST" enctype="multipart/form-data">
+                        <form class="py-4 px-5" action="/add-user" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">                            <div class="row g-4">
                                 <div class="col-md-12 mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">User Name</label>
-                                    <input type="text" class="form-control" name="user_name" placeholder="User Name" value="">
+                                    <input type="text" class="form-control" name="name" placeholder="User Name" value="">
                                                                     </div>
 
 
                                 <div class="col-md-12 mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">User Email</label>
-                                    <input type="text" class="form-control" name="user_email" placeholder="User Email" value="">
+                                    <input type="text" class="form-control" name="email" placeholder="User Email" value="">
                                                                     </div>
 
                                 <div class="col-md-12 mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Select Branch</label>
-                                    <select name="user_branch" class="form-control" id="">
-                                        <option value="">Select Branch</option>
-                                                                                    <option value="2">Ali</option>
-                                                                                    <option value="1">New Brand</option>
+                                    <select name="branch" class="form-control" id="">
+                                        <option selected disabled value="">Select Branch</option>
+                                        {% for i in branch %}
+                                                                                    <option value="{{i[1]}}">{{i[1]}}</option>
+                                          {% endfor %}
                                                                             </select>
                                                                     </div>
 
 
                                 <div class="col-md-12 mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Password</label>
-                                    <input type="password" class="form-control" name="pass" placeholder="Password" value="">
+                                    <input type="password" class="form-control" name="password" placeholder="Password" value="">
                                                                     </div>
 
                                 <div class="col-md-12 mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Confirm Password</label>
-                                    <input type="password" class="form-control" name="c_pass" placeholder="Brand Security Code" value="">
+                                    <input type="confirm_password" class="form-control" name="confirm_password" placeholder="Brand Security Code" value="">
                                                                     </div>
 
                                 <div class="col-md-12 mb-2">
@@ -72,7 +80,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <a href="/all-category" class="btn btn-danger">View All Users</a>
+                <a href="/all-users" class="btn btn-danger">View All Users</a>
             </div>
         </div>
     </div>
