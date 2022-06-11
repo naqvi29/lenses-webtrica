@@ -1,23 +1,23 @@
-{% extends 'layout.html' %} 
+{% extends 'layout.html' %}
 {% block title %} Add Pricing & Quantity{% endblock %}
-{% block head %} 
+{% block head %}
 <!-- <link rel="stylesheet" href="https://gosvision.pk/css/soft-ui-dashboard.css"> -->
 {% endblock %}
 {% block content %}
 <div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0">Add Pricing & Quantity</h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Add Pricing & Quantity</li>
-        </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Add Pricing & Quantity</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Add Pricing & Quantity</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
 
@@ -29,21 +29,22 @@
                 <div class="card mb-4">
                     <div class="card-body px-0 pt-0 pb-2">
                         <h3 class="m-4 mb-0">Add Price And Quantity</h3>
-                        <form class="py-4 px-5" action="https://gosvision.pk/form-pricing-qty" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">                            <div class="row g-4">
-                                
+                        <form class="py-4 px-5" action="https://gosvision.pk/form-pricing-qty" method="POST"
+                            enctype="multipart/form-data">
+                            <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+                            <div class="row g-4">
+
                                 <div class="col-md-12 mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Select Lense Name</label>
                                     <select name="lense_name" class="form-control" id="">
-                                        <option value="">Select Lense Name</option>
-                                                                                    <option value="5">NEW Lense</option>
-                                                                                    <option value="4">CLARION HD 1.54</option>
-                                                                                    <option value="3">testing 001</option>
-                                                                                    <option value="1">Test 1</option>
-                                                                            </select>
-                                                                    </div>
+                                        <option disabled selected value="">Select Lense Name</option>
+                                        {% for i in lense %}
+                                        <option value="{{i[1]}}">{{i[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
 
-                                
+
                                 <div class="col-md-6  mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Select Cylinder</label>
                                     <select name="cylinder" class="form-control" id="">
@@ -56,9 +57,9 @@
                                         <option value="1.25">1.25</option>
                                         <option value="1.5">1.5</option>
                                     </select>
-                                                                    </div>
+                                </div>
 
-                                
+
                                 <div class="col-md-6  mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Select Spherical</label>
                                     <select name="spherical" class="form-control" id="">
@@ -71,36 +72,41 @@
                                         <option value="1.25">1.25</option>
                                         <option value="1.5">1.5</option>
                                     </select>
-                                                                    </div>
+                                </div>
 
-                                
+
                                 <div class="col-md-6  mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Quantity Left</label>
-                                    <input type="number" class="form-control" name="quantity_left" placeholder="Enter Quantity Left">
-                                                                    </div>
+                                    <input type="number" class="form-control" name="quantity_left"
+                                        placeholder="Enter Quantity Left">
+                                </div>
 
                                 <div class="col-md-6  mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Quantity Right</label>
-                                    <input type="number" class="form-control" name="quantity_right" placeholder="Enter Quantity Right">
-                                                                    </div>
+                                    <input type="number" class="form-control" name="quantity_right"
+                                        placeholder="Enter Quantity Right">
+                                </div>
 
-                                
+
                                 <div class="col-md-6  mb-2">
                                     <label for="exampleFormControlInput1" class="form-label">Price</label>
                                     <input type="number" class="form-control" placeholder="Enter Price" name="price">
-                                                                    </div>
-                                <div class="mt-4 col-md-12  mb-2">
-                                    <button type="submit" class="btn my_btn01 w-100" style="background:purple; color:white">Submit</button>
                                 </div>
-                        
-                    </div></form>
+                                <div class="mt-4 col-md-12  mb-2">
+                                    <button type="submit" class="btn my_btn01 w-100"
+                                        style="background:purple; color:white">Submit</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a href="https://gosvision.pk/all-pricing-qty" class="btn btn-danger">View All Price &amp;
+                        Quantity</a>
                 </div>
             </div>
-            <div class="d-flex justify-content-end">
-                <a href="https://gosvision.pk/all-pricing-qty" class="btn btn-danger">View All Price &amp; Quantity</a>
-            </div>
         </div>
-    </div>
     </div>
     </div>
     </div>
