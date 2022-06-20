@@ -12,9 +12,10 @@ app = Flask(__name__)
 mysql = MySQL()
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
+# app.config['MYSQL_DATABASE_PASSWORD'] = 'LAwrence1234**'
 app.config['MYSQL_DATABASE_DB'] = 'lenses'
 app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
-app.config['MYSQL_DATABASE_PORT'] = 3307
+# app.config['MYSQL_DATABASE_PORT'] = 3307
 mysql.init_app(app)
 
 # configure secret key for session protection)
@@ -290,9 +291,36 @@ def order_to_make():
     lense_types = cursor.fetchall()
     return render_template("order-to-make.html",customers=customers,lense_types=lense_types)
 
-@app.route("/add-supplier")
+@app.route("/add-supplier",methods=['GET','POST'])
 def add_supplier():
+    if request.method=='POST':
+        name= request.form.get("name")
+        email= request.form.get("email")
+        phone= request.form.get("phone")
+        address= request.form.get("address")
+        desc= request.form.get("desc")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("INSERT INTO suppliers (name, email, phone,address,description) VALUES (%s,%s,%s,%s,%s);",(name,email,phone,address,desc))
+        conn.commit()
+        return redirect(url_for("add_supplier"))
     return render_template("add-supplier.html")
+
+@app.route("/all-suppliers")
+def all_suppliers():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from suppliers;")
+    suppliers = cursor.fetchall()
+    return render_template("all-suppliers.html", suppliers= suppliers)
+
+@app.route("/delete-suppliers/<string:id>")
+def delete_suppliers(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from suppliers where id=%s",(id))
+    conn.commit()
+    return redirect(url_for("all_suppliers"))
 
 @app.route("/add-sale-receipt")
 def add_sale_receipt():
@@ -394,6 +422,23 @@ def delete_user(id):
     cursor.execute("Delete from users where id=%s",(id))
     conn.commit()
     return redirect(url_for("all_users"))
+
+
+@app.route("/all-orders")
+def all_orders():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from orders;")
+    orders = cursor.fetchall()
+    return render_template("all-orders.html", orders= orders)
+
+@app.route("/delete-order/<string:id>")
+def delete_order(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from orders where id=%s",(id))
+    conn.commit()
+    return redirect(url_for("all_orders"))
 
 if __name__ == '__main__':
     app.run(debug=True)
