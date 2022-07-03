@@ -440,5 +440,162 @@ def delete_order(id):
     conn.commit()
     return redirect(url_for("all_orders"))
 
+@app.route("/view-ingoing-or-outgoing")
+def view_ingoing_or_outgoing():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from inOutReceipts;")
+    data = cursor.fetchall()
+    return render_template("view-ingoing-or-outgoing.html",data=data)
+
+@app.route("/view-bank-and-cash-accounts")
+def view_bank_and_cash_accounts():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from bankandcashaccounts;")
+    data = cursor.fetchall()
+    return render_template("view-bank-and-cash-accounts.html",data=data)
+
+@app.route("/view-payments")
+def view_payments():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from payments;")
+    data = cursor.fetchall()
+    return render_template("view-payments.html",data=data)
+
+@app.route("/add-ingoing-or-outgoing", methods=['GET','POST'])
+def add_ingoing_or_outgoing():
+    if request.method=='POST':
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        date= request.form.get("date")
+        reference= request.form.get("reference")
+        paid_by_account_type= request.form.get("paid_by_type")
+        if paid_by_account_type=="other":
+            paid_by_account_name = request.form.get("other_name")
+            paid_by_account_id= None
+        elif paid_by_account_type=="customer":
+            paid_by_account_id = request.form.get("customer")             
+            cursor.execute("SELECT name from customers where id=%s",(paid_by_account_id))
+            customer = cursor.fetchone()
+            paid_by_account_name = customer[0]
+        elif paid_by_account_type=="supplier":
+            paid_by_account_id = request.form.get("supplier")             
+            cursor.execute("SELECT name from suppliers where id=%s",(paid_by_account_id))
+            supplier = cursor.fetchone()
+            paid_by_account_name = supplier[0]
+        received_in_account_id= request.form.get("received_in_account")                     
+        cursor.execute("SELECT name from bankandcashaccounts where id=%s",(received_in_account_id))
+        received_in_account_name = cursor.fetchone()
+        received_in_account_name=received_in_account_name[0]
+        description= request.form.get("desc")
+        exp_account= request.form.get("exp_account")
+        print(exp_account)
+        print(description)
+        total_amount= float(request.form.get("amount"))
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("INSERT INTO inoutreceipts (date,reference,paid_by_account_type, paid_by_account_id, paid_by_account_name, received_in_account_id, 	received_in_account_name, description, exp_account, total_amount) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,paid_by_account_type,paid_by_account_id,paid_by_account_name,received_in_account_id,received_in_account_name,description,exp_account,total_amount))
+        conn.commit()
+        cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(received_in_account_id))
+        actual_balance = cursor.fetchone()
+        actual_balance=actual_balance[0]
+        update_balance = actual_balance + total_amount
+        cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
+        conn.commit()
+        return redirect(url_for("add_ingoing_or_outgoing"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers")
+    customers = cursor.fetchall()
+    cursor.execute("SELECT * from suppliers")
+    suppliers = cursor.fetchall()
+    cursor.execute("SELECT * from bankandcashaccounts")
+    bank_accounts = cursor.fetchall()
+    return render_template("add-ingoing-or-outgoing.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts)
+
+@app.route("/add-payments", methods=['GET','POST'])
+def add_payments():
+    if request.method=='POST':
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        date= request.form.get("date")
+        reference= request.form.get("reference")
+        paid_from_account_id= request.form.get("paid_from")             
+        cursor.execute("SELECT name from bankandcashaccounts where id=%s",(paid_from_account_id))
+        bank = cursor.fetchone()
+        paid_from_account_name = bank[0]
+        payee_type= request.form.get("payee_type")
+        if payee_type=="other":
+            payee__name = request.form.get("other_name")
+            payee_account_id= None
+        elif payee_type=="customer":
+            payee_account_id = request.form.get("customer")             
+            cursor.execute("SELECT name from customers where id=%s",(payee_account_id))
+            customer = cursor.fetchone()
+            payee__name = customer[0]
+        elif payee_type=="supplier":
+            payee_account_id = request.form.get("supplier")             
+            cursor.execute("SELECT name from suppliers where id=%s",(payee_account_id))
+            supplier = cursor.fetchone()
+            payee__name = supplier[0]
+        description= request.form.get("desc")
+        exp_account= request.form.get("exp_account")
+        total_amount= float(request.form.get("amount"))
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("INSERT INTO payments (date,reference,paid_from_account_id, paid_from_account_name, payee_type, payee_id, 	payee_name, description, exp_account, total_amount) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,paid_from_account_id,paid_from_account_name,payee_type,payee_account_id,payee__name,description,exp_account,total_amount))
+        conn.commit()
+        cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(paid_from_account_id))
+        actual_balance = cursor.fetchone()
+        actual_balance=actual_balance[0]
+        update_balance = actual_balance - total_amount
+        cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,paid_from_account_id))
+        conn.commit()
+        return redirect(url_for("add_payments"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers")
+    customers = cursor.fetchall()
+    cursor.execute("SELECT * from suppliers")
+    suppliers = cursor.fetchall()
+    cursor.execute("SELECT * from bankandcashaccounts")
+    bank_accounts = cursor.fetchall()
+    return render_template("add-payments.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts)
+
+@app.route("/add-bank-and-cash-accounts", methods=['GET','POST'])
+def add_bank_and_cash_accounts():
+    if request.method=='POST':
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        name= request.form.get("name")
+        code= request.form.get("code")
+        starting_bal= float(request.form.get("starting_bal"))
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("INSERT INTO bankandcashaccounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
+        conn.commit()
+        return redirect(url_for("add_bank_and_cash_accounts"))
+    return render_template("add-bank-and-cash-accounts.html")
+
+@app.route("/deletepay/<string:type>/<int:id>")
+def deletepay(type,id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    if type =="inout":
+        cursor.execute("Delete from inoutreceipts where id=%s",(id))    
+        conn.commit()
+        return redirect(url_for("view_ingoing_or_outgoing"))
+    elif type =="payments":
+        cursor.execute("Delete from payments where id=%s",(id))       
+        conn.commit()
+        return redirect(url_for("view_payments")) 
+    elif type =="bank_accounts":
+        cursor.execute("Delete from bankandcashaccounts where id=%s",(id))    
+        conn.commit()
+        return redirect(url_for("view_bank_and_cash_accounts"))
+
+
 if __name__ == '__main__':
     app.run(debug=True)

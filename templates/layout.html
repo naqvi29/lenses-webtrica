@@ -4,6 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{% endblock %}</title>
+  <style>
+    body{
+      font-size: 0.7rem;
+    }
+  </style>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -133,6 +138,33 @@
           
           
           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Payments
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/view-ingoing-or-outgoing" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>In going or Outgoing</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/view-bank-and-cash-accounts" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Bank & Cash Accounts</p>
+                </a>
+                <a href="/view-payments" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Payments</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
             <a href="/customer" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
@@ -141,6 +173,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/view-all-customers" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>View Customers</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="/add-customer" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -153,7 +191,7 @@
             <a href="/sale" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
-                Sale
+                RX
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -161,10 +199,28 @@
               <li class="nav-item">
                 <a href="/order-to-make" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Order To Make</p>
+                  <p>Rx Order</p>
                 </a>
               </li>
               <li class="nav-item">
+                <a href="/order-to-make" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rx Purchase</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/order-to-make" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rx Invoice</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/order-to-make" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Rx Inventory</p>
+                </a>
+              </li>
+              <!-- <li class="nav-item">
                 <a href="/add-supplier" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Supplier</p>
@@ -187,9 +243,15 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Purchase Order</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
-          </li><li class="nav-item">
+            </li>
+
+            
+          
+          
+          </li>
+          <li class="nav-item">
             <a href="/settings" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
@@ -222,6 +284,29 @@
                   <p>Pricing & Quantity</p>
                 </a>
               </li> -->
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="/settings" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Supplier
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/all-suppliers" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>View Suppliers</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/add-supplier" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Supplier</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">

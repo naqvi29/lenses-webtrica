@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2022 at 11:49 PM
+-- Generation Time: Jul 04, 2022 at 01:00 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -20,6 +20,26 @@ SET time_zone = "+00:00";
 --
 -- Database: `lenses`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bankandcashaccounts`
+--
+
+CREATE TABLE `bankandcashaccounts` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  `actual_balance` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `bankandcashaccounts`
+--
+
+INSERT INTO `bankandcashaccounts` (`id`, `name`, `code`, `actual_balance`) VALUES
+(1, 'Cash in Hand', 'CIH', 200);
 
 -- --------------------------------------------------------
 
@@ -106,6 +126,34 @@ INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `address`, `description
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `inoutreceipts`
+--
+
+CREATE TABLE `inoutreceipts` (
+  `id` int(11) NOT NULL,
+  `date` text NOT NULL,
+  `reference` text DEFAULT NULL,
+  `paid_by_account_type` text NOT NULL,
+  `paid_by_account_id` int(11) DEFAULT NULL,
+  `paid_by_account_name` text NOT NULL,
+  `received_in_account_id` int(11) NOT NULL,
+  `received_in_account_name` text DEFAULT NULL,
+  `description` text NOT NULL,
+  `exp_account` text NOT NULL,
+  `total_amount` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `inoutreceipts`
+--
+
+INSERT INTO `inoutreceipts` (`id`, `date`, `reference`, `paid_by_account_type`, `paid_by_account_id`, `paid_by_account_name`, `received_in_account_id`, `received_in_account_name`, `description`, `exp_account`, `total_amount`) VALUES
+(4, '2022-07-01', 'sdad', 'supplier', 1, 'sup 1 ', 1, 'Cash in Hand', 'asdasd', 'Motor vehicle expenses', 450000),
+(5, '2022-07-07', 'no ref', 'customer', 1, 'Groot', 1, 'Cash in Hand', 'this is desc', 'Printing and stationery', 200);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `lense_types`
 --
 
@@ -180,7 +228,34 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `customer`, `lense_type`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`) VALUES
-(1, 'Groot', 'my z lense', 'treat', 'serv', '1', '1', '1', '1', '1', '1', '1', '', '1', '1', '1', '1', '1', '1', '1', '', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '12');
+(3, 'Groot', 'my z lense', 'treat', 'serv', '1', '1', '1', '1', '1', '1', '1', '', '1', '1', '1', '1', '1', '1', '1', '', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` int(11) NOT NULL,
+  `date` text NOT NULL,
+  `reference` text DEFAULT NULL,
+  `paid_from_account_id` int(11) NOT NULL,
+  `paid_from_account_name` text NOT NULL,
+  `payee_type` text NOT NULL,
+  `payee_id` int(11) DEFAULT NULL,
+  `payee_name` text NOT NULL,
+  `description` text DEFAULT NULL,
+  `exp_account` text NOT NULL,
+  `total_amount` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `date`, `reference`, `paid_from_account_id`, `paid_from_account_name`, `payee_type`, `payee_id`, `payee_name`, `description`, `exp_account`, `total_amount`) VALUES
+(2, '2022-07-01', 'no ref', 1, 'Cash in Hand', 'customer', 1, 'Groot', 'this is desc', 'Legal fees', '100');
 
 -- --------------------------------------------------------
 
@@ -256,6 +331,12 @@ INSERT INTO `users` (`id`, `name`, `email`, `branch`, `password`, `security_code
 --
 
 --
+-- Indexes for table `bankandcashaccounts`
+--
+ALTER TABLE `bankandcashaccounts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `branch`
 --
 ALTER TABLE `branch`
@@ -280,6 +361,12 @@ ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `inoutreceipts`
+--
+ALTER TABLE `inoutreceipts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `lense_types`
 --
 ALTER TABLE `lense_types`
@@ -289,6 +376,12 @@ ALTER TABLE `lense_types`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -312,6 +405,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `bankandcashaccounts`
+--
+ALTER TABLE `bankandcashaccounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `branch`
@@ -338,6 +437,12 @@ ALTER TABLE `customers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `inoutreceipts`
+--
+ALTER TABLE `inoutreceipts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `lense_types`
 --
 ALTER TABLE `lense_types`
@@ -347,6 +452,12 @@ ALTER TABLE `lense_types`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
