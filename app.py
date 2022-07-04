@@ -1,3 +1,4 @@
+from tempfile import tempdir
 from click import confirm, password_option
 from flask import Flask, render_template, request, session
 from flask.helpers import url_for
@@ -235,61 +236,34 @@ def delete_customers(id):
     conn.commit()
     return redirect(url_for("all_customers"))
 
-@app.route("/order-to-make", methods=['GET','POST'])
-def order_to_make():
-    if request.method == "POST":
-        customer = request.form.get("customer")
-        lense_type = request.form.get("lense_type")
-        treatment = request.form.get("treatment")
-        tint_service = request.form.get("tint_service")
-        
-        od_sph = request.form.get("od_sph")
-        od_cyl = request.form.get("od_cyl")
-        od_axis = request.form.get("od_axis")
-        od_add = request.form.get("od_add")
-        od_base = request.form.get("od_base")
-        od_fh = request.form.get("od_fh")
-        od_prism_no = request.form.get("od_prism_no")
-        od_prism_detail = request.form.get("od_prism_detail")
-        
-        os_sph = request.form.get("os_sph")
-        os_cyl = request.form.get("os_cyl")
-        os_axis = request.form.get("os_axis")
-        os_add = request.form.get("os_add")
-        os_base = request.form.get("os_base")
-        os_fh = request.form.get("os_fh")
-        os_prism_no = request.form.get("os_prism_no")
-        os_prism_detail = request.form.get("os_prism_detail")
-        
-        bvd_mm = request.form.get("bvd_mm")
-        face_angle = request.form.get("face_angle")
-        pantoscopic_Angle = request.form.get("pantoscopic_Angle")
-        nrd = request.form.get("nrd")
-        decentration = request.form.get("decentration")
-        center_edge = request.form.get("center_edge")
-        frame_size_h = request.form.get("frame_size_h")
-        oc_height = request.form.get("oc_height")
-        od1 = request.form.get("od1")
-        os1 = request.form.get("os1")
-        occupation = request.form.get("occupation")
-        driving = request.form.get("driving")
-        computer = request.form.get("computer")
-        reading = request.form.get("reading")
-        mobile = request.form.get("mobile")
-        gaming = request.form.get("gaming")
-
+@app.route("/make-rx-order", methods=['GET','POST'])
+def make_rx_order():
+    if request.method == "POST": 
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("INSERT INTO orders (customer,lense_type,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(customer,lense_type,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming))
+        date = request.form.get("date")
+        reference = request.form.get("reference")
+        customer_id = request.form.get("customer")
+        billing_address = request.form.get("billing_address")
+        description = request.form.get("dsc")
+        item_id = request.form.get("item")
+        item_desc = request.form.get("item_desc")
+        item_qty = request.form.get("item_qty")
+        item_price = request.form.get("item_price")
+        total = request.form.get("total")
+        cursor.execute("SELECT name from customers where id=%s",(customer_id))
+        customer_name = cursor.fetchone()
+        customer_name = customer_name[0]
+        # temp
+        item_name=""       
+        cursor.execute("INSERT INTO rx_orders (date, reference, customer_id, customer_name, billing_address, description, item_id, item_name, item_desc, item_qty, item_price, total) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(date, reference, customer_id, customer_name, billing_address, description, item_id, item_name, item_desc, item_qty, item_price, total))
         conn.commit()
-        return redirect(url_for("order_to_make"))
+        return redirect(url_for("make_rx_order"))
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT * from customers;")
     customers = cursor.fetchall()
-    cursor.execute("SELECT * from lense_types;")
-    lense_types = cursor.fetchall()
-    return render_template("order-to-make.html",customers=customers,lense_types=lense_types)
+    return render_template("make-rx-order.html",customers=customers)
 
 @app.route("/add-supplier",methods=['GET','POST'])
 def add_supplier():
@@ -424,13 +398,13 @@ def delete_user(id):
     return redirect(url_for("all_users"))
 
 
-@app.route("/all-orders")
-def all_orders():
+@app.route("/view-rx-orders")
+def view_rx_orders():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from orders;")
-    orders = cursor.fetchall()
-    return render_template("all-orders.html", orders= orders)
+    cursor.execute("SELECT * from rx_orders;")
+    rx_orders = cursor.fetchall()
+    return render_template("view-rx-orders.html", rx_orders= rx_orders)
 
 @app.route("/delete-order/<string:id>")
 def delete_order(id):

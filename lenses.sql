@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2022 at 01:00 AM
+-- Generation Time: Jul 04, 2022 at 02:28 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -180,59 +180,6 @@ INSERT INTO `lense_types` (`id`, `name`, `description`, `lense_category_id`, `le
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
---
-
-CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
-  `customer` varchar(255) NOT NULL,
-  `lense_type` varchar(255) NOT NULL,
-  `treatment` text NOT NULL,
-  `tint_service` text NOT NULL,
-  `od_sph` text NOT NULL,
-  `od_cyl` text NOT NULL,
-  `od_axis` text NOT NULL,
-  `od_add` text NOT NULL,
-  `od_base` text NOT NULL,
-  `od_fh` text NOT NULL,
-  `od_prism_no` text NOT NULL,
-  `od_prism_detail` text NOT NULL,
-  `os_sph` text NOT NULL,
-  `os_cyl` text NOT NULL,
-  `os_axis` text NOT NULL,
-  `os_add` text NOT NULL,
-  `os_base` text NOT NULL,
-  `os_fh` text NOT NULL,
-  `os_prism_no` text NOT NULL,
-  `os_prism_detail` text NOT NULL,
-  `bvd_mm` text NOT NULL,
-  `face_angle` text NOT NULL,
-  `pantoscopic_Angle` text NOT NULL,
-  `nrd` text NOT NULL,
-  `decentration` text NOT NULL,
-  `center_edge` text NOT NULL,
-  `frame_size_h` text NOT NULL,
-  `oc_height` text NOT NULL,
-  `od1` text NOT NULL,
-  `os1` text NOT NULL,
-  `occupation` text NOT NULL,
-  `driving` text NOT NULL,
-  `computer` text NOT NULL,
-  `reading` text NOT NULL,
-  `mobile` text NOT NULL,
-  `gaming` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `customer`, `lense_type`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`) VALUES
-(3, 'Groot', 'my z lense', 'treat', 'serv', '1', '1', '1', '1', '1', '1', '1', '', '1', '1', '1', '1', '1', '1', '1', '', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '12');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `payments`
 --
 
@@ -279,6 +226,35 @@ CREATE TABLE `pricing` (
 
 INSERT INTO `pricing` (`id`, `lense_name`, `cylinder`, `spherical`, `quantity_left`, `quantity_right`, `price`) VALUES
 (1, 'my z lense', '0.25', '0.25', 10, 20, 2000);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rx_orders`
+--
+
+CREATE TABLE `rx_orders` (
+  `id` int(11) NOT NULL,
+  `date` text NOT NULL,
+  `reference` text DEFAULT NULL,
+  `customer_id` int(11) NOT NULL,
+  `customer_name` text NOT NULL,
+  `billing_address` text NOT NULL,
+  `description` text NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `item_name` text DEFAULT NULL,
+  `item_desc` text NOT NULL,
+  `item_qty` int(11) NOT NULL,
+  `item_price` float NOT NULL,
+  `total` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `rx_orders`
+--
+
+INSERT INTO `rx_orders` (`id`, `date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `item_desc`, `item_qty`, `item_price`, `total`) VALUES
+(2, '2022-07-06', 'ref', 1, 'Groot', 'R12211`', 'desc', 0, 'item xyz', 'idees', 2, 100, 200);
 
 -- --------------------------------------------------------
 
@@ -373,12 +349,6 @@ ALTER TABLE `lense_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `payments`
 --
 ALTER TABLE `payments`
@@ -388,6 +358,12 @@ ALTER TABLE `payments`
 -- Indexes for table `pricing`
 --
 ALTER TABLE `pricing`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `rx_orders`
+--
+ALTER TABLE `rx_orders`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -449,12 +425,6 @@ ALTER TABLE `lense_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
@@ -465,6 +435,12 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `pricing`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `rx_orders`
+--
+ALTER TABLE `rx_orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
