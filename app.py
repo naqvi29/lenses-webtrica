@@ -265,6 +265,65 @@ def make_rx_order():
     customers = cursor.fetchall()
     return render_template("make-rx-order.html",customers=customers)
 
+@app.route("/make-rx-purchase", methods=['GET','POST'])
+def make_rx_purchase():
+    if request.method == "POST": 
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        issue_date = request.form.get("issue_date")
+        due_date = request.form.get("due_date")
+        reference = request.form.get("reference")
+        supplier_id = request.form.get("supplier")
+        description = request.form.get("dsc")
+        item_id = request.form.get("item")
+        exp_account = request.form.get("exp_account")
+        item_qty = request.form.get("item_qty")
+        item_price = request.form.get("item_price")
+        total = request.form.get("total")
+        cursor.execute("SELECT name from suppliers where id=%s",(supplier_id))
+        supplier_name = cursor.fetchone()
+        supplier_name = supplier_name[0]
+        # temp
+        item_name=""       
+        cursor.execute("INSERT INTO rx_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total))
+        conn.commit()
+        return redirect(url_for("make_rx_purchase"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from suppliers;")
+    suppliers = cursor.fetchall()
+    return render_template("make-rx-purchase.html",suppliers=suppliers)
+
+@app.route("/make-rx-invoice", methods=['GET','POST'])
+def make_rx_invoice():
+    if request.method == "POST": 
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        issue_date = request.form.get("issue_date")
+        due_date = request.form.get("due_date")
+        reference = request.form.get("reference")
+        customer_id = request.form.get("customer")
+        billing_address = request.form.get("billing_address")
+        description = request.form.get("dsc")
+        item_id = request.form.get("item")
+        exp_account = request.form.get("exp_account")
+        item_qty = request.form.get("item_qty")
+        item_price = request.form.get("item_price")
+        total = request.form.get("total")
+        cursor.execute("SELECT name from customers where id=%s",(customer_id))
+        customer_name = cursor.fetchone()
+        customer_name = customer_name[0]
+        # temp
+        item_name=""       
+        cursor.execute("INSERT INTO rx_invoices (issue_date, due_date, reference, customer_id, customer_name, billing_address, description, item_id, item_name, exp_account, item_qty, item_price, total) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, customer_id, customer_name, billing_address, description, item_id, item_name, exp_account, item_qty, item_price, total))
+        conn.commit()
+        return redirect(url_for("make_rx_invoice"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers;")
+    customers = cursor.fetchall()
+    return render_template("make-rx-invoice.html",customers=customers)
+
 @app.route("/add-supplier",methods=['GET','POST'])
 def add_supplier():
     if request.method=='POST':
@@ -405,6 +464,22 @@ def view_rx_orders():
     cursor.execute("SELECT * from rx_orders;")
     rx_orders = cursor.fetchall()
     return render_template("view-rx-orders.html", rx_orders= rx_orders)
+
+@app.route("/view-rx-purchase")
+def view_rx_purchase():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from rx_purchases;")
+    rx_purchases = cursor.fetchall()
+    return render_template("view-rx-purchase.html", rx_purchases= rx_purchases)
+
+@app.route("/view-rx-invoice")
+def view_rx_invoice():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from rx_invoices;")
+    rx_invoices = cursor.fetchall()
+    return render_template("view-rx-invoice.html", rx_invoices= rx_invoices)
 
 @app.route("/delete-order/<string:id>")
 def delete_order(id):

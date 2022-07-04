@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2022 at 02:28 PM
+-- Generation Time: Jul 04, 2022 at 06:12 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -230,6 +230,36 @@ INSERT INTO `pricing` (`id`, `lense_name`, `cylinder`, `spherical`, `quantity_le
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `rx_invoices`
+--
+
+CREATE TABLE `rx_invoices` (
+  `id` int(11) NOT NULL,
+  `issue_date` text NOT NULL,
+  `due_date` text NOT NULL,
+  `reference` text NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `customer_name` text NOT NULL,
+  `billing_address` text NOT NULL,
+  `description` text NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `item_name` text DEFAULT NULL,
+  `exp_account` text NOT NULL,
+  `item_qty` int(11) NOT NULL,
+  `item_price` float NOT NULL,
+  `total` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `rx_invoices`
+--
+
+INSERT INTO `rx_invoices` (`id`, `issue_date`, `due_date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `item_price`, `total`) VALUES
+(1, '2022-07-02', '2022-07-08', 'ref', 1, 'Groot', 'R2w23', 'desc', 0, '', 'Rent', 2, 2, 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `rx_orders`
 --
 
@@ -255,6 +285,35 @@ CREATE TABLE `rx_orders` (
 
 INSERT INTO `rx_orders` (`id`, `date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `item_desc`, `item_qty`, `item_price`, `total`) VALUES
 (2, '2022-07-06', 'ref', 1, 'Groot', 'R12211`', 'desc', 0, 'item xyz', 'idees', 2, 100, 200);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rx_purchases`
+--
+
+CREATE TABLE `rx_purchases` (
+  `id` int(11) NOT NULL,
+  `issue_date` text NOT NULL,
+  `due_date` text NOT NULL,
+  `reference` text NOT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `supplier_name` text NOT NULL,
+  `description` text NOT NULL,
+  `item_id` int(11) DEFAULT NULL,
+  `item_name` text DEFAULT NULL,
+  `exp_account` text NOT NULL,
+  `item_qty` int(11) NOT NULL,
+  `item_price` float NOT NULL,
+  `total` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `rx_purchases`
+--
+
+INSERT INTO `rx_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `item_price`, `total`) VALUES
+(1, '2022-07-01', '2022-07-13', 'ref', 1, 'sup 1 ', 'decs', 0, 'item xyz', 'Legal fees', 2, 300, 600);
 
 -- --------------------------------------------------------
 
@@ -361,9 +420,21 @@ ALTER TABLE `pricing`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `rx_invoices`
+--
+ALTER TABLE `rx_invoices`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `rx_orders`
 --
 ALTER TABLE `rx_orders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `rx_purchases`
+--
+ALTER TABLE `rx_purchases`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -437,10 +508,22 @@ ALTER TABLE `pricing`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `rx_invoices`
+--
+ALTER TABLE `rx_invoices`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `rx_orders`
 --
 ALTER TABLE `rx_orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `rx_purchases`
+--
+ALTER TABLE `rx_purchases`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `suppliers`

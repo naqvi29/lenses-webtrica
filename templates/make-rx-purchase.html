@@ -1,0 +1,163 @@
+{% extends 'layout.html' %}
+{% block title %}Make Rx Purchase{% endblock %}
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Make Rx Purchase</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Make Rx Purchase</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <!-- <h3 class="m-4 mb-0">Order To Make</h3> -->
+                        <form class="py-4 px-5 row" action="/make-rx-purchase" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Issue Date</label>
+                                <input type="date" class="form-control" name="issue_date">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" name="due_date">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Reference</label>
+                                <input type="text" class="form-control" name="reference">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Select Supplier</label>
+                                <select name="supplier" class="form-control" id="">
+                                    <option value="" selected disabled>Select Supplier</option>
+                                    {% for i in suppliers %}
+                                    <option value="{{i[0]}}">{{i[1]}}</option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Description</label>
+                                <input type="text" name="dsc" class="form-control" id="">
+
+                            </div>
+                            <area id="item-div">
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Item</label>
+                                <select name="item" class="form-control" id="">
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
+                                <select name="exp_account" class="form-control" id="">
+                                    <option value="Accounting feesExpenses">Accounting feesExpenses</option>
+                                    <option value="Accounts receivable">Accounts receivable</option>
+                                    <option value="Advertising and promotion">Advertising and promotion</option>
+                                    <option value="Bank charges">Bank charges</option>
+                                    <option value="Capital gains on investments">Capital gains on investments</option>
+                                    <option value="Computer equipment">Computer equipment</option>
+                                    <option value="Donations">Donations</option>
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Employee clearing account">Employee clearing account</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
+                                    <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
+                                    <option value="Interest received">Interest received</option>
+                                    <option value="Inventory - cost">Inventory - cost</option>
+                                    <option value="Inventory - sales">Inventory - sales</option>
+                                    <option value="Inventory on hand">Inventory on hand</option>
+                                    <option value="Legal fees">Legal fees</option>
+                                    <option value="Motor vehicle expenses">Motor vehicle expenses</option>
+                                    <option value="Printing and stationery">Printing and stationery</option>
+                                    <option value="Rent">Rent</option>
+                                    <option value="Repairs and maintenance">Repairs and maintenance</option>
+                                    <option value="Retained earnings">Retained earnings</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Telephone">Telephone</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Qty</label>
+                                <input type="number" class="form-control" name="item_qty" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
+                                <input type="number" step="any" class="form-control" name="item_price" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Total</label>
+                                <input type="number" step="any" class="form-control" name="total" id="">
+                            </div>
+
+                            </area>
+                            <div class="col-md-2 mb-3">
+                                <a href="#" onclick="add_line()" class="btn btn-sm btn-outline-secondary">Add Line</a>
+                            </div>
+
+
+
+                            <div class="mt-4 col-md-12">
+                                <button type="submit" class="btn my_btn01 w-100"
+                                    style="background:purple; color:white">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <a href="/view-rx-purchase" class="btn btn-danger">View All Purchases</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+<script>
+    function add_line() {
+        item_div = document.getElementById("item-div");
+        console.log(item_div.innerHTML);
+        document.getElementById("item-div").innerHTML = item_div.innerHTML += `<div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Item</label>
+                                    <select name="item" class="form-control" id="">
+                                        <option value="">1</option>
+                                        <option value="">2</option>
+                                        <option value="">3</option>
+                                    </select>                                
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Desc</label>
+                                    <input type="text" class="form-control" name="item_desc" id="">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Qty</label>
+                                    <input type="number" class="form-control" name="item_qty" id="">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
+                                    <input type="number" step="any" class="form-control" name="item_price" id="">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Total</label>
+                                    <input type="number" step="any" class="form-control" name="total" id="">
+                                </div>`;
+    }
+</script>
+
+{% endblock %}
