@@ -60,7 +60,7 @@
                                 <input type="text" name="dsc" class="form-control" id="">
 
                             </div>
-                            <area id="item-div">
+                            <div id="item-div" style="display: contents;">
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Item</label>
                                 <select name="item" class="form-control" id="">
@@ -112,9 +112,10 @@
                                 <input type="number" step="any" class="form-control" name="total" id="">
                             </div>
 
-                            </area>
+                            </div>
                             <div class="col-md-2 mb-3">
-                                <a href="#" onclick="add_line()" class="btn btn-sm btn-outline-secondary">Add Line</a>
+                                <a href="#" onclick="add_line()" class="btn btn-sm btn-outline-success">Add Line</a>
+                                <a href="#" onclick="clear_line()" class="btn btn-sm btn-outline-danger mx-2">Clear</a>
                             </div>
 
 
@@ -139,29 +140,110 @@
         item_div = document.getElementById("item-div");
         console.log(item_div.innerHTML);
         document.getElementById("item-div").innerHTML = item_div.innerHTML += `<div class="col-md-3 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Item</label>
-                                    <select name="item" class="form-control" id="">
-                                        <option value="">1</option>
-                                        <option value="">2</option>
-                                        <option value="">3</option>
-                                    </select>                                
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Desc</label>
-                                    <input type="text" class="form-control" name="item_desc" id="">
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Qty</label>
-                                    <input type="number" class="form-control" name="item_qty" id="">
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
-                                    <input type="number" step="any" class="form-control" name="item_price" id="">
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Total</label>
-                                    <input type="number" step="any" class="form-control" name="total" id="">
-                                </div>`;
+                                <label for="exampleFormControlInput1" class="form-label">Item</label>
+                                <select name="item" class="form-control" id="">
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
+                                <select name="exp_account" class="form-control" id="">
+                                    <option value="Accounting feesExpenses">Accounting feesExpenses</option>
+                                    <option value="Accounts receivable">Accounts receivable</option>
+                                    <option value="Advertising and promotion">Advertising and promotion</option>
+                                    <option value="Bank charges">Bank charges</option>
+                                    <option value="Capital gains on investments">Capital gains on investments</option>
+                                    <option value="Computer equipment">Computer equipment</option>
+                                    <option value="Donations">Donations</option>
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Employee clearing account">Employee clearing account</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
+                                    <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
+                                    <option value="Interest received">Interest received</option>
+                                    <option value="Inventory - cost">Inventory - cost</option>
+                                    <option value="Inventory - sales">Inventory - sales</option>
+                                    <option value="Inventory on hand">Inventory on hand</option>
+                                    <option value="Legal fees">Legal fees</option>
+                                    <option value="Motor vehicle expenses">Motor vehicle expenses</option>
+                                    <option value="Printing and stationery">Printing and stationery</option>
+                                    <option value="Rent">Rent</option>
+                                    <option value="Repairs and maintenance">Repairs and maintenance</option>
+                                    <option value="Retained earnings">Retained earnings</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Telephone">Telephone</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Qty</label>
+                                <input type="number" class="form-control" name="item_qty" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
+                                <input type="number" step="any" class="form-control" name="item_price" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Total</label>
+                                <input type="number" step="any" class="form-control" name="total" id="">
+                            </div>`;
+    }
+    function clear_line() {
+        item_div = document.getElementById("item-div");
+        console.log(item_div.innerHTML);
+        document.getElementById("item-div").innerHTML = `
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Item</label>
+                                <select name="item" class="form-control" id="">
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
+                                <select name="exp_account" class="form-control" id="">
+                                    <option value="Accounting feesExpenses">Accounting feesExpenses</option>
+                                    <option value="Accounts receivable">Accounts receivable</option>
+                                    <option value="Advertising and promotion">Advertising and promotion</option>
+                                    <option value="Bank charges">Bank charges</option>
+                                    <option value="Capital gains on investments">Capital gains on investments</option>
+                                    <option value="Computer equipment">Computer equipment</option>
+                                    <option value="Donations">Donations</option>
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Employee clearing account">Employee clearing account</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
+                                    <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
+                                    <option value="Interest received">Interest received</option>
+                                    <option value="Inventory - cost">Inventory - cost</option>
+                                    <option value="Inventory - sales">Inventory - sales</option>
+                                    <option value="Inventory on hand">Inventory on hand</option>
+                                    <option value="Legal fees">Legal fees</option>
+                                    <option value="Motor vehicle expenses">Motor vehicle expenses</option>
+                                    <option value="Printing and stationery">Printing and stationery</option>
+                                    <option value="Rent">Rent</option>
+                                    <option value="Repairs and maintenance">Repairs and maintenance</option>
+                                    <option value="Retained earnings">Retained earnings</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Telephone">Telephone</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Qty</label>
+                                <input type="number" class="form-control" name="item_qty" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
+                                <input type="number" step="any" class="form-control" name="item_price" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Total</label>
+                                <input type="number" step="any" class="form-control" name="total" id="">
+                            </div>`;
     }
 </script>
 
