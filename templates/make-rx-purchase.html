@@ -60,9 +60,9 @@
                                 <div class="col-md-3 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Item</label>
                                     <select name="item" class="form-control" id="">
-                                        <option value="">1</option>
-                                        <option value="">2</option>
-                                        <option value="">3</option>
+                                        {% for i in rx_items %}
+                                        <option value="{{i[0]}}">{{i[2]}}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
 
@@ -139,9 +139,9 @@
         document.getElementById("item-div").innerHTML = item_div.innerHTML += `<div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Item</label>
                                 <select name="item" class="form-control" id="">
-                                    <option value="">1</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
+                                    {% for i in rx_items %}
+                                        <option value="{{i[0]}}">{{i[2]}}</option>
+                                        {% endfor %}
                                 </select>
                             </div>
 

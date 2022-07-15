@@ -93,6 +93,14 @@ def delete_category(id):
     conn.commit()
     return redirect(url_for("all_category"))
 
+@app.route("/delete-inventory/<string:id>")
+def delete_inventory(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from rx_items where id=%s",(id))
+    conn.commit()
+    return redirect(url_for("view_rx_inventory"))
+
 @app.route("/add-brand",methods=['GET','POST'])
 def add_brand():
     if request.method=='POST':
@@ -318,8 +326,9 @@ def make_rx_purchase():
         cursor.execute("SELECT name from suppliers where id=%s",(supplier_id))
         supplier_name = cursor.fetchone()
         supplier_name = supplier_name[0]
-        # temp
-        item_name=""       
+        cursor.execute("SELECT item_name from rx_items where id=%s",(item_id))
+        item_name = cursor.fetchone()
+        item_name = item_name[0]        
         cursor.execute("INSERT INTO rx_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total))
         conn.commit()
         return redirect(url_for("make_rx_purchase"))
@@ -327,7 +336,9 @@ def make_rx_purchase():
     cursor =conn.cursor()
     cursor.execute("SELECT * from suppliers;")
     suppliers = cursor.fetchall()
-    return render_template("make-rx-purchase.html",suppliers=suppliers)
+    cursor.execute("SELECT * from rx_items;")
+    rx_items = cursor.fetchall()
+    return render_template("make-rx-purchase.html",suppliers=suppliers,rx_items=rx_items)
 
 @app.route("/make-rx-invoice", methods=['GET','POST'])
 def make_rx_invoice():
@@ -348,8 +359,9 @@ def make_rx_invoice():
         cursor.execute("SELECT name from customers where id=%s",(customer_id))
         customer_name = cursor.fetchone()
         customer_name = customer_name[0]
-        # temp
-        item_name=""       
+        cursor.execute("SELECT item_name from rx_items where id=%s",(item_id))
+        item_name = cursor.fetchone()
+        item_name = item_name[0]       
         cursor.execute("INSERT INTO rx_invoices (issue_date, due_date, reference, customer_id, customer_name, billing_address, description, item_id, item_name, exp_account, item_qty, item_price, total) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, customer_id, customer_name, billing_address, description, item_id, item_name, exp_account, item_qty, item_price, total))
         conn.commit()
         return redirect(url_for("make_rx_invoice"))
@@ -357,7 +369,9 @@ def make_rx_invoice():
     cursor =conn.cursor()
     cursor.execute("SELECT * from customers;")
     customers = cursor.fetchall()
-    return render_template("make-rx-invoice.html",customers=customers)
+    cursor.execute("SELECT * from rx_items;")
+    rx_items = cursor.fetchall()
+    return render_template("make-rx-invoice.html",customers=customers,rx_items=rx_items)
 
 @app.route("/add-supplier",methods=['GET','POST'])
 def add_supplier():
@@ -389,6 +403,14 @@ def delete_suppliers(id):
     cursor.execute("Delete from suppliers where id=%s",(id))
     conn.commit()
     return redirect(url_for("all_suppliers"))
+
+@app.route("/delete-rx-invoice/<string:id>")
+def delete_rx_invoice(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from rx_invoices where id=%s",(id))
+    conn.commit()
+    return redirect(url_for("view_rx_invoice"))
 
 @app.route("/add-sale-receipt")
 def add_sale_receipt():
@@ -680,9 +702,13 @@ def deletepay(type,id):
         conn.commit()
         return redirect(url_for("view_bank_and_cash_accounts"))
 
-@app.route("/rx-inventory")
-def rx_inventory():
-    return render_template("rx-inventory.html")
+@app.route("/view-rx-inventory")
+def view_rx_inventory():
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from rx_items;")
+    data = cursor.fetchall()
+    return render_template("view-rx-inventory.html",data=data)
 
 @app.route("/generate-rx-purchase/<int:id>")
 def generate_rx_purchase(id):
@@ -707,6 +733,42 @@ def generate_rx_order(id):
     cursor.execute("SELECT * from rx_orders where id=%s;",(id))
     rx_orders = cursor.fetchone()
     return render_template("generate-rx-order.html", rx_orders= rx_orders)
+
+@app.route("/generate-rx-item/<int:id>")
+def generate_rx_item(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from rx_items where id=%s;",(id))
+    rx_items = cursor.fetchone()
+    return render_template("generate-rx-item.html", rx_items= rx_items)
+
+
+@app.route("/add-rx-item", methods=['GET','POST'])
+def add_rx_item():
+    if request.method == "POST": 
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        if request.form.get("item_code"):
+            item_code = request.form.get("item_code")
+        else:
+            item_code = None
+        if request.form.get("desc"):
+            description = request.form.get("desc")
+        else:
+            description = None
+        item_name = request.form.get("item_name")
+        unit_name = request.form.get("unit_name")
+        purchase_price = request.form.get("purchase_price")
+        sales_price = request.form.get("sales_price")
+        qty = request.form.get("qty")
+        average_cost = request.form.get("average_cost")
+        total_cost = request.form.get("total_cost") 
+        if not item_name and not unit_name and not purchase_price and not sales_price and not qty and not average_cost and not total_cost:
+            return "Oops! Something is missing"      
+        cursor.execute("INSERT INTO rx_items (item_code, item_name, unit_name, purchase_price, sales_price, qty, average_cost, description, total_cost) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);",(item_code,item_name ,unit_name, purchase_price, sales_price, qty, average_cost, description, total_cost))
+        conn.commit()
+        return redirect(url_for("add_rx_item"))
+    return render_template("add-rx-item.html")
 
 
 
