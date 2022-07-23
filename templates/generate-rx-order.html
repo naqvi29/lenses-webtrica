@@ -35,35 +35,44 @@
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Reference</label>
                                 <input disabled type="text" class="form-control" name="reference" value="{{rx_orders[2]}}">
+                            </div><div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Order Number</label>
+                                <input disabled type="text" name="order_number" class="form-control" id="order_number" value="{{rx_orders[3]}}">
+                                
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
+                                
+                                <input  disabled type="text" class="form-control" name="item_id" value="{{rx_orders[7]}}">
+                            </div>
+                            <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Select Customer</label>
-                                <input disabled type="text" class="form-control" name="customer" value="{{rx_orders[4]}}">
+                                <input  disabled type="text" class="form-control" name="customer" value="{{rx_orders[5]}}">
                             </div>
 
 
                             <div class="col-md-12 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Billing Address</label>
                                 <input disabled type="text" name="billing_address" class="form-control" id=""
-                                    value="{{rx_orders[5]}}">
+                                    value="{{rx_orders[8]}}">
 
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Description</label>
-                                <input disabled type="text" name="dsc" class="form-control" id="" value="{{rx_orders[6]}}">
+                                <input disabled type="text" name="dsc" class="form-control" id="" value="{{rx_orders[9]}}">
 
                             </div>
                             <div class="col-md-6">
                                 <label for="exampleFormControlInput1" class="form-label">Treatment</label>
                                 <input disabled type="text" class="form-control" name="treatment" placeholder="Enter Treatment"
-                                    value="{{rx_orders[7]}}">
+                                    value="{{rx_orders[10]}}">
                             </div>
 
 
                             <div class="col-md-6">
                                 <label for="exampleFormControlInput1" class="form-label">Tints of Services</label>
                                 <input disabled type="text" class="form-control" name="tint_service"
-                                    placeholder="Tints of Services" value="{{rx_orders[8]}}">
+                                    placeholder="Tints of Services" value="{{rx_orders[11]}}">
                             </div>
                             <div class="col-md-12 mt-4 mb-4">
                                 <div class="table-responsive">
@@ -84,26 +93,26 @@
                                         <tbody>
                                             <tr>
                                                 <td>OD</td>
-                                                <td><input disabled type="number" class="my-order-inp" name="od_sph" value="{{rx_orders[9]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="od_cyl" value="{{rx_orders[10]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="od_axis" value="{{rx_orders[11]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="od_add" value="{{rx_orders[12]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="od_base" value="{{rx_orders[13]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="od_fh" value="{{rx_orders[14]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="od_prism_no" value="{{rx_orders[15]}}"></td>
-                                                <td><input disabled type="text" class="my-order-inp1" name="od_prism_detail" value="{{rx_orders[16]}}">
+                                                <td><input disabled type="number" class="my-order-inp" name="od_sph" value="{{rx_orders[12]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="od_cyl" value="{{rx_orders[13]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="od_axis" value="{{rx_orders[14]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="od_add" value="{{rx_orders[15]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="od_base" value="{{rx_orders[16]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="od_fh" value="{{rx_orders[17]}}"></td>
+                                                <td><input disabled type="text" class="my-order-inp" name="od_prism_no" value="{{rx_orders[18]}}"></td>
+                                                <td><input disabled type="text" class="my-order-inp1" name="od_prism_detail" value="{{rx_orders[19]}}">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>OS</td>
-                                                <td><input disabled type="number" class="my-order-inp" name="os_sph" value="{{rx_orders[17]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="os_cyl" value="{{rx_orders[18]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="os_axis" value="{{rx_orders[19]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="os_add" value="{{rx_orders[20]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="os_base" value="{{rx_orders[21]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="os_fh" value="{{rx_orders[22]}}"></td>
-                                                <td><input disabled type="number" class="my-order-inp" name="os_prism_no" value="{{rx_orders[23]}}"></td>
-                                                <td><input disabled type="text" class="my-order-inp1" name="os_prism_detail" value="{{rx_orders[24]}}">
+                                                <td><input disabled type="number" class="my-order-inp" name="os_sph" value="{{rx_orders[20]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="os_cyl" value="{{rx_orders[21]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="os_axis" value="{{rx_orders[22]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="os_add" value="{{rx_orders[23]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="os_base" value="{{rx_orders[24]}}"></td>
+                                                <td><input disabled type="number" class="my-order-inp" name="os_fh" value="{{rx_orders[25]}}"></td>
+                                                <td><input disabled type="text" class="my-order-inp" name="os_prism_no" value="{{rx_orders[26]}}"></td>
+                                                <td><input disabled type="text" class="my-order-inp1" name="os_prism_detail" value="{{rx_orders[27]}}">
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -113,93 +122,93 @@
                             <h4 class="w-100 mb-2">Special Measurement For Digital Surfacing</h4>
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">BVD in mm</label>
-                                <input disabled type="text" class="form-control" name="bvd_mm" placeholder="Enter BVD in mm" value="{{rx_orders[25]}}">
+                                <input disabled type="text" class="form-control" name="bvd_mm" placeholder="Enter BVD in mm" value="{{rx_orders[28]}}">
 
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Face from Angle</label>
                                 <input disabled type="text" class="form-control" name="face_angle"
-                                    placeholder="Enter Face from Angle" value="{{rx_orders[26]}}">
+                                    placeholder="Enter Face from Angle" value="{{rx_orders[29]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Pantoscopic Angle</label>
                                 <input disabled type="text" class="form-control" name="pantoscopic_Angle"
-                                    placeholder="Enter Pantoscopic Angle" value="{{rx_orders[27]}}">
+                                    placeholder="Enter Pantoscopic Angle" value="{{rx_orders[30]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">NRD(Near Reading
                                     Distance)</label>
                                 <input disabled type="text" class="form-control" name="nrd"
-                                    placeholder="Enter NRD(Near Reading Distance)" value="{{rx_orders[28]}}">
+                                    placeholder="Enter NRD(Near Reading Distance)" value="{{rx_orders[31]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Decentration mm</label>
                                 <input disabled type="text" class="form-control" name="decentration"
-                                    placeholder="Enter Decentration mm" value="{{rx_orders[29]}}">
+                                    placeholder="Enter Decentration mm" value="{{rx_orders[32]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Center Thickness or Edge
                                     Thickness</label>
                                 <input disabled type="text" class="form-control" name="center_edge"
-                                    placeholder="Enter Center Thickness or Edge Thickness" value="{{rx_orders[30]}}">
+                                    placeholder="Enter Center Thickness or Edge Thickness" value="{{rx_orders[33]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Frame Size Horizontal
                                     mm</label>
                                 <input disabled type="text" class="form-control" name="frame_size_h"
-                                    placeholder="Enter Frame Size Horizontal mm" value="{{rx_orders[31]}}">
+                                    placeholder="Enter Frame Size Horizontal mm" value="{{rx_orders[34]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">OC Height</label>
-                                <input disabled type="text" class="form-control" name="oc_height" placeholder="Enter OC Height" value="{{rx_orders[32]}}">
+                                <input disabled type="text" class="form-control" name="oc_height" placeholder="Enter OC Height" value="{{rx_orders[35]}}">
                             </div>
 
                             <h4 class="w-100 mb-2">Monocular PD mm</h4>
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">OD</label>
-                                <input disabled type="text" class="form-control" name="od1" placeholder="Enter OD" value="{{rx_orders[33]}}">
+                                <input disabled type="text" class="form-control" name="od1" placeholder="Enter OD" value="{{rx_orders[36]}}">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">OS</label>
-                                <input disabled type="text" class="form-control" name="os1" placeholder="Enter OS" value="{{rx_orders[34]}}">
+                                <input disabled type="text" class="form-control" name="os1" placeholder="Enter OS" value="{{rx_orders[37]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Occupation</label>
                                 <input disabled type="text" class="form-control" name="occupation"
-                                    placeholder="Enter Occupation" value="{{rx_orders[35]}}">
+                                    placeholder="Enter Occupation" value="{{rx_orders[38]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Driving %</label>
-                                <input disabled type="text" class="form-control" name="driving" placeholder="Enter Driving %" value="{{rx_orders[36]}}">
+                                <input disabled type="text" class="form-control" name="driving" placeholder="Enter Driving %" value="{{rx_orders[39]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Computer %</label>
-                                <input disabled type="text" class="form-control" name="computer" placeholder="Enter Computer %" value="{{rx_orders[37]}}">
+                                <input disabled type="text" class="form-control" name="computer" placeholder="Enter Computer %" value="{{rx_orders[40]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Reading %</label>
-                                <input disabled type="text" class="form-control" name="reading" placeholder="Enter Reading %" value="{{rx_orders[38]}}">
+                                <input disabled type="text" class="form-control" name="reading" placeholder="Enter Reading %" value="{{rx_orders[41]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Mobile %</label>
-                                <input disabled type="text" class="form-control" name="mobile" placeholder="Enter Mobile %" value="{{rx_orders[39]}}">
+                                <input disabled type="text" class="form-control" name="mobile" placeholder="Enter Mobile %" value="{{rx_orders[42]}}">
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Gaming %</label>
-                                <input disabled type="text" class="form-control" name="gaming" placeholder="Enter Gaming %" value="{{rx_orders[40]}}">
+                                <input disabled type="text" class="form-control" name="gaming" placeholder="Enter Gaming %" value="{{rx_orders[43]}}">
                             </div>
                         </form>
                     </div>

@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{% block title %}Add Tints Of Service{% endblock %}
+{% block content %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">Add Tints Of Service</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Add Tints Of Service</li>
+        </ol>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-body px-0 pt-0 pb-2">
+            <!-- <h3 class="m-4 mb-0">Add Category</h3> -->
+            <form class="py-4 px-5" action="/add-tints-of-service" method="POST" enctype="multipart/form-data">
+              <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+              <div class="row g-4">
+                <div class="col-md-12">
+                  <label for="exampleFormControlInput1" class="form-label">Service Name</label>
+                  <input type="text" class="form-control" name="name" placeholder="Service Name" required>
+                </div>
+
+
+                <div class="col-md-12">
+                  <label for="exampleFormControlInput1" class="form-label">Service Description</label>
+                  <textarea class="form-control" name="desc" id="" cols="30" rows="4"
+                    placeholder="Service Description"></textarea>
+                </div>
+
+                <div class="mt-4 col-md-12">
+                  <button type="submit" class="btn my_btn01 w-100"
+                    style="background:purple; color:white">Submit</button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          <a href="/view-tints-of-services" class="btn btn-danger">View All Tints Of Services</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock %}

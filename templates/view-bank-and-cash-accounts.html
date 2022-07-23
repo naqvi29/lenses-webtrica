@@ -1,5 +1,8 @@
 {% extends 'layout.html' %}
 {% block title %}Bank And Cash Accounts{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
 {% block content %}
 <div class="content-header">
   <div class="container-fluid">
@@ -26,8 +29,8 @@
         <div class="card mb-4">
           <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive">
-              <table class="table table-hover align-middle table-bordered border-dark">
-                <thead class="bg-dark text-white text-center" style="line-height: 15px">
+              <table id="example" class="nowrap table table-hover align-middle table-bordered">
+                <thead class="bg-dark text-white text-center">
                   <tr>
                     <th>Id</th>
                     <th>Name</th>
@@ -50,9 +53,17 @@
                     <td></td> -->
                     <td>{{i[3]}}</td>
                     <td>
-                      <a class="btn btn-danger mb-0" href="/deletepay/bank_accounts/{{i[0]}}">
-                        Del
-                      </a>
+                      <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-bank-and-cash-accounts/{{i[0]}}">Edit</a>
+                          
+                          <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/deletepay/bank_accounts/{{i[0]}}">Del</a>
+                        </div>
+                      </div>
+                      
                     </td>
                   </tr>
                   {% endfor %}
@@ -71,3 +82,15 @@
 <!-- /.content -->
 
 {% endblock %}
+{%block scripts %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );
+</script>
+{%endblock%}

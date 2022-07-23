@@ -1,26 +1,24 @@
-{% extends 'layout.html' %} {% block title %}RX Purchases{% endblock %}
+{% extends 'layout.html' %}
+{% block title %}Receipts{% endblock %}
 {% block head %}
 {{ super() }}
-{% endblock %} {% block
-content %}
+{% endblock %}
+{% block content %}
+
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">RX Purchases</h1>
-      </div>
-      <!-- /.col -->
+        <h1 class="m-0">Receipts</h1>
+      </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">RX Purchases</li>
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">Receipts</li>
         </ol>
-      </div>
-      <!-- /.col -->
-    </div>
-    <!-- /.row -->
-  </div>
-  <!-- /.container-fluid -->
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
 
@@ -30,44 +28,42 @@ content %}
     <div class="row">
       <div class="col-12">
         <div class="card mb-4">
-          <div class="card-body px-0 pt-0 pb-2">
+          <div class="card-body">
+            <!-- <h3 class="m-4 mb-3">Ingoing Or Outgoing Receipts</h3> -->
             <div class="table-responsive">
-              <table id="example" class="table table-hover align-middle table-bordered">
-                <thead class="bg-dark text-white text-center">
+              <table id="example" class="table nowrap table-hover align-middle table-bordered">
+                <thead class="bg-dark text-white" >
                   <tr>
-                    <th>ID</th>
-                    <th>View</th>
-                    <th>Supplier</th>
+                    <th>Date</th>
+                    <th>#</th>
+                    <th>Paid By</th>
+                    <th>Received In</th>
                     <th>Description</th>
-                    <th>Item</th>
-                    <th>Exp Account</th>
-                    <th>Item Qty</th>
-                    <th>Issue Date</th>
-                    <th>Due Date</th>
-                    <th>Total Price</th>
-                    <th>Status</th>
+                    <th>Amount</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for i in rx_purchases %}
-                  <tr class="text-center">
-                    <td>{{i[0]}}</td>
-                    <td><a href="/generate-rx-purchase/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td>
+                  {% for i in data %}
+                  <tr >
+                    <td>{{i[1]}}</td>
+                    <td>{{loop.index}}</td>
                     <td>{{i[5]}}</td>
-                    
-                    <td>{{i[6]}}</td>
+                    <td>{{i[7]}}</td>
                     <td>{{i[8]}}</td>
-                    <td>{{i[9]}}</td>
                     <td>{{i[10]}}</td>
-                    <td>{{i[1]}}</td>
-                    <td>{{i[1]}}</td>
-                    <td>{{i[12]}}</td>
-                    <td>{{i[13]}}</td>
                     <td>
-                      <a class="btn btn-danger mb-0" href="/delete-order/{{i[0]}}">
-                        Del
-                      </a>
+                      <div class="btn-group">
+                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-receipts/{{i[0]}}">Edit</a>
+                        <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/deletepay/inout/{{i[0]}}">
+                          Del
+                        </a>
+                      </div>
+                    </div>
                     </td>
                   </tr>
                   {% endfor %}
@@ -78,12 +74,13 @@ content %}
         </div>
       </div>
       <div class="d-flex justify-content-end">
-        <a href="/make-rx-purchase" class="btn btn-danger">Make Purchase</a>
+        <a href="/add-receipts" class="btn btn-danger">Add New</a>
       </div>
     </div>
   </div>
 </section>
 <!-- /.content -->
+
 
 {% endblock %}
 {%block scripts %}

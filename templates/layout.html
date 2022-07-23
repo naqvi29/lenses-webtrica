@@ -1,23 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  {% block head %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="/static/img/gos-logo png.png">
   <title>{% block title %}{% endblock %}</title>
   <style>
-    body{
+    body {
       font-size: 0.7rem;
     }
   </style>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="/static/adminlte/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="/static/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet"
+    href="/static/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="/static/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- JQVMap -->
@@ -30,38 +35,49 @@
   <link rel="stylesheet" href="/static/adminlte/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="/static/adminlte/plugins/summernote/summernote-bs4.min.css">
+  <link href='https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css' rel="stylesheet" media="all">
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.12.1/b-2.2.3/sl-1.4.0/datatables.min.css"/> -->
+  <!-- <link rel="stylesheet" type="text/css" href="https://editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css"> -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.4.0/css/select.dataTables.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css">
+
   <!-- mycustom css  -->
   <link rel="stylesheet" href="/static/css/style.css">
-  {% block head %}{% endblock %}
+  {% endblock %}
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+  <div class="wrapper">
 
-  <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <!-- <img class="animation__shake" src="/static/adminlte/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60"> -->
-    <img class="animation__shake" src="/static/img/gos-logo png.png" alt="AdminLTELogo" height="60" width="60">
-  </div>
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <!-- <img class="animation__shake" src="/static/adminlte/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60"> -->
+      <img class="animation__shake" src="/static/img/gos-logo png.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
 
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-      <!-- <li class  
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+      <!-- Left navbar links -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <!-- <li class  
         <a href="index3.html" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
       </li> -->
-    </ul>
+      </ul>
 
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Navbar Search -->
-      <!-- <li class="nav-item">
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        <!-- Navbar Search -->
+        <!-- <li class="nav-item">
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
         </a>
@@ -81,22 +97,22 @@
           </form>
         </div>
       </li> -->
-    </ul>
-  </nav>
-  <!-- /.navbar -->
+      </ul>
+    </nav>
+    <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <!-- <a href="index3.html" class="brand-link">
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <!-- <a href="index3.html" class="brand-link">
       <img src="/static/adminlte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">AdminLTE 3</span>
     </a> -->
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           <img src="/static/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
@@ -105,13 +121,13 @@
         </div>
       </div> -->
 
-      <a class="navbar-brand m-0 Znav-ele">        
-        <img src="/static/img/gos-logo png.png" style="border-radius:25%;" class="img-fluid" width="" alt="main_logo">         
-      </a>
+        <a class="navbar-brand m-0 Znav-ele">
+          <img src="/static/img/gos-logo png.png" style="border-radius:25%;" class="img-fluid" width="" alt="main_logo">
+        </a>
 
 
-      <!-- SidebarSearch Form -->
-      <!-- <div class="form-inline">
+        <!-- SidebarSearch Form -->
+        <!-- <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
@@ -122,105 +138,105 @@
         </div>
       </div> -->
 
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="/" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-          </li>
-          
-          
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Payments
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/view-ingoing-or-outgoing" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>In going or Outgoing</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/view-bank-and-cash-accounts" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Bank & Cash Accounts</p>
-                </a>
-                <a href="/view-payments" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Payments</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="/customer" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Customer
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/view-all-customers" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>View Customers</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/add-customer" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Customer</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="/sale" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                RX
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/make-rx-order" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Rx Order</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/make-rx-purchase" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Rx Purchase</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/make-rx-invoice" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Rx Invoice</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/view-rx-inventory" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Rx Inventory</p>
-                </a>
-              </li>
-              <!-- <li class="nav-item">
+            <li class="nav-item">
+              <a href="/" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                </p>
+              </a>
+            </li>
+
+
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  Payments
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/view-bank-and-cash-accounts" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Bank & Cash Accounts</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/view-receipts" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Receipts</p>
+                  </a>
+                  <a href="/view-payments" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Payments</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="/customer" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  Customers
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/view-all-customers" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>View Customers</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/add-customer" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Add Customer</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="/sale" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  RX
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/view-rx-orders" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Rx Orders</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/view-rx-purchase" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Rx Purchases</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/view-rx-invoice" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Rx Invoices</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/view-rx-inventory" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Rx Inventory</p>
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
                 <a href="/add-supplier" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Supplier</p>
@@ -244,35 +260,47 @@
                   <p>Add Purchase Order</p>
                 </a>
               </li> -->
-            </ul>
+              </ul>
             </li>
 
-            
-          
-          
-          </li>
-          <li class="nav-item">
-            <a href="/settings" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Settings
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/add-category" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Category</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/add-brand" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Brands</p>
-                </a>
-              </li>
-              <!-- <li class="nav-item">
+
+
+
+            </li>
+            <li class="nav-item">
+              <a href="/settings" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  Settings
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/all-category" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Categories</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/all-brand" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Brands</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/view-treatments" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Treatments</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/view-tints-of-services" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Tints Of Services</p>
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
                 <a href="/add-new-lense-type" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add New Lense Type</p>
@@ -284,116 +312,128 @@
                   <p>Pricing & Quantity</p>
                 </a>
               </li> -->
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="/settings" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Supplier
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/all-suppliers" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>View Suppliers</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/add-supplier" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Supplier</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="/admin" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Admin
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/add-branch" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Branch</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/add-user" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add User</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/logout" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Logout</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="/settings" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  Suppliers
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/all-suppliers" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>View Suppliers</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/add-supplier" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Add Supplier</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="/admin" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  Admin
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/all-branch" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Branches</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/all-users" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Users</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/logout" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Logout</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      {% block content %}{% endblock %}
     </div>
-    <!-- /.sidebar -->
-  </aside>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+      <strong>Copyright &copy; 2022 <a href="https://webtrica.com">Webtrica</a>.</strong>
+      All rights reserved.
+    </footer>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    {% block content %}{% endblock %}
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
   </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2022 <a href="https://webtrica.com">Webtrica</a>.</strong>
-    All rights reserved.
-  </footer>
+  <!-- ./wrapper -->
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
+  <!-- jQuery -->
+  <script src="/static/adminlte/plugins/jquery/jquery.min.js"></script>
+  <!-- jQuery UI 1.11.4 -->
+  <script src="/static/adminlte/plugins/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+    $.widget.bridge('uibutton', $.ui.button)
+  </script>
+  <!-- Bootstrap 4 -->
+  <script src="/static/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- ChartJS -->
+  <script src="/static/adminlte/plugins/chart.js/Chart.min.js"></script>
+  <!-- Sparkline -->
+  <script src="/static/adminlte/plugins/sparklines/sparkline.js"></script>
+  <!-- JQVMap -->
+  <script src="/static/adminlte/plugins/jqvmap/jquery.vmap.min.js"></script>
+  <script src="/static/adminlte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+  <!-- jQuery Knob Chart -->
+  <script src="/static/adminlte/plugins/jquery-knob/jquery.knob.min.js"></script>
+  <!-- daterangepicker -->
+  <script src="/static/adminlte/plugins/moment/moment.min.js"></script>
+  <script src="/static/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+  <!-- Tempusdominus Bootstrap 4 -->
+  <script src="/static/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+  <!-- Summernote -->
+  <script src="/static/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+  <!-- overlayScrollbars -->
+  <script src="/static/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src='https://code.jquery.com/jquery-3.5.1.js'></script>
+  <script src='https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js'></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+  <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.12.1/b-2.2.3/sl-1.4.0/datatables.min.js"></script> -->
 
-<!-- jQuery -->
-<script src="/static/adminlte/plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="/static/adminlte/plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="/static/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="/static/adminlte/plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="/static/adminlte/plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="/static/adminlte/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="/static/adminlte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="/static/adminlte/plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="/static/adminlte/plugins/moment/moment.min.js"></script>
-<script src="/static/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="/static/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="/static/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="/static/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="/static/adminlte/dist/js/adminlte.js"></script>
+  {% block scripts %}{% endblock %}
+  <script src="/static/adminlte/dist/js/adminlte.js"></script>
 
-{% block scripts %}{% endblock %}
+
 </body>
+
 </html>

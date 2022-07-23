@@ -1,4 +1,7 @@
-{% extends 'layout.html' %} {% block title %}All Branch{% endblock %} {% block
+{% extends 'layout.html' %} {% block title %}All Branch{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %} {% block
     content %}
     <div class="content-header">
       <div class="container-fluid">
@@ -30,12 +33,11 @@
               <div class="card-body px-0 pt-0 pb-2">
                 <h3 class="m-4 mb-3">All Branch</h3>
                 <div class="table-responsive">
-                  <table
-                    class="table table-hover align-middle table-bordered border-dark"
+                  <table id="example"
+                    class="nowrap table table-hover align-middle table-bordered"
                   >
                     <thead
                       class="bg-dark text-white text-center"
-                      style="line-height: 27px"
                     >
                       <tr>
                         <th>ID</th>
@@ -79,4 +81,14 @@
     <!-- /.content -->
     
     {% endblock %}
+     {%block scripts %}
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#example").DataTable({
+          dom: "Bfrtip",
+          buttons: ["copy", "csv", "excel", "pdf", "print"],
+        });
+      });
+    </script>
+    {%endblock%}
     

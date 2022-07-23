@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2022 at 11:23 PM
+-- Generation Time: Jul 23, 2022 at 02:32 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -39,7 +39,9 @@ CREATE TABLE `bankandcashaccounts` (
 --
 
 INSERT INTO `bankandcashaccounts` (`id`, `name`, `code`, `actual_balance`) VALUES
-(1, 'Cash in Hand', 'CIH', 200);
+(1, 'Cash in Hand', 'CIH', 200),
+(3, 'account1', '1', 200),
+(4, 'account2', '2', 200);
 
 -- --------------------------------------------------------
 
@@ -112,16 +114,16 @@ CREATE TABLE `customers` (
   `name` text NOT NULL,
   `email` text NOT NULL,
   `phone` text NOT NULL,
-  `address` text NOT NULL,
-  `description` text NOT NULL
+  `address` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `address`, `description`) VALUES
-(1, 'Groot', 'groot@test.com', '03232323232', 'R-1231293 PECHS', 'asdasd desc');
+INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `address`) VALUES
+(1, 'Groot', 'groot@test.com', '03232323232', 'R-1231293 PECHS'),
+(2, 'abc', 'asdsa@adsdas.com', '65465456465', 'asdsadsad');
 
 -- --------------------------------------------------------
 
@@ -148,7 +150,7 @@ CREATE TABLE `inoutreceipts` (
 --
 
 INSERT INTO `inoutreceipts` (`id`, `date`, `reference`, `paid_by_account_type`, `paid_by_account_id`, `paid_by_account_name`, `received_in_account_id`, `received_in_account_name`, `description`, `exp_account`, `total_amount`) VALUES
-(4, '2022-07-01', 'sdad', 'supplier', 1, 'sup 1 ', 1, 'Cash in Hand', 'asdasd', 'Motor vehicle expenses', 450000),
+(4, '2022-07-01', 'sdad', 'supplier', 1, 'sup 1 ', 1, 'Cash in Hand', 'asdasd', 'Accounting feesExpenses', 450000),
 (5, '2022-07-07', 'no ref', 'customer', 1, 'Groot', 1, 'Cash in Hand', 'this is desc', 'Printing and stationery', 200);
 
 -- --------------------------------------------------------
@@ -266,12 +268,12 @@ INSERT INTO `rx_invoices` (`id`, `issue_date`, `due_date`, `reference`, `custome
 CREATE TABLE `rx_items` (
   `id` int(11) NOT NULL,
   `item_code` text DEFAULT NULL,
-  `item_name` text NOT NULL,
+  `lense_type` text NOT NULL,
   `unit_name` text NOT NULL,
   `purchase_price` float NOT NULL,
   `sales_price` float NOT NULL,
   `qty` int(11) NOT NULL,
-  `average_cost` float NOT NULL,
+  `service_cost` float NOT NULL,
   `description` text DEFAULT NULL,
   `total_cost` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -280,8 +282,8 @@ CREATE TABLE `rx_items` (
 -- Dumping data for table `rx_items`
 --
 
-INSERT INTO `rx_items` (`id`, `item_code`, `item_name`, `unit_name`, `purchase_price`, `sales_price`, `qty`, `average_cost`, `description`, `total_cost`) VALUES
-(1, '3.0 1.67 BF', 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Piece', 900, 900, 200, 900, NULL, 900);
+INSERT INTO `rx_items` (`id`, `item_code`, `lense_type`, `unit_name`, `purchase_price`, `sales_price`, `qty`, `service_cost`, `description`, `total_cost`) VALUES
+(1, '3.0 1.67 BF', 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Piece', 11, 12, 5, 13, NULL, 14);
 
 -- --------------------------------------------------------
 
@@ -293,8 +295,11 @@ CREATE TABLE `rx_orders` (
   `id` int(11) NOT NULL,
   `date` text NOT NULL,
   `reference` text NOT NULL,
+  `order_number` text DEFAULT NULL,
   `customer_id` int(11) NOT NULL,
   `customer_name` text NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `item_name` text NOT NULL,
   `billing_address` text NOT NULL,
   `description` text NOT NULL,
   `treatment` text NOT NULL,
@@ -337,8 +342,9 @@ CREATE TABLE `rx_orders` (
 -- Dumping data for table `rx_orders`
 --
 
-INSERT INTO `rx_orders` (`id`, `date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`) VALUES
-(3, '2022-07-09', 'reference', 1, 'Groot', 'Address', 'description', 'treament', 'tints of services', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', 'bvd', 'face', 'pan', 'nrd', 'dec', 'cent', 'fram', 'oc ', 'od', 'os', 'occ', 'dri', 'comp', 'read', 'mobi', 'gamin');
+INSERT INTO `rx_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`) VALUES
+(3, '2022-07-09', 'reference', '', 1, 'Groot', 0, '', 'Address', 'description', 'treament', 'tints of services', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', 'bvd', 'face', 'pan', 'nrd', 'dec', 'cent', 'fram', 'oc ', 'od', 'os', 'occ', 'dri', 'comp', 'read', 'mobi', 'gamin'),
+(8, '2022-07-23', '2ref', 'order3', 1, 'Groot', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'R-1231293 PECHS', 'desc', 'treat', 'tints', '1', '1', '1', '1', '1', '10', '1t', '1t', '1', '1', '1', '1', '1', '10', '1t', '1t', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111');
 
 -- --------------------------------------------------------
 
@@ -388,15 +394,16 @@ CREATE TABLE `rx_purchases` (
   `exp_account` text NOT NULL,
   `item_qty` int(11) NOT NULL,
   `item_price` float NOT NULL,
-  `total` float NOT NULL
+  `total` float NOT NULL,
+  `status` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rx_purchases`
 --
 
-INSERT INTO `rx_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `item_price`, `total`) VALUES
-(1, '2022-07-01', '2022-07-13', 'ref', 1, 'sup 1 ', 'decs', 0, 'item xyz', 'Legal fees', 2, 300, 600);
+INSERT INTO `rx_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `item_price`, `total`, `status`) VALUES
+(1, '2022-07-01', '2022-07-13', 'ref', 1, 'sup 1 ', 'decs', 0, 'item xyz', 'Legal fees', 2, 300, 600, 'pending');
 
 -- --------------------------------------------------------
 
@@ -419,6 +426,44 @@ CREATE TABLE `suppliers` (
 
 INSERT INTO `suppliers` (`id`, `name`, `email`, `phone`, `address`, `description`) VALUES
 (1, 'sup 1 ', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tints_of_services`
+--
+
+CREATE TABLE `tints_of_services` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tints_of_services`
+--
+
+INSERT INTO `tints_of_services` (`id`, `name`, `description`) VALUES
+(5, 'service a', 'desc');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `treatments`
+--
+
+CREATE TABLE `treatments` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `treatments`
+--
+
+INSERT INTO `treatments` (`id`, `name`, `description`) VALUES
+(1, 'treatment no1 ', '');
 
 -- --------------------------------------------------------
 
@@ -539,6 +584,18 @@ ALTER TABLE `suppliers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tints_of_services`
+--
+ALTER TABLE `tints_of_services`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `treatments`
+--
+ALTER TABLE `treatments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -552,7 +609,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bankandcashaccounts`
 --
 ALTER TABLE `bankandcashaccounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `branch`
@@ -576,7 +633,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `inoutreceipts`
@@ -618,7 +675,7 @@ ALTER TABLE `rx_items`
 -- AUTO_INCREMENT for table `rx_orders`
 --
 ALTER TABLE `rx_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `rx_orders_old`
@@ -636,6 +693,18 @@ ALTER TABLE `rx_purchases`
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tints_of_services`
+--
+ALTER TABLE `tints_of_services`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `treatments`
+--
+ALTER TABLE `treatments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --

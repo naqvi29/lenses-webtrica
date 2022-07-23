@@ -1,20 +1,16 @@
-{% extends 'layout.html' %} {% block title %}All Suppliers{% endblock %}
-{% block head %}
-{{ super() }}
-{% endblock %}
-{% block
-content %}
+{% extends 'layout.html' %} {% block title %}All Treatments{% endblock %} {% block
+head %} {{ super() }} {% endblock %} {% block content %}
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">All Suppliers</h1>
+        <h1 class="m-0">All Treatments</h1>
       </div>
       <!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">All Suppliers</li>
+          <li class="breadcrumb-item active">All Treatments</li>
         </ol>
       </div>
       <!-- /.col -->
@@ -32,31 +28,25 @@ content %}
       <div class="col-12">
         <div class="card mb-4">
           <div class="card-body px-0 pt-0 pb-2">
-            <h3 class="m-4 mb-3">All Suppliers</h3>
+            <!-- <h3 class="m-4 mb-3">All Treatments</h3> -->
             <div class="table-responsive">
               <table id="example" class="nowrap table table-hover align-middle table-bordered">
                 <thead class="bg-dark text-white text-center">
                   <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Address</th>
-                    <th>Description</th>
+                    <th>Treatment Name</th>
+                    <th>Category Description</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for i in suppliers %}
+                  {% for i in treatments %}
                   <tr class="text-center">
                     <td>{{i[0]}}</td>
                     <td>{{i[1]}}</td>
                     <td>{{i[2]}}</td>
-                    <td>{{i[3]}}</td>
-                    <td>{{i[4]}}</td>
-                    <td>{{i[5]}}</td>
                     <td>
-                      <a class="btn btn-danger mb-0" href="/delete-suppliers/{{i[0]}}">
+                      <a class="btn btn-danger mb-0" href="/delete-treatment/{{i[0]}}">
                         Del
                       </a>
                     </td>
@@ -69,22 +59,19 @@ content %}
         </div>
       </div>
       <div class="d-flex justify-content-end">
-        <a href="add-supplier" class="btn btn-danger">Add Supplier</a>
+        <a href="add-treatment" class="btn btn-danger">Add Treatment</a>
       </div>
     </div>
   </div>
 </section>
 <!-- /.content -->
 
-{% endblock %}
-{%block scripts %}
+{% endblock %} {%block scripts %}
 <script type="text/javascript">
   $(document).ready(function () {
-    $('#example').DataTable({
-      dom: 'Bfrtip',
-      buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-      ]
+    $("#example").DataTable({
+      dom: "Bfrtip",
+      buttons: ["copy", "csv", "excel", "pdf", "print"],
     });
   });
 </script>

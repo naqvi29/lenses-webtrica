@@ -1,5 +1,8 @@
-{% extends 'layout.html' %} {% block title %}RX Orders{% endblock %} {% block
-content %}
+{% extends 'layout.html' %} {% block title %}RX Orders{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -29,15 +32,17 @@ content %}
         <div class="card mb-4">
           <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive">
-              <table class="table table-hover align-middle table-bordered border-dark">
-                <thead class="bg-dark text-white text-center" style="line-height: 27px">
+              <table id="example" class="table table-hover align-middle table-bordered">
+                <thead class="bg-dark text-white text-center">
                   <tr>
                     <th>ID</th>
                     <th>View</th>
                     <th>Date</th>
                     <th>Reference</th>
+                    <th>Order#</th>
                     <!-- <th>CustomerID</th> -->
                     <th>CustomerName</th>
+                    <th>Item Name</th>
                     <th>Billing Address</th>
                     <th>Description</th>
                     <th>Treatment</th>
@@ -81,13 +86,13 @@ content %}
                   {% for i in rx_orders %}
                   <tr class="text-center">
                     <td>{{i[0]}}</td>
-                    <td><a href="/generate-rx-order/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td>
+                    <td><a href="/generate-rx-order/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a>
+                    </td>
                     <td>{{i[1]}}</td>
                     <td>{{i[2]}}</td>
+                    <td>{{i[3]}}</td>
                     <!-- <td>{{i[3]}}</td> -->
-                    <td>{{i[4]}}</td>
                     <td>{{i[5]}}</td>
-                    <td>{{i[6]}}</td>
                     <td>{{i[7]}}</td>
                     <td>{{i[8]}}</td>
                     <td>{{i[9]}}</td>
@@ -122,6 +127,9 @@ content %}
                     <td>{{i[38]}}</td>
                     <td>{{i[39]}}</td>
                     <td>{{i[40]}}</td>
+                    <td>{{i[41]}}</td>
+                    <td>{{i[42]}}</td>
+                    <td>{{i[43]}}</td>
                     <td>
                       <a class="btn btn-danger mb-0" href="/delete-rxorder/{{i[0]}}">
                         Del
@@ -143,4 +151,20 @@ content %}
 </section>
 <!-- /.content -->
 
+{% endblock %}
+{%block scripts %}
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script> -->
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#example').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+    });
+  });
+</script>
 {% endblock %}

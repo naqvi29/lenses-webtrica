@@ -1,4 +1,7 @@
-{% extends 'layout.html' %} {% block title %}RX Inventory{% endblock %} {% block
+{% extends 'layout.html' %} {% block title %}RX Inventory{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %} {% block
   content %}
   <div class="content-header">
     <div class="container-fluid">
@@ -30,19 +33,19 @@
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive">
                 
-            <table class="table table-hover align-middle table-bordered border-dark">
-              <thead class="bg-dark text-white text-center" style="line-height: 27px">
+            <table id="example" class="nowrap table table-hover align-middle table-bordered">
+              <thead class="bg-dark text-white text-center">
                 <tr>
                   <th>ID</th>
                   <th>View</th>
                   <th>Item Code</th>
-                  <th>Item Name</th>
-                  <th>Description</th>
+                  <th>Lense Type</th>
+                  <!-- <th>Description</th> -->
                   <th>Purchase Price</th>
                   <th>Sales Price</th>
                   <th>Unit Name</th>
                   <th>Qty on Hand</th>
-                  <th>Average Cost</th>
+                  <th>Service Cost</th>
                   <th>Total Cost</th>
                   <th>Action</th>
                 </tr>
@@ -54,12 +57,12 @@
                   <td><a href="/generate-rx-item/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td>
                   <td>{{i[1]}}</td>
                   <td>{{i[2]}}</td>
-                  <td>{{i[3]}}</td>
+                  <!-- <td>{{i[3]}}</td> -->
                   <td>{{i[4]}}</td>
                   <td>{{i[5]}}</td>
+                  <td>{{i[3]}}</td>
                   <td>{{i[6]}}</td>
                   <td>{{i[7]}}</td>
-                  <td>{{i[8]}}</td>
                   <td>{{i[9]}}</td>
                   <td>
                     <a class="btn btn-danger mb-0" href="/delete-inventory/{{i[0]}}">
@@ -83,3 +86,15 @@
   <!-- /.content -->
   
   {% endblock %}
+  {%block scripts %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('#example').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+          ]
+      } );
+  } );
+  </script>
+  {%endblock%}
