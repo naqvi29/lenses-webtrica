@@ -56,9 +56,17 @@ content %}
                     <td>{{i[4]}}</td>
                     <td>{{i[5]}}</td>
                     <td>
-                      <a class="btn btn-danger mb-0" href="/delete-suppliers/{{i[0]}}">
-                        Del
-                      </a>
+                      <div class="btn-group">
+                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-supplier/{{i[0]}}">Edit</a>
+                        <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/delete-suppliers/{{i[0]}}">
+                          Del
+                        </a>
+                      </div>
+                    </div>
                     </td>
                   </tr>
                   {% endfor %}

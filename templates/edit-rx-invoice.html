@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
-{% block title %}Make Rx Invoice{% endblock %}
+{% block title %}Edit Rx Invoice{% endblock %}
 {% block content %}
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Make Rx Invoice</h1>
+                <h1 class="m-0">Edit Rx Invoice</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Make Rx Invoice</li>
+                    <li class="breadcrumb-item active">Edit Rx Invoice</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -26,31 +26,19 @@
                 <div class="card mb-4">
                     <div class="card-body px-0 pt-0 pb-2">
                         <!-- <h3 class="m-4 mb-0">Order To Make</h3> -->
-                        <form class="py-4 px-5 row" action="/make-rx-invoice" method="POST" enctype="multipart/form-data">
+                        <form class="py-4 px-5 row" action="/edit-rx-invoice/{{data[0]}}" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Issue Date</label>
-                                <input id="datebox" type="date" class="form-control" name="issue_date" value="{{today}}">
-                                <script>
-                                    Date.prototype.toDateInputValue = (function () {
-                                        var local = new Date(this);
-                                        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-                                        return local.toJSON().slice(0, 10);
-                                    });
-                                    document.getElementById('datebox').value = new Date().toDateInputValue();
-                                </script>
+                                <input id="datebox" type="date" class="form-control" name="issue_date" value="{{data[1]}}">
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Due Date</label>
-                                <input type="date" class="form-control" name="due_date">
+                                <input type="date" class="form-control" name="due_date" value="{{data[2]}}">
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Reference</label>
-                                <select name="reference" class="form-control" id="">
-                                    {% for i in rx_orders %}
-                                    <option value="{{i[3]}}">{{i[3]}}</option>
-                                    {% endfor %}
-                                </select>
+                                <input type="text" class="form-control" name="reference" value="{{data[3]}}">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Select Customer</label>
@@ -70,7 +58,7 @@
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Description</label>
-                                <input type="text" name="dsc" class="form-control" id="">
+                                <input type="text" name="dsc" class="form-control" id="" value="{{data[7]}}">
 
                             </div>
                             <div id="item-div" style="display: contents;">
@@ -114,15 +102,15 @@
                             </div>
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Qty</label>
-                                <input onchange="return qty_unitP_changed()" type="number" class="form-control" name="item_qty" id="Qty">
+                                <input onchange="return qty_unitP_changed()" type="number" class="form-control" name="item_qty" id="Qty"  value="{{data[11]}}">
                             </div>
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
-                                <input onchange="return qty_unitP_changed()" type="number" step="any" class="form-control" name="item_price" id="UnitP">
+                                <input onchange="return qty_unitP_changed()" type="number" step="any" class="form-control" name="item_price" id="UnitP" value="{{data[12]}}">
                             </div>
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Total</label>
-                                <input type="number" step="any" class="form-control" name="total" id="Total">
+                                <input type="number" step="any" class="form-control" name="total" id="Total" value="{{data[13]}}">
                             </div>
 
                             </div>

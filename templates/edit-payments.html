@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
-{% block title %}Add Receipts{% endblock %}
+{% block title %}Edit Payment{% endblock %}
 {% block content %}
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Add Receipts</h1>
+        <h1 class="m-0">Edit Payment</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item active">Add Receipts</li>
+          <li class="breadcrumb-item active">Edit Payment</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -26,50 +26,64 @@
         <div class="card mb-4">
           <div class="card-body px-0 pt-0 pb-2">
             <!-- <h3 class="m-4 mb-0">Add Ingoing or Outgoing Receipts</h3> -->
-            <form class="py-4 px-5" action="/add-receipts" method="POST" enctype="multipart/form-data">
+            <form class="py-4 px-5" action="/edit-payments/{{data[0]}}" method="POST" enctype="multipart/form-data">
               <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
               <div class="row g-4">
                 <div class="col-md-3">
-                  <label for="exampleFormControlInput1" class="form-label">Date <span style="color: red;">*</span></label>
-                  <input id="datebox" type="date" class="form-control" name="date" value="{{today}}">
-                                <script>
+                  <label for="exampleFormControlInput1" class="form-label">Date </label>
+                  <input id="datebox" type="date" class="form-control" name="date" value="{{data[1]}}">
+                                <!-- <script>
                                     Date.prototype.toDateInputValue = (function () {
                                         var local = new Date(this);
                                         local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
                                         return local.toJSON().slice(0, 10);
                                     });
                                     document.getElementById('datebox').value = new Date().toDateInputValue();
-                                </script>
+                                </script> -->
                 </div>
                 <div class="col-md-9">
                   <label for="exampleFormControlInput1" class="form-label">Reference</label>
-                  <input type="text" class="form-control" name="reference" >
+                  <input type="text" class="form-control" name="reference"  value="{{data[2]}}">
                 </div>
-                <div class="col-md-3" >
-                  <label for="exampleFormControlInput1" class="form-label">Paid By <span style="color: red;">*</span></label>
-                    <select class="form-control"  name="paid_by_type" id="paid_by_type" onchange="changevalueofpaidbytype()">
-                      <option value="other">Other</option>
-                      <option value="customer">Customer</option>
-                      <option value="supplier">Supplier</option>
-                    </select>   
-                </div> 
-                <div class="col-md-9">
-                  <label for="exampleFormControlInput1" class="form-label"><span style="color: red;">*</span></label>
-                  <span id="paid_by_name">
-                      <input type="text" class="form-control" name="other_name" >
-                    </span>
-                  </div>
-                <div class="col-md-3" >
-                  <label for="exampleFormControlInput1" class="form-label">Received in <span style="color: red;">*</span></label>
-                    <select class="form-control" name="received_in_account" id="contact">
+                <div class="col-md-12" >
+                  <label for="exampleFormControlInput1" class="form-label">Paid From </label>
+                  <!-- <input type="text" class="form-control" name="paid_from" id=""  value="{{data[4]}}"> -->
+                    <select class="form-control" name="paid_from" id="contact">
                       {% for i in bank_accounts %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
                       {% endfor %}
                     </select>                  
                 </div>
+                <div class="col-md-3" >
+                  <label for="exampleFormControlInput1" class="form-label">Payee</label>
+                  <!-- <input type="text" class="form-control" name="payee_type" id=""  value="{{data[5]}}"> -->
+                    <select class="form-control"  name="payee_type" id="payee_type" onchange="changevalueofpaidbytype()">
+                      {% if data[5] == "other" %}
+                      <option selected value="other">Other</option>
+                      <option value="customer">Customer</option>
+                      <option value="supplier">Supplier</option>
+                      {% elif data[5] == "customer" %}
+                      <option value="other">Other</option>
+                      <option selected value="customer">Customer</option>
+                      <option value="supplier">Supplier</option>
+                      {% elif data[5] == "supplier" %}
+                      <option value="other">Other</option>
+                      <option value="customer">Customer</option>
+                      <option selected value="supplier">Supplier</option>
+                      {% endif %}
+                    </select>   
+                </div> 
+                <div class="col-md-9">
+                  <label for="exampleFormControlInput1" class="form-label"></label>
+                  <span id="payee_name">
+                      <input type="text" class="form-control" name="other_name" value="{{data[7]}}">
+                    </span>
+                  </div>
                 <div class="col-md-9">
                   <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                  <select name="exp_account" class="form-control" id="">
+                  
+                  <input type="text" class="form-control" name="exp_account" value="{{data[9]}}">
+                  <!-- <select name="exp_account" class="form-control" id="">
                     <option value="Accounting feesExpenses">Accounting feesExpenses</option>
                     <option value="Accounts receivable">Accounts receivable</option>
                     <option value="Advertising and promotion">Advertising and promotion</option>
@@ -94,22 +108,22 @@
                     <option value="Retained earnings">Retained earnings</option>
                     <option value="Sales">Sales</option>
                     <option value="Telephone">Telephone</option>
-                  </select>
+                  </select> -->
                 </div>
                 <div class="col-md-12">
                   <label for="exampleFormControlInput1" class="form-label">Description</label>
                   <input type="text" class="form-control" name="desc" id="" cols="30" rows="1"
-                    ></input>
+                  value="{{data[8]}}"></input>
                 </div>
 
                 <div class="col-md-3">
                   <label for="exampleFormControlInput1" class="form-label">Amount</label>
-                  <input class="form-control" type="number" name="amount" id="">
+                  <input class="form-control" type="number" name="amount" id="" value="{{data[10]}}">
                 </div>
 
                 <div class="mt-4 col-md-12">
                   <button type="submit" class="btn my_btn01 w-100"
-                    style="background:purple; color:white">Add</button>
+                    style="background:purple; color:white">Update</button>
                 </div>
 
               </div>
@@ -117,7 +131,7 @@
           </div>
         </div>
         <div class="d-flex justify-content-end">
-          <a href="/view-receipts" class="btn btn-danger">View All</a>
+          <a href="/view-payments" class="btn btn-danger">Back</a>
         </div>
       </div>
     </div>
@@ -128,10 +142,10 @@
 
 <script>
     function changevalueofpaidbytype(){
-          var select = document.getElementById('paid_by_type');
+          var select = document.getElementById('payee_type');
           var value = select.options[select.selectedIndex].value;
           if (value == "customer"){
-            div = document.getElementById("paid_by_name");
+            div = document.getElementById("payee_name");
             div.innerHTML=``
             div.innerHTML =`
                         <select class="form-control" name="customer" id="">
@@ -141,7 +155,7 @@
                     </select>   `
           }
           if (value == "supplier"){
-            div = document.getElementById("paid_by_name");
+            div = document.getElementById("payee_name");
             div.innerHTML=``
             div.innerHTML =`
                         <select class="form-control" name="supplier" id="">
@@ -151,7 +165,7 @@
                     </select>   `
           }
           if (value == "other"){
-            div = document.getElementById("paid_by_name");
+            div = document.getElementById("payee_name");
             div.innerHTML=``
             div.innerHTML =`
                         <input type="text" class="form-control" name="other_name" >`

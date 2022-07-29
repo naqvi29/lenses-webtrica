@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
-{% block title %}Make Rx Purchase{% endblock %}
+{% block title %}Edit Rx Purchase{% endblock %}
 {% block content %}
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Make Rx Purchase</h1>
+                <h1 class="m-0">Edit Rx Purchase</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Make Rx Purchase</li>
+                    <li class="breadcrumb-item active">Edit Rx Purchase</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -26,34 +26,21 @@
                 <div class="card mb-4">
                     <div class="card-body px-0 pt-0 pb-2">
                         <!-- <h3 class="m-4 mb-0">Order To Make</h3> -->
-                        <form class="py-4 px-5 row" action="/make-rx-purchase" method="POST"
+                        <form class="py-4 px-5 row" action="/edit-rx-purchase/{{data[0]}}" method="POST"
                             enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Issue Date</label>
                                 <!-- <input type="date" class="form-control" name="issue_date"> -->
-                                <input id="datebox" type="date" class="form-control" name="issue_date" value="{{today}}">
-                                <script>
-                                    Date.prototype.toDateInputValue = (function () {
-                                        var local = new Date(this);
-                                        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-                                        return local.toJSON().slice(0, 10);
-                                    });
-                                    document.getElementById('datebox').value = new Date().toDateInputValue();
-                                </script>
+                                <input id="datebox" type="date" class="form-control" name="issue_date" value="{{data[1]}}">
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Due Date</label>
-                                <input type="date" class="form-control" name="due_date">
+                                <input type="date" class="form-control" name="due_date" value="{{data[2]}}">
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Reference</label>
-                                <!-- <input type="text" class="form-control" name="reference"> -->
-                                <select name="reference" class="form-control" id="">
-                                    {% for i in rx_orders %}
-                                    <option value="{{i[3]}}">{{i[3]}}</option>
-                                    {% endfor %}
-                                </select>
+                                <input type="text" class="form-control" name="reference" value="{{data[3]}}">
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Select Supplier</label>
@@ -68,16 +55,14 @@
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Select Status</label>
                                 <select name="status" class="form-control" id="">
+                                    <option value="" selected disabled>Select Status</option>
                                     <option value="pending">Pending</option>
-                                    <option value="inprocess">In Process</option>
-                                    <option value="ready">Ready</option>
-                                    <option value="delivered">Delivered</option>
-                                    <option value="cancelled">Cancelled</option>
+                                    <option value="status2">status 2</option>
                                 </select>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Description</label>
-                                <input type="text" name="dsc" class="form-control" id="">
+                                <input type="text" name="dsc" class="form-control" id="" value="{{data[6]}}">
 
                             </div>
                             <div id="item-div" style="display: contents;">
@@ -122,15 +107,15 @@
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Qty</label>
-                                    <input onchange="return qty_unitP_changed()" type="number" class="form-control" name="item_qty" id="Qty">
+                                    <input onchange="return qty_unitP_changed()" type="number" class="form-control" name="item_qty" id="Qty"  value="{{data[10]}}">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
-                                    <input  onchange="return qty_unitP_changed()" type="number" step="any" class="form-control" name="item_price" id="UnitP">
+                                    <input  onchange="return qty_unitP_changed()" type="number" step="any" class="form-control" name="item_price" id="UnitP" value="{{data[11]}}">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Total</label>
-                                    <input type="number" step="any" class="form-control" name="total" id="Total">
+                                    <input type="number" step="any" class="form-control" name="total" id="Total" value="{{data[12]}}">
                                 </div>
 
                             </div>
@@ -143,14 +128,14 @@
 
                             <div class="mt-4 col-md-12">
                                 <button type="submit" class="btn my_btn01 w-100"
-                                    style="background:purple; color:white">Submit</button>
+                                    style="background:purple; color:white">Update</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <a href="/view-rx-purchase" class="btn btn-danger">View All Purchases</a>
+                <a href="/view-rx-purchase" class="btn btn-danger">Back</a>
             </div>
         </div>
     </div>

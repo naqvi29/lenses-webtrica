@@ -58,7 +58,8 @@
                 <div class="col-md-9">
                   <label for="exampleFormControlInput1" class="form-label"><span style="color: red;">*</span></label>
                   <span id="paid_by_name">
-                      <input type="text" class="form-control" name="{{data[3]}}"  value="{{data[5]}}">
+                      <input type="text" class="form-control" name="other_name" required>
+                      <!-- <input type="text" class="form-control" name="{{data[3]}}"  value="{{data[5]}}"> -->
                     </span>
                   </div>
                 <div class="col-md-3" >
@@ -136,7 +137,7 @@
             div = document.getElementById("paid_by_name");
             div.innerHTML=``
             div.innerHTML =`
-                        <select class="form-control" name="customer" id="">
+                        <select class="form-control" name="customer" id="" required>
                       {% for i in customers %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
                       {% endfor %}
@@ -146,7 +147,7 @@
             div = document.getElementById("paid_by_name");
             div.innerHTML=``
             div.innerHTML =`
-                        <select class="form-control" name="supplier" id="">
+                        <select class="form-control" name="supplier" id="" required>
                       {% for i in suppliers %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
                       {% endfor %}
@@ -156,7 +157,7 @@
             div = document.getElementById("paid_by_name");
             div.innerHTML=``
             div.innerHTML =`
-                        <input type="text" class="form-control" name="other_name" >`
+                        <input type="text" class="form-control" name="other_name" required>`
           }
           console.log(value);
   }

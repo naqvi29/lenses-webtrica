@@ -31,7 +31,15 @@
               <div class="row g-4">
                 <div class="col-md-3">
                   <label for="exampleFormControlInput1" class="form-label">Date <span style="color: red;">*</span></label>
-                  <input type="date" class="form-control" name="date" >
+                  <input id="datebox" type="date" class="form-control" name="date" value="{{today}}">
+                                <script>
+                                    Date.prototype.toDateInputValue = (function () {
+                                        var local = new Date(this);
+                                        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                                        return local.toJSON().slice(0, 10);
+                                    });
+                                    document.getElementById('datebox').value = new Date().toDateInputValue();
+                                </script>
                 </div>
                 <div class="col-md-9">
                   <label for="exampleFormControlInput1" class="form-label">Reference</label>

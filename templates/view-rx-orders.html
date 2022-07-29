@@ -79,6 +79,8 @@
                     <th>reading</th>
                     <th>mobile</th>
                     <th>gaming</th>
+                    <th>Status</th>
+                    <th>Update Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -130,11 +132,43 @@
                     <td>{{i[41]}}</td>
                     <td>{{i[42]}}</td>
                     <td>{{i[43]}}</td>
+                    <td>{{i[44]}}</td>
                     <td>
-                      <a class="btn btn-danger mb-0" href="/delete-rxorder/{{i[0]}}">
-                        Del
-                      </a>
+                      <div class="btn-group">
+                      <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Update Status
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="display: block;" class="btn btn-sm btn-dark mb-2 mx-2" href="/update-rxorder-status/{{i[0]}}/pending">Pending</a>
+                        <a style="display: block;" class="btn btn-sm btn-dark mb-2 mx-2" href="/update-rxorder-status/{{i[0]}}/inprocess">
+                          InProcess
+                        </a>
+                        <a style="display: block;" class="btn btn-sm btn-dark mb-2 mx-2" href="/update-rxorder-status/{{i[0]}}/ready">
+                          Ready
+                        </a>
+                        <a style="display: block;" class="btn btn-sm btn-dark mb-2 mx-2" href="/update-rxorder-status/{{i[0]}}/delivered">
+                          Delivered
+                        </a>
+                        <a style="display: block;" class="btn btn-sm btn-dark mb-2 mx-2" href="/update-rxorder-status/{{i[0]}}/cancelled">
+                          Cancelled
+                        </a>
+                      </div>
+                    </div>
                     </td>
+                    <td>
+                      <div class="btn-group">
+                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-rxorder/{{i[0]}}">Edit</a>
+                        <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/delete-rxorder/{{i[0]}}">
+                          Del
+                        </a>
+                      </div>
+                    </div>
+                    </td>
+                    
                   </tr>
                   {% endfor %}
                 </tbody>

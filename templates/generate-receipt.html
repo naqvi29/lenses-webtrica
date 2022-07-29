@@ -1,0 +1,84 @@
+{% extends 'layout.html' %}
+{% block title %}View Receipt{% endblock %}
+{% block content %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">View Receipts # {{receipt[0]}}</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">View Receipts # {{receipt[0]}}</li>
+        </ol>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-body px-0 pt-0 pb-2">
+            <!-- <h3 class="m-4 mb-0">Add Ingoing or Outgoing Receipts</h3> -->
+            <form class="py-4 px-5" action="#" method="POST" enctype="multipart/form-data">
+              <input disabled  type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+              <div class="row g-4">
+                <div class="col-md-3">
+                  <label for="exampleFormControlInput1" class="form-label">Date </label>
+                  <input disabled  id="datebox" type="date" class="form-control" name="date" value="{{receipt[1]}}">
+                </div>
+                <div class="col-md-9">
+                  <label for="exampleFormControlInput1" class="form-label">Reference</label>
+                  <input disabled  type="text" class="form-control" name="reference" value="{{receipt[2]}}" >
+                </div>
+                <div class="col-md-3" >
+                  <label for="exampleFormControlInput1" class="form-label">Paid By </label>
+                  <input disabled  type="text" class="form-control" value="{{receipt[3]}}" name="" id="">
+                </div> 
+                <div class="col-md-9">
+                  <label for="exampleFormControlInput1" class="form-label"></label>
+                  <span id="paid_by_name">
+                      <input disabled  type="text" class="form-control" name="other_name" value="{{receipt[5]}}" >
+                    </span>
+                  </div>
+                <div class="col-md-3" >
+                  <label for="exampleFormControlInput1" class="form-label">Received in </label>
+                  <input disabled  type="text" class="form-control" name="other_name" value="{{receipt[7]}}" >  
+                </div>
+                <div class="col-md-9">
+                  <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
+                  <input disabled  type="text" class="form-control" name="other_name" value="{{receipt[9]}}" >  
+                </div>
+                <div class="col-md-12">
+                  <label for="exampleFormControlInput1" class="form-label">Description</label>
+                  
+                  <input disabled  type="text" class="form-control" name="other_name" value="{{receipt[8]}}" >  
+                </div>
+
+                <div class="col-md-3">
+                  <label for="exampleFormControlInput1" class="form-label">Amount</label>
+                  <input disabled  class="form-control" type="number" name="amount" id=""  value="{{receipt[10]}}">
+                </div>
+
+
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          <a href="/view-receipts" class="btn btn-danger">Back</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock %}

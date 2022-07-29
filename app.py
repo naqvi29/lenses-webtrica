@@ -86,6 +86,24 @@ def add_category():
         return redirect(url_for("add_category"))
     return render_template("add-category.html")
 
+@app.route("/edit-category/<string:id>", methods=['GET','POST'])
+def edit_category(id):
+    if request.method=='POST':
+        name = request.form.get("name")
+        desc = request.form.get("desc")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("UPDATE categories SET name=%s,description=%s WHERE id=%s; ",(name,desc,id))
+        conn.commit()
+        return redirect(url_for("all_category"))
+        
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from categories where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-category.html",data=data)
+
+
 @app.route("/add-treatment", methods=['GET','POST'])
 def add_treatment():
     if request.method=='POST':
@@ -98,6 +116,23 @@ def add_treatment():
         return redirect(url_for("view_treatments"))
     return render_template("add-treatment.html")
 
+@app.route("/edit-treatment/<string:id>", methods=['GET','POST'])
+def edit_treatment(id):
+    if request.method=='POST':
+        name = request.form.get("name")
+        desc = request.form.get("desc")
+        conn = mysql.connect()
+        cursor =conn.cursor()        
+        cursor.execute("UPDATE treatments SET name=%s,description=%s WHERE id=%s; ",(name,desc,id))
+        conn.commit()
+        return redirect(url_for("view_treatments"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from treatments where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-treatment.html",data=data)
+
+
 @app.route("/add-tints-of-service", methods=['GET','POST'])
 def add_tints_of_service():
     if request.method=='POST':
@@ -109,6 +144,23 @@ def add_tints_of_service():
         conn.commit()
         return redirect(url_for("view_tints_of_services"))
     return render_template("add-tints-of-service.html")
+
+@app.route("/edit-tints-of-service/<string:id>", methods=['GET','POST'])
+def edit_tints_of_service(id):
+    if request.method=='POST':
+        name = request.form.get("name")
+        desc = request.form.get("desc")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("UPDATE tints_of_services SET name=%s,description=%s WHERE id=%s; ",(name,desc,id))
+        conn.commit()   
+    
+        return redirect(url_for("view_tints_of_services"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from tints_of_services where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-tints-of-service.html",data=data)
 
 @app.route("/all-category")
 def all_category():
@@ -177,6 +229,23 @@ def add_brand():
         conn.commit()
         return redirect(url_for("add_brand"))
     return render_template("add-brand.html")
+
+@app.route("/edit-brand/<string:id>",methods=['GET','POST'])
+def edit_brand(id):
+    if request.method=='POST':
+        name = request.form.get("name")
+        desc = request.form.get("desc")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("UPDATE brands SET name=%s,description=%s WHERE id=%s; ",(name,desc,id))
+        conn.commit()
+        return redirect(url_for("all_brand"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from brands where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-brand.html",data=data)
+
 
 @app.route("/all-brand")
 def all_brand():
@@ -292,6 +361,26 @@ def add_customer():
     customers = cursor.fetchall()
     return render_template("add-customer.html",customers=customers)
 
+@app.route("/edit-customer/<string:id>", methods=['GET','POST'])
+def edit_customer(id):
+    if request.method=='POST':
+        customer_name= request.form.get("customer_name")
+        customer_email= request.form.get("customer_email")
+        customer_phone= request.form.get("customer_phone")
+        customer_address= request.form.get("customer_address")
+        # customer_description= request.form.get("customer_description")
+        conn = mysql.connect()
+        cursor =conn.cursor()        
+        cursor.execute("UPDATE customers SET name=%s,email=%s,phone=%s,address=%s WHERE id=%s; ",(customer_name,customer_email,customer_phone,customer_address,id))
+        conn.commit()
+        return redirect(url_for("all_customers"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    
+    cursor.execute("SELECT * from customers where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-customer.html",data=data)
+
 @app.route("/view-all-customers")
 def all_customers():
     conn = mysql.connect()
@@ -359,18 +448,17 @@ def make_rx_order():
         reading = request.form.get("reading")
         mobile = request.form.get("mobile")
         gaming = request.form.get("gaming")
+        status = "pending"
 
         cursor.execute("SELECT name from customers where id=%s",(customer_id))
         customer_name = cursor.fetchone()
         customer_name = customer_name[0]
-        cursor.execute("SELECT item_name from rx_items where id=%s",(item_id))
+        cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
         item_name = cursor.fetchone()
         print("item name is: ",item_name)
         item_name = item_name[0]
         print("item name is: ",item_name)
-        # temp    
-        # cursor.execute("INSERT INTO rx_orders (date, reference, customer_id, customer_name, billing_address, description, item_id, item_name, item_desc, item_qty, item_price, total) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(date, reference, customer_id, customer_name, billing_address, description, item_id, item_name, item_desc, item_qty, item_price, total))
-        cursor.execute("INSERT INTO rx_orders (date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming))
+        cursor.execute("INSERT INTO rx_orders (date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status))
 
         conn.commit()
         return redirect(url_for("make_rx_order"))
@@ -384,7 +472,100 @@ def make_rx_order():
     treatments = cursor.fetchall()
     cursor.execute("SELECT * from tints_of_services;")
     tints_of_services = cursor.fetchall()
-    return render_template("make-rx-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services)
+    # todo write query which fetch the id of last inserted row in rx_orders
+    
+    cursor.execute("select id from rx_orders ORDER BY id DESC LIMIT 1;;")
+    last_row_id = cursor.fetchone()
+    reference = last_row_id[0]+1
+    return render_template("make-rx-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services,reference=reference)
+
+@app.route("/edit-rxorder/<string:id>", methods=['GET','POST'])
+def edit_rxorder(id):
+    if request.method == "POST": 
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        date = request.form.get("date")
+        reference = request.form.get("reference")
+        order_number = request.form.get("order_number")
+        customer_name = request.form.get("customer")
+        item_name = request.form.get("item_name")
+        billing_address = request.form.get("billing_address")
+        description = request.form.get("dsc")
+        
+        treatment = request.form.get("treatment")
+        tint_service = request.form.get("tint_service")
+
+        od_sph = request.form.get("od_sph")
+        od_cyl = request.form.get("od_cyl")
+        od_axis = request.form.get("od_axis")
+        od_add = request.form.get("od_add")
+        od_base = request.form.get("od_base")
+        od_fh = request.form.get("od_fh")
+        od_prism_no = request.form.get("od_prism_no")
+        od_prism_detail = request.form.get("od_prism_detail")
+        
+        os_sph = request.form.get("os_sph")
+        os_cyl = request.form.get("os_cyl")
+        os_axis = request.form.get("os_axis")
+        os_add = request.form.get("os_add")
+        os_base = request.form.get("os_base")
+        os_fh = request.form.get("os_fh")
+        os_prism_no = request.form.get("os_prism_no")
+        os_prism_detail = request.form.get("os_prism_detail")
+        
+        bvd_mm = request.form.get("bvd_mm")
+        face_angle = request.form.get("face_angle")
+        pantoscopic_Angle = request.form.get("pantoscopic_Angle")
+        nrd = request.form.get("nrd")
+        decentration = request.form.get("decentration")
+        center_edge = request.form.get("center_edge")
+        frame_size_h = request.form.get("frame_size_h")
+        oc_height = request.form.get("oc_height")
+        od1 = request.form.get("od1")
+        os1 = request.form.get("os1")
+        occupation = request.form.get("occupation")
+        driving = request.form.get("driving")
+        computer = request.form.get("computer")
+        reading = request.form.get("reading")
+        mobile = request.form.get("mobile")
+        gaming = request.form.get("gaming")
+        status = request.form.get("status")
+
+        # cursor.execute("SELECT name from customers where id=%s",(customer_id))
+        # customer_name = cursor.fetchone()
+        # customer_name = customer_name[0]
+        # cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
+        # item_name = cursor.fetchone()
+        # print("item name is: ",item_name)
+        # item_name = item_name[0]
+        # print("item name is: ",item_name)
+        # temp    
+
+        
+        cursor.execute("UPDATE rx_orders SET date=%s, reference=%s, order_number=%s,customer_name=%s, item_name=%s,billing_address=%s, description=%s,treatment=%s, tint_service=%s,od_sph=%s, od_cyl=%s,od_axis=%s, od_add=%s,od_base=%s, od_fh=%s,od_prism_no=%s, od_prism_detail=%s,os_sph=%s, os_cyl=%s,os_axis=%s, os_add=%s,os_base=%s, os_fh=%s,os_prism_no=%s, os_prism_detail=%s,bvd_mm=%s, face_angle=%s,pantoscopic_Angle=%s, nrd=%s, decentration=%s,center_edge=%s, frame_size_h=%s,oc_height=%s, od1=%s,os1=%s, occupation=%s,driving=%s, computer=%s,reading=%s, mobile=%s,gaming=%s,status=%s WHERE id=%s; ",(date,reference,order_number,customer_name,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,id))
+        
+
+        conn.commit()
+        return redirect(url_for("view_rx_orders"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers;")
+    customers = cursor.fetchall()
+    cursor.execute("SELECT * from rx_items;")
+    rx_items = cursor.fetchall()
+    cursor.execute("SELECT * from treatments;")
+    treatments = cursor.fetchall()
+    cursor.execute("SELECT * from tints_of_services;")
+    tints_of_services = cursor.fetchall()
+    cursor.execute("SELECT * from rx_orders where id=%s;",(id))
+    data = cursor.fetchone()
+    # todo write query which fetch the id of last inserted row in rx_orders
+    
+    # cursor.execute("select id from rx_orders ORDER BY id DESC LIMIT 1;;")
+    # last_row_id = cursor.fetchone()
+    # reference = last_row_id[0]+1
+    return render_template("edit-rx-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services,data=data)
+
 
 @app.route("/make-rx-purchase", methods=['GET','POST'])
 def make_rx_purchase():
@@ -405,11 +586,28 @@ def make_rx_purchase():
         cursor.execute("SELECT name from suppliers where id=%s",(supplier_id))
         supplier_name = cursor.fetchone()
         supplier_name = supplier_name[0]
-        cursor.execute("SELECT item_name from rx_items where id=%s",(item_id))
+        cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
         item_name = cursor.fetchone()
         item_name = item_name[0]        
         cursor.execute("INSERT INTO rx_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status))
         conn.commit()
+
+        # now increase item qty in inventory 
+        cursor.execute("SELECT qty from rx_items where id=%s",(item_id))
+        actual_qty = cursor.fetchone()
+        actual_qty=actual_qty[0]
+        updated_qty = int(actual_qty) + int(item_qty)
+        cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,item_id))
+        conn.commit()
+
+        # now change order status from pending to in process
+        cursor.execute("SELECT id from rx_orders where order_number=%s",(reference))
+        order_id = cursor.fetchone()
+        if order_id:
+            cursor.execute("UPDATE rx_orders SET status='inprocess' WHERE id=%s; ",(order_id))
+            conn.commit()
+
+        
         return redirect(url_for("make_rx_purchase"))
     conn = mysql.connect()
     cursor =conn.cursor()
@@ -417,7 +615,70 @@ def make_rx_purchase():
     suppliers = cursor.fetchall()
     cursor.execute("SELECT * from rx_items;")
     rx_items = cursor.fetchall()
-    return render_template("make-rx-purchase.html",suppliers=suppliers,rx_items=rx_items)
+    cursor.execute("SELECT * from rx_orders;")
+    rx_orders = cursor.fetchall()
+    return render_template("make-rx-purchase.html",suppliers=suppliers,rx_items=rx_items,rx_orders=rx_orders)
+
+@app.route("/edit-rx-purchase/<string:id>", methods=['GET','POST'])
+def edit_rx_purchase(id):
+    if request.method == "POST": 
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        issue_date = request.form.get("issue_date")
+        due_date = request.form.get("due_date")
+        reference = request.form.get("reference")
+        supplier_id = request.form.get("supplier")
+        description = request.form.get("dsc")
+        item_id = request.form.get("item")
+        exp_account = request.form.get("exp_account")
+        item_qty = request.form.get("item_qty")
+        item_price = request.form.get("item_price")
+        total = request.form.get("total")
+        status = request.form.get("status")
+        cursor.execute("SELECT name from suppliers where id=%s",(supplier_id))
+        supplier_name = cursor.fetchone()
+        supplier_name = supplier_name[0]
+        cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
+        item_name = cursor.fetchone()
+        item_name = item_name[0]    
+        # fetch old item id and quantity      
+        cursor.execute("SELECT item_id,item_qty from rx_purchases where id=%s",(id))
+        prevData = cursor.fetchone()
+        prevItemID=prevData[0]
+        prevItemQty=prevData[1]
+
+        # cursor.execute("INSERT INTO rx_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status))
+        cursor.execute("UPDATE rx_purchases SET issue_date=%s,due_date=%s,reference=%s,supplier_id=%s,supplier_name=%s,description=%s,item_id=%s,item_name=%s,exp_account=%s,item_qty=%s,item_price=%s,total=%s,status=%s WHERE id=%s; ",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status,id))
+        conn.commit()
+
+
+        # undo old record 
+        cursor.execute("SELECT qty from rx_items where id=%s",(prevItemID))
+        prev_qty = cursor.fetchone()
+        prev_qty=prev_qty[0]
+        updated_qty = int(prev_qty) - int(prevItemQty)
+        cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,prevItemID))
+        conn.commit()
+
+        # now increase item qty in inventory 
+        cursor.execute("SELECT qty from rx_items where id=%s",(item_id))
+        actual_qty = cursor.fetchone()
+        actual_qty=actual_qty[0]
+        updated_qty = int(actual_qty) + int(item_qty)
+        cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,item_id))
+        conn.commit()
+        
+        return redirect(url_for("make_rx_purchase"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from suppliers;")
+    suppliers = cursor.fetchall()
+    cursor.execute("SELECT * from rx_items;")
+    rx_items = cursor.fetchall()
+    cursor.execute("SELECT * from rx_purchases where id=%s;",(id))
+    data = cursor.fetchone()
+    return render_template("edit-rx-purchase.html",suppliers=suppliers,rx_items=rx_items,data=data)
+
 
 @app.route("/make-rx-invoice", methods=['GET','POST'])
 def make_rx_invoice():
@@ -438,10 +699,81 @@ def make_rx_invoice():
         cursor.execute("SELECT name from customers where id=%s",(customer_id))
         customer_name = cursor.fetchone()
         customer_name = customer_name[0]
-        cursor.execute("SELECT item_name from rx_items where id=%s",(item_id))
+        cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
         item_name = cursor.fetchone()
         item_name = item_name[0]       
         cursor.execute("INSERT INTO rx_invoices (issue_date, due_date, reference, customer_id, customer_name, billing_address, description, item_id, item_name, exp_account, item_qty, item_price, total) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, customer_id, customer_name, billing_address, description, item_id, item_name, exp_account, item_qty, item_price, total))
+        conn.commit()
+        # now decrease item qty in inventory 
+        cursor.execute("SELECT qty from rx_items where id=%s",(item_id))
+        actual_qty = cursor.fetchone()
+        actual_qty=actual_qty[0]
+        updated_qty = int(actual_qty) - int(item_qty)
+        cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,item_id))
+        conn.commit()
+
+        # now change order status from in process to ready 
+        cursor.execute("SELECT id from rx_orders where order_number=%s",(reference))
+        order_id = cursor.fetchone()
+        cursor.execute("UPDATE rx_orders SET status='ready' WHERE id=%s; ",(order_id))
+        conn.commit()
+
+        return redirect(url_for("make_rx_invoice"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers;")
+    customers = cursor.fetchall()
+    cursor.execute("SELECT * from rx_items;")
+    rx_items = cursor.fetchall()
+    cursor.execute("SELECT * from rx_orders;")
+    rx_orders = cursor.fetchall()
+    return render_template("make-rx-invoice.html",customers=customers,rx_items=rx_items,rx_orders=rx_orders)
+
+@app.route("/edit-rx-invoice/<string:id>", methods=['GET','POST'])
+def edit_rx_invoice(id):
+    if request.method == "POST": 
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        issue_date = request.form.get("issue_date")
+        due_date = request.form.get("due_date")
+        reference = request.form.get("reference")
+        customer_id = request.form.get("customer")
+        billing_address = request.form.get("billing_address")
+        description = request.form.get("dsc")
+        item_id = request.form.get("item")
+        exp_account = request.form.get("exp_account")
+        item_qty = request.form.get("item_qty")
+        item_price = request.form.get("item_price")
+        total = request.form.get("total")
+        cursor.execute("SELECT name from customers where id=%s",(customer_id))
+        customer_name = cursor.fetchone()
+        customer_name = customer_name[0]
+        cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
+        item_name = cursor.fetchone()
+        item_name = item_name[0]   
+
+        # fetch old item id and quantity      
+        cursor.execute("SELECT item_id,item_qty from rx_invoices where id=%s",(id))
+        prevData = cursor.fetchone()
+        prevItemID=prevData[0]
+        prevItemQty=prevData[1]
+        cursor.execute("UPDATE rx_invoices SET issue_date=%s,due_date=%s,reference=%s,customer_id=%s,customer_name=%s,billing_address=%s,description=%s,item_id=%s,item_name=%s,exp_account=%s,item_qty=%s,item_price=%s,total=%s WHERE id=%s; ",(issue_date,due_date ,reference, customer_id, customer_name, billing_address, description, item_id, item_name, exp_account, item_qty, item_price, total,id))
+        conn.commit()
+
+        # undo old record 
+        cursor.execute("SELECT qty from rx_items where id=%s",(prevItemID))
+        prev_qty = cursor.fetchone()
+        prev_qty=prev_qty[0]
+        updated_qty = int(prev_qty) + int(prevItemQty)
+        cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,prevItemID))
+        conn.commit()
+
+        # now decrease item qty in inventory 
+        cursor.execute("SELECT qty from rx_items where id=%s",(item_id))
+        actual_qty = cursor.fetchone()
+        actual_qty=actual_qty[0]
+        updated_qty = int(actual_qty) - int(item_qty)
+        cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,item_id))
         conn.commit()
         return redirect(url_for("make_rx_invoice"))
     conn = mysql.connect()
@@ -450,7 +782,10 @@ def make_rx_invoice():
     customers = cursor.fetchall()
     cursor.execute("SELECT * from rx_items;")
     rx_items = cursor.fetchall()
-    return render_template("make-rx-invoice.html",customers=customers,rx_items=rx_items)
+    cursor.execute("SELECT * from rx_invoices where id=%s;",(id))
+    data = cursor.fetchone()
+    return render_template("edit-rx-invoice.html",customers=customers,rx_items=rx_items,data=data)
+
 
 @app.route("/add-supplier",methods=['GET','POST'])
 def add_supplier():
@@ -466,6 +801,25 @@ def add_supplier():
         conn.commit()
         return redirect(url_for("add_supplier"))
     return render_template("add-supplier.html")
+
+@app.route("/edit-supplier/<string:id>",methods=['GET','POST'])
+def edit_supplier(id):
+    if request.method=='POST':
+        name= request.form.get("name")
+        email= request.form.get("email")
+        phone= request.form.get("phone")
+        address= request.form.get("address")
+        desc= request.form.get("desc")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("UPDATE suppliers SET name=%s,email=%s,phone=%s,address=%s,description=%s WHERE id=%s; ",(name,email,phone,address,desc,id))
+        conn.commit()
+        return redirect(url_for("all_suppliers"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from suppliers where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-supplier.html",data=data)
 
 @app.route("/all-suppliers")
 def all_suppliers():
@@ -490,6 +844,14 @@ def delete_rx_invoice(id):
     cursor.execute("Delete from rx_invoices where id=%s",(id))
     conn.commit()
     return redirect(url_for("view_rx_invoice"))
+
+@app.route("/delete-rx-purchase/<string:id>")
+def delete_rx_purchase(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from rx_purchases where id=%s",(id))
+    conn.commit()
+    return redirect(url_for("view_rx_purchase"))
 
 @app.route("/add-sale-receipt")
 def add_sale_receipt():
@@ -520,6 +882,24 @@ def add_branch():
     cursor.execute("SELECT * from branch")
     branch = cursor.fetchall()
     return render_template("add-branch.html",branch=branch)
+
+@app.route("/edit-branch/<string:id>",methods=['GET','POST'])
+def edit_branch(id):
+    if request.method=='POST':
+        name= request.form.get("name")
+        phone= request.form.get("phone")
+        address= request.form.get("address")
+        security_code= request.form.get("security_code")
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("UPDATE branch SET name=%s,phone=%s,address=%s,security_code=%s WHERE id=%s; ",(name,phone,address,security_code,id))
+        conn.commit()
+        return redirect(url_for("all_branch"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from branch where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-branch.html",data=data)
 
 @app.route("/all-branch")
 def all_branch():
@@ -574,6 +954,37 @@ def add_user():
     cursor.execute("SELECT * from branch")
     branch = cursor.fetchall()
     return render_template("add-user.html",branch=branch)
+@app.route("/edit-user/<string:id>",methods=['GET','POST'])
+def edit_user(id):
+    if request.method=='POST':
+        name= request.form.get("name")
+        email= request.form.get("email")
+        branch= request.form.get("branch")
+        password= request.form.get("password")
+        confirm_password= request.form.get("confirm_password")
+        security_code= request.form.get("security_code")
+        type = "user"
+        
+        if password != confirm_password:            
+            conn = mysql.connect()
+            cursor =conn.cursor()
+            cursor.execute("SELECT * from branch")
+            branch = cursor.fetchall()
+            cursor.execute("SELECT * from users where id=%s",(id))
+            data = cursor.fetchone()
+            return render_template("edit-user.html",error="Passwords doesn't match",branch=branch,data=data)
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("UPDATE users set name=%s, email=%s,branch=%s,password=%s,security_code=%s where id=%s;",(name,email,branch,password,security_code,id))
+        conn.commit()
+        return redirect(url_for("all_users"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from branch")
+    branch = cursor.fetchall()
+    cursor.execute("SELECT * from users where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-user.html",branch=branch,data=data)
 
 
 @app.route("/all-users")
@@ -713,7 +1124,7 @@ def edit_receipts(id):
             paid_by_account_name = request.form.get("other_name")
             paid_by_account_id= None
         elif paid_by_account_type=="customer":
-            paid_by_account_id = request.form.get("customer")             
+            paid_by_account_id = request.form.get("customer")  
             cursor.execute("SELECT name from customers where id=%s",(paid_by_account_id))
             customer = cursor.fetchone()
             paid_by_account_name = customer[0]
@@ -723,7 +1134,7 @@ def edit_receipts(id):
             cursor.execute("SELECT name from suppliers where id=%s",(paid_by_account_id))
             supplier = cursor.fetchone()
             paid_by_account_name = supplier[0]
-        received_in_account_id= request.form.get("received_in_account")                     
+        received_in_account_id= request.form.get("received_in_account")           
         cursor.execute("SELECT name from bankandcashaccounts where id=%s",(received_in_account_id))
         received_in_account_name = cursor.fetchone()
         received_in_account_name=received_in_account_name[0]
@@ -735,14 +1146,35 @@ def edit_receipts(id):
         conn = mysql.connect()
         cursor =conn.cursor()
         
+        # fetch previous amount from receippt
+        cursor.execute("SELECT total_amount,received_in_account_id from inoutreceipts where id=%s",(id))
+        data = cursor.fetchone()
+        prev_bal=data[0]
+        prev_received_in_account_id=data[1]
+
+        # update receipt 
         cursor.execute("UPDATE inoutreceipts SET date=%s, paid_by_account_type=%s,paid_by_account_id=%s,paid_by_account_name=%s,received_in_account_id=%s,received_in_account_name=%s,description=%s,exp_account=%s,total_amount=%s WHERE id=%s;",(date,paid_by_account_type,paid_by_account_id,paid_by_account_name,received_in_account_id,received_in_account_name,description,exp_account,total_amount,id))
         conn.commit()
-        # cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(received_in_account_id))
-        # actual_balance = cursor.fetchone()
-        # actual_balance=actual_balance[0]
-        # update_balance = actual_balance + total_amount
-        # cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
-        # conn.commit()
+
+        
+        
+
+        # undo prev record 
+        cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(prev_received_in_account_id))
+        actual_balance0 = cursor.fetchone()
+        actual_balance0=actual_balance0[0]
+        u = actual_balance0 - prev_bal
+        cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(u,prev_received_in_account_id))
+        conn.commit()
+
+        # now update new record
+
+        cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(received_in_account_id))
+        actual_balance = cursor.fetchone()
+        actual_balance=actual_balance[0]
+        update_balance = actual_balance + total_amount
+        cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
+        conn.commit()
         return redirect(url_for("view_receipts"))
     conn = mysql.connect()
     cursor =conn.cursor()
@@ -752,9 +1184,79 @@ def edit_receipts(id):
     suppliers = cursor.fetchall()
     cursor.execute("SELECT * from bankandcashaccounts")
     bank_accounts = cursor.fetchall()
-    cursor.execute("SELECT * from inoutreceipts")
+    cursor.execute("SELECT * from inoutreceipts where id=%s",id)
     data = cursor.fetchone()
     return render_template("edit-receipts.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,data=data)
+
+@app.route("/edit-payments/<string:id>", methods=['GET','POST'])
+def edit_payments(id):
+    if request.method=='POST':
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        date= request.form.get("date")
+        reference= request.form.get("reference")
+        paid_from_account_id= request.form.get("paid_from")  
+        cursor.execute("SELECT name from bankandcashaccounts where id=%s",(paid_from_account_id))
+        bank = cursor.fetchone()
+        paid_from_account_name = bank[0]
+        payee_type= request.form.get("payee_type")
+        
+        payee_name = request.form.get("payee_name")
+        if payee_type=="other":
+            payee__name = request.form.get("other_name")
+            payee_account_id= None
+        elif payee_type=="customer":
+            payee_account_id = request.form.get("customer")             
+            cursor.execute("SELECT name from customers where id=%s",(payee_account_id))
+            customer = cursor.fetchone()
+            payee__name = customer[0]
+        elif payee_type=="supplier":
+            payee_account_id = request.form.get("supplier")             
+            cursor.execute("SELECT name from suppliers where id=%s",(payee_account_id))
+            supplier = cursor.fetchone()
+            payee__name = supplier[0]
+        description= request.form.get("desc")
+        exp_account= request.form.get("exp_account")
+        total_amount= float(request.form.get("amount"))
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        
+        # fetch prev record  
+        cursor.execute("SELECT paid_from_account_id,total_amount from payments where id=%s",(id))
+        prev_rec = cursor.fetchone()
+        prev_paid_from_account_id=prev_rec[0]
+        prev_total_amount=prev_rec[1]
+
+        cursor.execute("UPDATE payments SET date=%s,reference=%s,paid_from_account_name=%s,payee_type=%s,payee_name=%s,description=%s,exp_account=%s,total_amount=%s where id=%s;",(date,reference,paid_from_account_id,payee_type,payee_name,description,exp_account,total_amount,id))
+        conn.commit()
+
+        # undo prev record 
+        cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(prev_paid_from_account_id))
+        prev_account_bal = cursor.fetchone()
+        prev_account_bal=prev_account_bal[0]
+        u_account_bal = float(prev_account_bal) + float(prev_total_amount)
+        cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(u_account_bal,prev_paid_from_account_id))
+        conn.commit()
+        
+        cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(paid_from_account_id))
+        actual_balance = cursor.fetchone()
+        actual_balance=actual_balance[0]
+        update_balance = actual_balance - total_amount
+        cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,paid_from_account_id))
+        conn.commit()
+        
+        return redirect(url_for("view_payments"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers")
+    customers = cursor.fetchall()
+    cursor.execute("SELECT * from suppliers")
+    suppliers = cursor.fetchall()
+    cursor.execute("SELECT * from bankandcashaccounts")
+    bank_accounts = cursor.fetchall()
+    cursor.execute("SELECT * from payments where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-payments.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,data=data)
 
 @app.route("/add-payments", methods=['GET','POST'])
 def add_payments():
@@ -794,7 +1296,7 @@ def add_payments():
         update_balance = actual_balance - total_amount
         cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,paid_from_account_id))
         conn.commit()
-        return redirect(url_for("add_payments"))
+        return redirect(url_for("view_payments"))
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT * from customers")
@@ -817,7 +1319,7 @@ def add_bank_and_cash_accounts():
         cursor =conn.cursor()
         cursor.execute("INSERT INTO bankandcashaccounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
         conn.commit()
-        return redirect(url_for("add_bank_and_cash_accounts"))
+        return redirect(url_for("view_bank_and_cash_accounts"))
     return render_template("add-bank-and-cash-accounts.html")
 
 @app.route("/edit-bank-and-cash-accounts/<string:id>", methods=['GET','POST'])
@@ -871,6 +1373,22 @@ def generate_rx_purchase(id):
     rx_purchases = cursor.fetchone()
     return render_template("generate-rx-purchase.html", rx_purchases= rx_purchases)
 
+@app.route("/generate-receipt/<int:id>")
+def generate_receipt(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from inoutreceipts where id=%s;",(id))
+    receipt = cursor.fetchone()
+    return render_template("generate-receipt.html", receipt= receipt)
+
+@app.route("/generate-payment/<int:id>")
+def generate_payment(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from payments where id=%s;",(id))
+    payment = cursor.fetchone()
+    return render_template("generate-payment.html", payment=payment)
+
 @app.route("/generate-rx-invoice/<int:id>")
 def generate_rx_invoice(id):
     conn = mysql.connect()
@@ -878,6 +1396,14 @@ def generate_rx_invoice(id):
     cursor.execute("SELECT * from rx_invoices where id=%s;",(id))
     rx_invoices = cursor.fetchone()
     return render_template("generate-rx-invoice.html", rx_invoices= rx_invoices)
+
+@app.route("/generate-customer/<int:id>")
+def generate_customer(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from customers where id=%s;",(id))
+    customer = cursor.fetchone()
+    return render_template("generate-customer.html", customer= customer)
 
 @app.route("/generate-rx-order/<int:id>")
 def generate_rx_order(id):
@@ -923,14 +1449,59 @@ def add_rx_item():
         return redirect(url_for("add_rx_item"))
     return render_template("add-rx-item.html")
 
+@app.route("/edit-rx-inventory/<string:id>", methods=['GET','POST'])
+def edit_rx_inventory(id):
+    if request.method == "POST": 
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        if request.form.get("item_code"):
+            item_code = request.form.get("item_code")
+        else:
+            item_code = None
+        if request.form.get("desc"):
+            description = request.form.get("desc")
+        else:
+            description = None
+        lense_type = request.form.get("lense_type")
+        unit_name = request.form.get("unit_name")
+        purchase_price = request.form.get("purchase_price")
+        sales_price = request.form.get("sales_price")
+        qty = request.form.get("qty")
+        service_cost = request.form.get("service_cost")
+        total_cost = request.form.get("total_cost") 
+        if not lense_type and not unit_name and not purchase_price and not sales_price and not qty and not service_cost and not total_cost:
+            return "Oops! Something is missing"   
+        cursor.execute("UPDATE rx_items SET item_code=%s,lense_type=%s,unit_name=%s,purchase_price=%s,sales_price=%s,qty=%s,service_cost=%s,description=%s,total_cost=%s WHERE id=%s; ",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,id))
+        conn.commit()
+        return redirect(url_for("view_rx_inventory"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    
+    cursor.execute("SELECT * from rx_items where id=%s",(id))
+    data = cursor.fetchone()
+    return render_template("edit-rx-item.html",data=data)
+
+
 @app.route("/fetch-billing-address",methods=["POST"])
 def fetch_billing_address():
     customer_id = request.form.get("customer_id")
+    print("customerid is: ",customer_id)
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT address from customers where id=%s",(customer_id))
     billing_address = cursor.fetchone()
-    return billing_address
+    return str(billing_address)
+
+@app.route("/update-rxorder-status/<string:id>/<string:status>")
+def update_rxorder_status(id,status):
+    try:
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("UPDATE rx_orders SET status=%s WHERE id=%s; ",(status,id))
+        conn.commit()
+        return redirect(url_for("view_rx_orders"))
+    except Exception as e:
+        return str(e)
 
 
 

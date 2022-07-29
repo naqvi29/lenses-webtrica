@@ -37,6 +37,7 @@
               <table id="example" class="table table-hover align-middle table-bordered">
                 <thead class="bg-dark text-white text-center">
                   <tr>
+                    <th>View</th>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -48,15 +49,25 @@
                 <tbody>
                   {% for i in customers %}
                   <tr class="text-center">
+                    
+                    <td><a href="/generate-customer/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td>
                     <td>{{i[0]}}</td>
                     <td>{{i[1]}}</td>
                     <td>{{i[2]}}</td>
                     <td>{{i[3]}}</td>
                     <td>{{i[4]}}</td>
                     <td>
-                      <a class="btn btn-danger mb-0" href="/delete-customer/{{i[0]}}">
-                        Del
-                      </a>
+                      <div class="btn-group">
+                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-customer/{{i[0]}}">Edit</a>
+                        <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/delete-customer/{{i[0]}}">
+                          Del
+                        </a>
+                      </div>
+                    </div>
                     </td>
                   </tr>
                   {% endfor %}

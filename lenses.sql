@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2022 at 02:32 AM
+-- Generation Time: Jul 29, 2022 at 06:47 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -40,8 +40,9 @@ CREATE TABLE `bankandcashaccounts` (
 
 INSERT INTO `bankandcashaccounts` (`id`, `name`, `code`, `actual_balance`) VALUES
 (1, 'Cash in Hand', 'CIH', 200),
-(3, 'account1', '1', 200),
-(4, 'account2', '2', 200);
+(3, 'account1', '1', 0),
+(4, 'account2', '2', 400),
+(5, 'testing', 'TEST', 1000);
 
 -- --------------------------------------------------------
 
@@ -122,8 +123,8 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `address`) VALUES
-(1, 'Groot', 'groot@test.com', '03232323232', 'R-1231293 PECHS'),
-(2, 'abc', 'asdsa@adsdas.com', '65465456465', 'asdsadsad');
+(2, 'abc', 'asdsa@adsdas.com', '65465456465', 'asdsadsad'),
+(3, 'Groot', 'groot@test.com', '03232323232', 'R-1231293 PECHS');
 
 -- --------------------------------------------------------
 
@@ -151,7 +152,8 @@ CREATE TABLE `inoutreceipts` (
 
 INSERT INTO `inoutreceipts` (`id`, `date`, `reference`, `paid_by_account_type`, `paid_by_account_id`, `paid_by_account_name`, `received_in_account_id`, `received_in_account_name`, `description`, `exp_account`, `total_amount`) VALUES
 (4, '2022-07-01', 'sdad', 'supplier', 1, 'sup 1 ', 1, 'Cash in Hand', 'asdasd', 'Accounting feesExpenses', 450000),
-(5, '2022-07-07', 'no ref', 'customer', 1, 'Groot', 1, 'Cash in Hand', 'this is desc', 'Printing and stationery', 200);
+(5, '2022-07-07', 'no ref', 'customer', 1, 'Groot', 1, 'Cash in Hand', 'this is desc', 'Printing and stationery', 200),
+(6, '2022-07-29', 'ref', 'customer', 3, 'Groot', 4, 'account2', 'received rent from groot customer', 'Accounting feesExpenses', 200);
 
 -- --------------------------------------------------------
 
@@ -204,7 +206,8 @@ CREATE TABLE `payments` (
 --
 
 INSERT INTO `payments` (`id`, `date`, `reference`, `paid_from_account_id`, `paid_from_account_name`, `payee_type`, `payee_id`, `payee_name`, `description`, `exp_account`, `total_amount`) VALUES
-(2, '2022-07-01', 'no ref', 1, 'Cash in Hand', 'customer', 1, 'Groot', 'this is desc', 'Legal fees', '100');
+(2, '2022-07-01', 'ref', 1, 'Cash in Hand', 'customer', 1, '', 'this is desc', 'Legal fees', '100'),
+(3, '2022-07-29', 'ref', 5, '3', 'customer', 3, '', 'pay rent to groot customer', 'Rent', '200');
 
 -- --------------------------------------------------------
 
@@ -257,7 +260,8 @@ CREATE TABLE `rx_invoices` (
 --
 
 INSERT INTO `rx_invoices` (`id`, `issue_date`, `due_date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `item_price`, `total`) VALUES
-(2, '2022-07-02', '2022-07-06', 'ref', 1, 'Groot', 'sadsad', 'dasdsad', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Accounting feesExpenses', 2, 2, 2);
+(4, '2022-07-29', '2022-07-09', 'ref', 3, 'Groot', 'R-1231293 PECHS', 'sold 2 optolux for 300', 4, 'developer lense', 'Accounting feesExpenses', 1, 150, 150),
+(5, '2022-07-29', '2022-06-30', 'order3', 2, 'abc', 'asdsadsad', 'desc', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Accounting feesExpenses', 20, 2, 40);
 
 -- --------------------------------------------------------
 
@@ -283,7 +287,8 @@ CREATE TABLE `rx_items` (
 --
 
 INSERT INTO `rx_items` (`id`, `item_code`, `lense_type`, `unit_name`, `purchase_price`, `sales_price`, `qty`, `service_cost`, `description`, `total_cost`) VALUES
-(1, '3.0 1.67 BF', 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Piece', 11, 12, 5, 13, NULL, 14);
+(1, '3.0 1.67 BF', 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Piece', 11, 12, 40, 13, 'dec', 14),
+(4, 'Gr', 'developer lense', 'unit name', 2000, 3000, 9, 50, NULL, 2050);
 
 -- --------------------------------------------------------
 
@@ -335,16 +340,16 @@ CREATE TABLE `rx_orders` (
   `computer` text NOT NULL,
   `reading` text NOT NULL,
   `mobile` text NOT NULL,
-  `gaming` text NOT NULL
+  `gaming` text NOT NULL,
+  `status` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rx_orders`
 --
 
-INSERT INTO `rx_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`) VALUES
-(3, '2022-07-09', 'reference', '', 1, 'Groot', 0, '', 'Address', 'description', 'treament', 'tints of services', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', '3', 'bvd', 'face', 'pan', 'nrd', 'dec', 'cent', 'fram', 'oc ', 'od', 'os', 'occ', 'dri', 'comp', 'read', 'mobi', 'gamin'),
-(8, '2022-07-23', '2ref', 'order3', 1, 'Groot', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'R-1231293 PECHS', 'desc', 'treat', 'tints', '1', '1', '1', '1', '1', '10', '1t', '1t', '1', '1', '1', '1', '1', '10', '1t', '1t', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111');
+INSERT INTO `rx_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `status`) VALUES
+(8, '2022-07-23', '2ref2', 'order3', 1, 'Groot', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'R-1231293 PECHS', 'desc', 'treat', 'tints', '1', '1', '1', '1', '1', '10', '1t', '1t', '1', '1', '1', '1', '1', '10', '1t', '1t', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', 'ready');
 
 -- --------------------------------------------------------
 
@@ -403,7 +408,8 @@ CREATE TABLE `rx_purchases` (
 --
 
 INSERT INTO `rx_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `item_price`, `total`, `status`) VALUES
-(1, '2022-07-01', '2022-07-13', 'ref', 1, 'sup 1 ', 'decs', 0, 'item xyz', 'Legal fees', 2, 300, 600, 'pending');
+(2, '2022-07-29', '2022-07-02', 'ref', 1, 'sup 1 ', 'purchased 10 opt for 40000', 4, 'developer lense', 'Accounting feesExpenses', 10, 4000, 32000, 'pending'),
+(4, '2022-07-29', '2022-06-29', 'order3', 1, 'sup 1', 'desc', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Accounting feesExpenses', 50, 100, 5000, 'pending');
 
 -- --------------------------------------------------------
 
@@ -425,7 +431,8 @@ CREATE TABLE `suppliers` (
 --
 
 INSERT INTO `suppliers` (`id`, `name`, `email`, `phone`, `address`, `description`) VALUES
-(1, 'sup 1 ', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr');
+(1, 'sup 1', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr'),
+(3, 'sup 1 2', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr');
 
 -- --------------------------------------------------------
 
@@ -444,7 +451,7 @@ CREATE TABLE `tints_of_services` (
 --
 
 INSERT INTO `tints_of_services` (`id`, `name`, `description`) VALUES
-(5, 'service a', 'desc');
+(5, 'service b', 'desc');
 
 -- --------------------------------------------------------
 
@@ -463,7 +470,7 @@ CREATE TABLE `treatments` (
 --
 
 INSERT INTO `treatments` (`id`, `name`, `description`) VALUES
-(1, 'treatment no1 ', '');
+(1, 'treatment no12', 'desc');
 
 -- --------------------------------------------------------
 
@@ -609,7 +616,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bankandcashaccounts`
 --
 ALTER TABLE `bankandcashaccounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `branch`
@@ -633,13 +640,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `inoutreceipts`
 --
 ALTER TABLE `inoutreceipts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `lense_types`
@@ -651,7 +658,7 @@ ALTER TABLE `lense_types`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pricing`
@@ -663,19 +670,19 @@ ALTER TABLE `pricing`
 -- AUTO_INCREMENT for table `rx_invoices`
 --
 ALTER TABLE `rx_invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `rx_items`
 --
 ALTER TABLE `rx_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `rx_orders`
 --
 ALTER TABLE `rx_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `rx_orders_old`
@@ -687,13 +694,13 @@ ALTER TABLE `rx_orders_old`
 -- AUTO_INCREMENT for table `rx_purchases`
 --
 ALTER TABLE `rx_purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tints_of_services`

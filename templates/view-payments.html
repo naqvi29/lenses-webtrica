@@ -34,25 +34,38 @@
                 <thead class="bg-dark text-white text-center">
                   <tr>
                     <th>Id</th>
+                    <th>View</th>
+                    <th>Date</th>
+                    <th>Reference</th>
                     <th>Paid From</th>
                     <th>Description</th>
                     <th>Amount</th>
-                    <th>Date</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for i in data %}
                   <tr class="text-center">
-                    <td>{{i[0]}}</td>
+                    <td>{{loop.index}}</td>
+                    <td><a href="/generate-payment/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td>
+                    
+                    <td>{{i[1]}}</td>
+                    <td>{{i[2]}}</td>
                     <td>{{i[4]}}</td>
                     <td>{{i[8]}}</td>
                     <td>{{i[10]}}</td>
-                    <td>{{i[1]}}</td>
                     <td>
-                      <a class="btn btn-danger mb-0" href="/deletepay/payments/{{i[0]}}">
-                        Del
-                      </a>
+                      <div class="btn-group">
+                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-payments/{{i[0]}}">Edit</a>
+                        <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/deletepay/payments/{{i[0]}}">
+                          Del
+                        </a>
+                      </div>
+                    </div>
                     </td>
                   </tr>
                   {% endfor %}

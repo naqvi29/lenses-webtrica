@@ -34,8 +34,9 @@
               <table id="example" class="table nowrap table-hover align-middle table-bordered">
                 <thead class="bg-dark text-white" >
                   <tr>
-                    <th>Date</th>
                     <th>#</th>
+                    <th>View</th>
+                    <th>Date</th>
                     <th>Paid By</th>
                     <th>Received In</th>
                     <th>Description</th>
@@ -46,8 +47,9 @@
                 <tbody>
                   {% for i in data %}
                   <tr >
-                    <td>{{i[1]}}</td>
                     <td>{{loop.index}}</td>
+                    <td><a href="/generate-receipt/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td>
+                    <td>{{i[1]}}</td>
                     <td>{{i[5]}}</td>
                     <td>{{i[7]}}</td>
                     <td>{{i[8]}}</td>
