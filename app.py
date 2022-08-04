@@ -603,29 +603,50 @@ def make_rx_purchase():
         due_date = request.form.get("due_date")
         reference = request.form.get("reference")
         supplier_id = request.form.get("supplier")
-        description = request.form.get("dsc")
-        item_id = request.form.get("item")
+        # description = request.form.get("dsc")
+        description = None
+        item_id = request.form.get("item_idd")
+        item_name = request.form.get("item_name")
         exp_account = request.form.get("exp_account")
-        item_qty = request.form.get("item_qty")
-        item_price = request.form.get("item_price")
+        item_qty = request.form.get("qty")
+        cost_price = request.form.get("cost_price")
         total = request.form.get("total")
         status = request.form.get("status")
         cursor.execute("SELECT name from suppliers where id=%s",(supplier_id))
         supplier_name = cursor.fetchone()
         supplier_name = supplier_name[0]
-        cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
-        item_name = cursor.fetchone()
-        item_name = item_name[0]        
-        cursor.execute("INSERT INTO rx_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status))
+        # cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
+        # item_name = cursor.fetchone()
+        # item_name = item_name[0]     
+        od_size = request.form.get("od_size")   
+        od_sph = request.form.get("od_sph")   
+        od_cyl = request.form.get("od_cyl")   
+        od_axis = request.form.get("od_axis")   
+        od_add = request.form.get("od_add")   
+        od_base = request.form.get("od_base")   
+        od_fh = request.form.get("od_fh")   
+        os_size = request.form.get("os_size")   
+        os_sph = request.form.get("os_sph")   
+        os_cyl = request.form.get("os_cyl")   
+        os_axis = request.form.get("os_axis")   
+        os_add = request.form.get("os_add")   
+        os_base = request.form.get("os_base")   
+        os_fh = request.form.get("os_fh")   
+        os_prism_detail = request.form.get("os_prism_detail")   
+        od_prism_detail = request.form.get("od_prism_detail")   
+        cursor.execute("INSERT INTO rx_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail))
         conn.commit()
 
         # now increase item qty in inventory 
-        cursor.execute("SELECT qty from rx_items where id=%s",(item_id))
-        actual_qty = cursor.fetchone()
-        actual_qty=actual_qty[0]
-        updated_qty = int(actual_qty) + int(item_qty)
-        cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,item_id))
-        conn.commit()
+        # cursor.execute("SELECT qty from rx_items where id=%s",(item_id))
+        # actual_qty = cursor.fetchone()
+        # actual_qty=actual_qty[0]
+        # print("item_id :",item_id)
+        # print("actual_qty :",actual_qty)
+        # print("item_qty :",item_qty)
+        # updated_qty = int(actual_qty) + int(item_qty)
+        # cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,item_id))
+        # conn.commit()
 
         # now change order status from pending to in process
         cursor.execute("SELECT id from rx_orders where order_number=%s",(reference))
@@ -654,48 +675,71 @@ def edit_rx_purchase(id):
         issue_date = request.form.get("issue_date")
         due_date = request.form.get("due_date")
         reference = request.form.get("reference")
-        supplier_id = request.form.get("supplier")
-        description = request.form.get("dsc")
-        item_id = request.form.get("item")
+        supplier_id = request.form.get("supplier_id")
+        # supplier_name = request.form.get("supplier_name")
+        # description = request.form.get("dsc")
+        description = None
+        item_id = request.form.get("item_idd")
+        item_name = request.form.get("item_name")
         exp_account = request.form.get("exp_account")
         item_qty = request.form.get("item_qty")
-        item_price = request.form.get("item_price")
+        cost_price = request.form.get("cost_price")
         total = request.form.get("total")
         status = request.form.get("status")
+        print("supp id: ",supplier_id)
         cursor.execute("SELECT name from suppliers where id=%s",(supplier_id))
+        print("supp id: ",supplier_id)
         supplier_name = cursor.fetchone()
         supplier_name = supplier_name[0]
-        cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
-        item_name = cursor.fetchone()
-        item_name = item_name[0]    
+             
+        od_size = request.form.get("od_size")   
+        od_sph = request.form.get("od_sph")   
+        od_cyl = request.form.get("od_cyl")   
+        od_axis = request.form.get("od_axis")   
+        od_add = request.form.get("od_add")   
+        od_base = request.form.get("od_base")   
+        od_fh = request.form.get("od_fh")   
+        os_size = request.form.get("os_size")   
+        os_sph = request.form.get("os_sph")   
+        os_cyl = request.form.get("os_cyl")   
+        os_axis = request.form.get("os_axis")   
+        os_add = request.form.get("os_add")   
+        os_base = request.form.get("os_base")   
+        os_fh = request.form.get("os_fh")   
+        os_prism_detail = request.form.get("os_prism_detail")   
+        od_prism_detail = request.form.get("od_prism_detail")
+        # cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
+        # item_name = cursor.fetchone()
+        # item_name = item_name[0]    
         # fetch old item id and quantity      
-        cursor.execute("SELECT item_id,item_qty from rx_purchases where id=%s",(id))
-        prevData = cursor.fetchone()
-        prevItemID=prevData[0]
-        prevItemQty=prevData[1]
+        # cursor.execute("SELECT item_id,item_qty from rx_purchases where id=%s",(id))
+        # prevData = cursor.fetchone()
+        # prevItemID=prevData[0]
+        # prevItemQty=prevData[1]
 
         # cursor.execute("INSERT INTO rx_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status))
-        cursor.execute("UPDATE rx_purchases SET issue_date=%s,due_date=%s,reference=%s,supplier_id=%s,supplier_name=%s,description=%s,item_id=%s,item_name=%s,exp_account=%s,item_qty=%s,item_price=%s,total=%s,status=%s WHERE id=%s; ",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, item_price, total,status,id))
+        cursor.execute("UPDATE rx_purchases SET issue_date=%s,due_date=%s,reference=%s,supplier_id=%s,supplier_name=%s,description=%s,item_id=%s,item_name=%s,exp_account=%s,item_qty=%s,cost_price=%s,total=%s,status=%s,od_size=%s,od_sph=%s,od_cyl=%s,od_axis=%s,od_add=%s,od_base=%s,od_fh=%s,od_prism_detail=%s,os_size=%s,os_sph=%s,os_cyl=%s,os_axis=%s,os_add=%s,os_base=%s,os_fh=%s,os_prism_detail=%s WHERE id=%s; ",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,id))
         conn.commit()
 
+        
 
         # undo old record 
-        cursor.execute("SELECT qty from rx_items where id=%s",(prevItemID))
-        prev_qty = cursor.fetchone()
-        prev_qty=prev_qty[0]
-        updated_qty = int(prev_qty) - int(prevItemQty)
-        cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,prevItemID))
-        conn.commit()
+        # cursor.execute("SELECT qty from rx_items where id=%s",(prevItemID))
+        # prev_qty = cursor.fetchone()
+        # prev_qty=prev_qty[0]
+        # updated_qty = int(prev_qty) - int(prevItemQty)
+        # cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,prevItemID))
+        # conn.commit()
 
         # now increase item qty in inventory 
-        cursor.execute("SELECT qty from rx_items where id=%s",(item_id))
-        actual_qty = cursor.fetchone()
-        actual_qty=actual_qty[0]
-        updated_qty = int(actual_qty) + int(item_qty)
-        cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,item_id))
-        conn.commit()
+        # cursor.execute("SELECT qty from rx_items where id=%s",(item_id))
+        # actual_qty = cursor.fetchone()
+        # actual_qty=actual_qty[0]
+        # updated_qty = int(actual_qty) + int(item_qty)
+        # cursor.execute("UPDATE rx_items SET qty=%s WHERE id=%s; ",(updated_qty,item_id))
+        # conn.commit()
         
-        return redirect(url_for("make_rx_purchase"))
+        return redirect(url_for("view_rx_purchase"))
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT * from suppliers;")
@@ -1053,6 +1097,7 @@ def view_rx_invoice():
     cursor =conn.cursor()
     cursor.execute("SELECT * from rx_invoices;")
     rx_invoices = cursor.fetchall()
+    return render_template("todo.html")
     return render_template("view-rx-invoice.html", rx_invoices= rx_invoices)
 
 @app.route("/delete-rxorder/<string:id>")
@@ -1522,6 +1567,17 @@ def fetch_billing_address():
     cursor.execute("SELECT address from customers where id=%s",(customer_id))
     billing_address = cursor.fetchone()
     return billing_address
+
+@app.route("/fetch-order",methods=["POST"])
+def fetch_order():
+    order_id = request.form.get("order_id")
+    print("order_id is: ",order_id)
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from rx_orders where id=%s",(order_id))
+    data = cursor.fetchone()
+    print(data)
+    return str(data)
 
 
 @app.route("/fetch-item-price",methods=["POST"])

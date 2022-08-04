@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Edit Rx Purchase</h1>
+                <!-- <h1 class="m-0">Rx Purchase Invoice # {{data[0]}}</h1> -->
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -23,244 +23,325 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-body px-0 pt-0 pb-2">
-                        <!-- <h3 class="m-4 mb-0">Order To Make</h3> -->
+
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title"><strong>Edit Rx Purchase</strong></h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button> -->
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: block;">
+                        <div class="row">
+                            
                         <form class="py-4 px-5 row" action="/edit-rx-purchase/{{data[0]}}" method="POST"
-                            enctype="multipart/form-data">
-                            <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Issue Date</label>
-                                <!-- <input type="date" class="form-control" name="issue_date"> -->
-                                <input id="datebox" type="date" class="form-control" name="issue_date" value="{{data[1]}}">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Due Date</label>
-                                <input type="date" class="form-control" name="due_date" value="{{data[2]}}">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Reference</label>
-                                <input type="text" class="form-control" name="reference" value="{{data[3]}}">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Select Supplier</label>
-                                <select name="supplier" class="form-control" id="">
-                                    <option value="" selected disabled>Select Supplier</option>
-                                    {% for i in suppliers %}
-                                    <option value="{{i[0]}}">{{i[1]}}</option>
-                                    {% endfor %}
-
-                                </select>
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Select Status</label>
-                                <select name="status" class="form-control" id="">
-                                    <option value="" selected disabled>Select Status</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="status2">status 2</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Description</label>
-                                <input type="text" name="dsc" class="form-control" id="" value="{{data[6]}}">
-
-                            </div>
-                            <div id="item-div" style="display: contents;">
-                                <div class="col-md-3 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Item</label>
-                                    <select name="item" class="form-control" id="">
-                                        {% for i in rx_items %}
-                                        <option value="{{i[0]}}">{{i[2]}}</option>
-                                        {% endfor %}
-                                    </select>
+                                enctype="multipart/form-data">
+                                <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Issue Date</label>
+                                    <input  type="date" class="form-control" name="issue_date" value="{{data[1]}}">
                                 </div>
-
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Due Date</label>
+                                    <input  type="date" class="form-control" name="due_date" value="{{data[2]}}">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Reference</label>
+                                    <input  type="text" class="form-control" name="reference" value="{{data[3]}}">
+                                    <!-- <input type="text" class="form-control" name="reference"> -->
+                                </div>
+                                <!-- <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Order Number</label>
+                                    <input type="text" name="order_number" class="form-control" id="order_number" disabled>
+    
+                                </div> -->
+                                <!-- <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Customer</label>
+                                    <input type="text" class="form-control" name="customer" id="customer">
+                                </div> -->
+                                <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Select Supplier</label>
+                                    <input  type="text" class="form-control" name="supplier_name" value="{{data[5]}}">
+                                    <input  type="text" class="form-control" name="supplier_id" value="{{data[4]}}"hidden>
+                                </div>
                                 <div class="col-md-3">
                                     <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                                    <select name="exp_account" class="form-control" id="">
-                                        <option value="Accounting feesExpenses">Accounting feesExpenses</option>
-                                        <option value="Accounts receivable">Accounts receivable</option>
-                                        <option value="Advertising and promotion">Advertising and promotion</option>
-                                        <option value="Bank charges">Bank charges</option>
-                                        <option value="Capital gains on investments">Capital gains on investments
-                                        </option>
-                                        <option value="Computer equipment">Computer equipment</option>
-                                        <option value="Donations">Donations</option>
-                                        <option value="Electricity">Electricity</option>
-                                        <option value="Employee clearing account">Employee clearing account</option>
-                                        <option value="Entertainment">Entertainment</option>
-                                        <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
-                                        <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
-                                        <option value="Interest received">Interest received</option>
-                                        <option value="Inventory - cost">Inventory - cost</option>
-                                        <option value="Inventory - sales">Inventory - sales</option>
-                                        <option value="Inventory on hand">Inventory on hand</option>
-                                        <option value="Legal fees">Legal fees</option>
-                                        <option value="Motor vehicle expenses">Motor vehicle expenses</option>
-                                        <option value="Printing and stationery">Printing and stationery</option>
-                                        <option value="Rent">Rent</option>
-                                        <option value="Repairs and maintenance">Repairs and maintenance</option>
-                                        <option value="Retained earnings">Retained earnings</option>
-                                        <option value="Sales">Sales</option>
-                                        <option value="Telephone">Telephone</option>
-                                    </select>
+                                    <input  type="text" name="exp_account" class="form-control" id="" value="{{data[9]}}">
+                                </div>
+
+
+
+                                <!-- <div class="col-md-5 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Billing Address</label>
+                                    <input type="text" name="billing_address" class="form-control" id="bill_address">
+
+                                </div> -->
+
+                                <div class="col-md-4 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
+                                    <input  type="text" name="item_name" class="form-control" id="" value="{{data[8]}}">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Qty</label>
-                                    <input onchange="return qty_unitP_changed()" type="number" class="form-control" name="item_qty" id="Qty"  value="{{data[10]}}">
+                                    <input  type="number" class="form-control" name="item_qty" id="" value="{{data[10]}}">
                                 </div>
                                 <div class="col-md-2 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
-                                    <input  onchange="return qty_unitP_changed()" type="number" step="any" class="form-control" name="item_price" id="UnitP" value="{{data[11]}}">
+                                    <label for="exampleFormControlInput1" class="form-label">Cost Price</label>
+                                    <input  type="number" step="any" class="form-control" name="cost_price" id="" value="{{data[11]}}">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Total</label>
-                                    <input type="number" step="any" class="form-control" name="total" id="Total" value="{{data[12]}}">
+                                    <input  type="number" step="any" class="form-control" name="total" id="" value="{{data[12]}}">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Status</label>
+                                    <input  type="text" class="form-control" name="status" value="{{data[13]}}">
+                                </div>
+                                <!-- <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Sales Price</label>
+                                    <input type="text" min="0" step="any" name="sales_price" class="form-control"
+                                        id="sales_price">
+                                </div> -->
+                                <!-- <div class="col-md-12 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Description</label>
+                                    <input type="text" name="dsc" class="form-control" id="">
+    
+                                </div> -->
+                                <div class="col-md-12 mt-4 mb-4">
+                                    <div class="table-responsive">
+                                        <table class="table w-auto" width="100%">
+                                            <thead>
+                                                <tr class="col-md-12">
+                                                    <th width="2%"></th>
+                                                    <th width="5%">SIZE</th>
+                                                    <th width="5%">SPH</th>
+                                                    <th width="5%">CYL</th>
+                                                    <th width="5%">AXIS</th>
+                                                    <th width="5%">ADD</th>
+                                                    <th width="5%">BASE</th>
+                                                    <th width="5%">FH</th>
+                                                    <!-- <th>PRISM NO</th> -->
+                                                    <th width="5%">PRISM DETAILS</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="col-md-12">
+                                                    <td>OD</td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            class="my-order-inp" name="od_size" id="od_size" value="{{data[14]}}"></td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            step="0.25" class="my-order-inp" name="od_sph" id="od_sph" value="{{data[15]}}" ></td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            step="0.25" class="my-order-inp" name="od_cyl" id="od_cyl" value="{{data[16]}}"></td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            min="1" max="180" class="my-order-inp" name="od_axis"id="od_axis" value="{{data[17]}}"></td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            step="0.25" min="0" max="10" class="my-order-inp"
+                                                            name="od_add"id="od_add" value="{{data[18]}}">
+                                                    </td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" min="1" max="10"
+                                                            type="text" class="my-order-inp" name="od_base"id="od_base" value="{{data[19]}}"></td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            min="10" max="30" step="2" class="my-order-inp"
+                                                            name="od_fh"id="od_fh" value="{{data[20]}}">
+                                                    </td>
+                                                    <!-- <td><input class="col-md-6" style="max-width: 68%;" type="text"
+                                                            class="my-order-inp" name="od_prism_no"></td> -->
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            class="my-order-inp1" name="od_prism_detail"id="od_prism_detail" value="{{data[21]}}"></td>
+                                                </tr>
+                                                <tr class="col-md-12">
+                                                    <td>OS</td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            class="my-order-inp" name="os_size" id="os_size"id="os_size" value="{{data[22]}}"></td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" step="0.25"
+                                                            type="text" class="my-order-inp" name="os_sph"id="os_sph" value="{{data[23]}}"></td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" step="0.25"
+                                                            type="text" class="my-order-inp" name="os_cyl"id="os_cyl" value="{{data[24]}}"></td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" min="1"
+                                                            max="180" type="text" class="my-order-inp" name="os_axis"id="os_axis" value="{{data[25]}}">
+                                                    </td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            step="0.25" min="0" max="10" class="my-order-inp"
+                                                            name="os_add"id="os_add" value="{{data[26]}}">
+                                                    </td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            min="1" max="10" class="my-order-inp" name="os_base"id="os_base" value="{{data[27]}}"></td>
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            min="10" max="30" step="2" class="my-order-inp"
+                                                            name="os_fh"id="os_fh" value="{{data[28]}}">
+                                                    </td>
+                                                    <!-- <td><input class="col-md-6" style="max-width: 68%;" type="text"
+                                                            class="my-order-inp" name="os_prism_no"></td> -->
+                                                    <td><input  class="col-md-6" style="max-width: 68%;" type="text"
+                                                            class="my-order-inp1" name="os_prism_detail"id="os_prism_detail" value="{{data[29]}}"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
 
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <a href="#" onclick="add_line()" class="btn btn-sm btn-outline-success">Add Line</a>
-                                <a href="#" onclick="clear_line()" class="btn btn-sm btn-outline-danger mx-2">Clear</a>
-                            </div>
+                                <!-- <div class="col-md-6">
+                                    <label for="exampleFormControlInput1" class="form-label">Coating</label>
+                                    <select name="treatment" class="form-control" required>
+                                        <option value="" selected disabled>Select Coating</option>
+                                        {% for i in treatments %}
+                                        <option value="{{i[1]}}">{{i[1]}}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <label for="exampleFormControlInput1" class="form-label">Services</label>
+                                    <select name="tint_service" class="form-control" required>
+                                        <option value="" selected disabled>Select Services</option>
+                                        {% for i in tints_of_services %}
+                                        <option value="{{i[1]}}">{{i[1]}}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <h4 class="w-100 mb-2 mt-4">Special Measurement For Digital Surfacing</h4>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">BVD</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="bvd_mm">
+
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">FFA</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="face_angle">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">PA</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control"
+                                        name="pantoscopic_Angle">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">NRD</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="nrd">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Decentr.</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="decentration">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">CT or ET</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="center_edge">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">FrSH</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_h">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">OC Height</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="oc_height">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">OD</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="od1">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">OS</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="os1">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Occupation</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="occupation">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Driving %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="driving">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Computer %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="computer">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Reading %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="reading">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Mobile %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="mobile">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Gaming %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="gaming">
+                                </div> -->
+                                <!-- <div id="item-div" style="display: contents;">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Item</label>
+                                        <select name="item" class="form-control" id="">
+                                            <option value="">1</option>
+                                            <option value="">2</option>
+                                            <option value="">3</option>
+                                        </select>                                
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Desc</label>
+                                        <input type="text" class="form-control" name="item_desc" id="">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Qty</label>
+                                        <input type="text" class="form-control" name="item_qty" id="">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
+                                        <input type="text" step="any" class="form-control" name="item_price" id="">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Total</label>
+                                        <input type="text" step="any" class="form-control" name="total" id="">
+                                    </div>                                
+                                </div> -->
+                                <!-- <div class="col-md-6 mb-3">
+                                    <a href="#"  onclick="add_line()" class="btn btn-sm btn-outline-secondary">Add Line</a>
+                                </div> -->
 
 
 
-                            <div class="mt-4 col-md-12">
-                                <button type="submit" class="btn my_btn01 w-100"
-                                    style="background:purple; color:white">Update</button>
-                            </div>
-                        </form>
+                                <!-- <div class="mt-4 col-md-12 text-center">
+                                    <button type="submit" class="btn btn-success my_btn01 w-50">Create</button>
+                                </div> -->
+                                <div class="mt-4 col-md-12 text-center">
+                                    <button type="submit" class="btn btn-success my_btn01 w-50">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer" style="display: block;">
+                            <a href="/view-rx-purchase" class="btn btn-dark">Back</a>
                     </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-end">
-                <a href="/view-rx-purchase" class="btn btn-danger">Back</a>
+
             </div>
         </div>
     </div>
 </section>
 <!-- /.content -->
-<script>
-    function add_line() {
-        item_div = document.getElementById("item-div");
-        console.log(item_div.innerHTML);
-        document.getElementById("item-div").innerHTML = item_div.innerHTML += `<div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Item</label>
-                                <select name="item" class="form-control" id="">
-                                    {% for i in rx_items %}
-                                        <option value="{{i[0]}}">{{i[2]}}</option>
-                                        {% endfor %}
-                                </select>
-                            </div>
-
-                            <div class="col-md-3">
-                                <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                                <select name="exp_account" class="form-control" id="">
-                                    <option value="Accounting feesExpenses">Accounting feesExpenses</option>
-                                    <option value="Accounts receivable">Accounts receivable</option>
-                                    <option value="Advertising and promotion">Advertising and promotion</option>
-                                    <option value="Bank charges">Bank charges</option>
-                                    <option value="Capital gains on investments">Capital gains on investments</option>
-                                    <option value="Computer equipment">Computer equipment</option>
-                                    <option value="Donations">Donations</option>
-                                    <option value="Electricity">Electricity</option>
-                                    <option value="Employee clearing account">Employee clearing account</option>
-                                    <option value="Entertainment">Entertainment</option>
-                                    <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
-                                    <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
-                                    <option value="Interest received">Interest received</option>
-                                    <option value="Inventory - cost">Inventory - cost</option>
-                                    <option value="Inventory - sales">Inventory - sales</option>
-                                    <option value="Inventory on hand">Inventory on hand</option>
-                                    <option value="Legal fees">Legal fees</option>
-                                    <option value="Motor vehicle expenses">Motor vehicle expenses</option>
-                                    <option value="Printing and stationery">Printing and stationery</option>
-                                    <option value="Rent">Rent</option>
-                                    <option value="Repairs and maintenance">Repairs and maintenance</option>
-                                    <option value="Retained earnings">Retained earnings</option>
-                                    <option value="Sales">Sales</option>
-                                    <option value="Telephone">Telephone</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Qty</label>
-                                <input type="number" class="form-control" name="item_qty" id="">
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
-                                <input type="number" step="any" class="form-control" name="item_price" id="">
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Total</label>
-                                <input type="number" step="any" class="form-control" name="total" id="">
-                            </div>`;
-    }
-    function clear_line() {
-        item_div = document.getElementById("item-div");
-        console.log(item_div.innerHTML);
-        document.getElementById("item-div").innerHTML = `
-                                <div class="col-md-3 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Item</label>
-                                    <select name="item" class="form-control" id="">
-                                        <option value="">1</option>
-                                        <option value="">2</option>
-                                        <option value="">3</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                                    <select name="exp_account" class="form-control" id="">
-                                        <option value="Accounting feesExpenses">Accounting feesExpenses</option>
-                                        <option value="Accounts receivable">Accounts receivable</option>
-                                        <option value="Advertising and promotion">Advertising and promotion</option>
-                                        <option value="Bank charges">Bank charges</option>
-                                        <option value="Capital gains on investments">Capital gains on investments
-                                        </option>
-                                        <option value="Computer equipment">Computer equipment</option>
-                                        <option value="Donations">Donations</option>
-                                        <option value="Electricity">Electricity</option>
-                                        <option value="Employee clearing account">Employee clearing account</option>
-                                        <option value="Entertainment">Entertainment</option>
-                                        <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
-                                        <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
-                                        <option value="Interest received">Interest received</option>
-                                        <option value="Inventory - cost">Inventory - cost</option>
-                                        <option value="Inventory - sales">Inventory - sales</option>
-                                        <option value="Inventory on hand">Inventory on hand</option>
-                                        <option value="Legal fees">Legal fees</option>
-                                        <option value="Motor vehicle expenses">Motor vehicle expenses</option>
-                                        <option value="Printing and stationery">Printing and stationery</option>
-                                        <option value="Rent">Rent</option>
-                                        <option value="Repairs and maintenance">Repairs and maintenance</option>
-                                        <option value="Retained earnings">Retained earnings</option>
-                                        <option value="Sales">Sales</option>
-                                        <option value="Telephone">Telephone</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Qty</label>
-                                    <input type="number" class="form-control" name="item_qty" id="">
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
-                                    <input type="number" step="any" class="form-control" name="item_price" id="">
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Total</label>
-                                    <input type="number" step="any" class="form-control" name="total" id="">
-                                </div>`;
-    }
-</script>
-<script>
-    function qty_unitP_changed(){
-        let Qty = document.getElementById('Qty').value;
-        let UnitP = document.getElementById("UnitP").value;
-        let Total = document.getElementById("Total");
-        let result = Qty * UnitP;
-        Total.value = result;
-    }
-</script>
 
 {% endblock %}

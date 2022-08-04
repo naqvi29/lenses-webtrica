@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 04, 2022 at 12:56 PM
+-- Generation Time: Aug 04, 2022 at 05:05 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -355,7 +355,8 @@ CREATE TABLE `rx_orders` (
 --
 
 INSERT INTO `rx_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `status`, `od_size`, `os_size`, `cost_price`, `sales_price`, `qty`) VALUES
-(16, '2022-08-04', 'Noref', 'gos-16', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', 'pending', 'tex', 'tex', 20, 30, 2);
+(16, '2022-08-04', 'Noref', 'gos-16', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', 'pending', 'tex', 'tex', 20, 30, 2),
+(17, '2022-08-04', 'Noref', 'gos-15', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', 'pending', 'tex', 'tex', 20, 30, 2);
 
 -- --------------------------------------------------------
 
@@ -399,23 +400,40 @@ CREATE TABLE `rx_purchases` (
   `reference` text NOT NULL,
   `supplier_id` int(11) NOT NULL,
   `supplier_name` text NOT NULL,
-  `description` text NOT NULL,
+  `description` text DEFAULT NULL,
   `item_id` int(11) DEFAULT NULL,
-  `item_name` text DEFAULT NULL,
+  `item_name` text NOT NULL,
   `exp_account` text NOT NULL,
   `item_qty` int(11) NOT NULL,
-  `item_price` float NOT NULL,
+  `cost_price` float NOT NULL,
   `total` float NOT NULL,
-  `status` text NOT NULL
+  `status` text NOT NULL,
+  `od_size` text NOT NULL,
+  `od_sph` text NOT NULL,
+  `od_cyl` text NOT NULL,
+  `od_axis` text NOT NULL,
+  `od_add` text NOT NULL,
+  `od_base` text NOT NULL,
+  `od_fh` text NOT NULL,
+  `od_prism_detail` text NOT NULL,
+  `os_size` text NOT NULL,
+  `os_sph` text NOT NULL,
+  `os_cyl` text NOT NULL,
+  `os_axis` text NOT NULL,
+  `os_add` text NOT NULL,
+  `os_base` text NOT NULL,
+  `os_fh` text NOT NULL,
+  `os_prism_detail` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rx_purchases`
 --
 
-INSERT INTO `rx_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `item_price`, `total`, `status`) VALUES
-(2, '2022-07-29', '2022-07-02', 'ref', 1, 'sup 1 ', 'purchased 10 opt for 40000', 4, 'developer lense', 'Accounting feesExpenses', 10, 4000, 32000, 'pending'),
-(4, '2022-07-29', '2022-06-29', 'order3', 1, 'sup 1', 'desc', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Accounting feesExpenses', 50, 100, 5000, 'pending');
+INSERT INTO `rx_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `cost_price`, `total`, `status`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_detail`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`) VALUES
+(2, '2022-07-29', '2022-07-02', 'ref', 1, 'sup 1 ', 'purchased 10 opt for 40000', 4, 'developer lense', 'Accounting feesExpenses', 10, 4000, 32000, 'pending', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(4, '2022-07-29', '2022-06-29', 'order3', 1, 'sup 1', NULL, NULL, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Accounting feesExpenses', 50, 100, 5000, 'pending', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(13, '2022-08-04', '2022-08-12', '16', 1, 'sup 1', NULL, NULL, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Bank charges', 0, 0, 40, 'inprocess', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de');
 
 -- --------------------------------------------------------
 
@@ -688,7 +706,7 @@ ALTER TABLE `rx_items`
 -- AUTO_INCREMENT for table `rx_orders`
 --
 ALTER TABLE `rx_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `rx_orders_old`
@@ -700,7 +718,7 @@ ALTER TABLE `rx_orders_old`
 -- AUTO_INCREMENT for table `rx_purchases`
 --
 ALTER TABLE `rx_purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
