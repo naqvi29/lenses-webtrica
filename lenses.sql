@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 29, 2022 at 06:47 PM
+-- Generation Time: Aug 04, 2022 at 12:56 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -276,10 +276,10 @@ CREATE TABLE `rx_items` (
   `unit_name` text NOT NULL,
   `purchase_price` float NOT NULL,
   `sales_price` float NOT NULL,
-  `qty` int(11) NOT NULL,
-  `service_cost` float NOT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `service_cost` float DEFAULT NULL,
   `description` text DEFAULT NULL,
-  `total_cost` float NOT NULL
+  `total_cost` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -288,7 +288,8 @@ CREATE TABLE `rx_items` (
 
 INSERT INTO `rx_items` (`id`, `item_code`, `lense_type`, `unit_name`, `purchase_price`, `sales_price`, `qty`, `service_cost`, `description`, `total_cost`) VALUES
 (1, '3.0 1.67 BF', 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Piece', 11, 12, 40, 13, 'dec', 14),
-(4, 'Gr', 'developer lense', 'unit name', 2000, 3000, 9, 50, NULL, 2050);
+(4, 'Gr', 'developer lense', 'unit name', 2000, 3000, 9, 50, NULL, 2050),
+(5, 'item code', 'grootex lens', 'unit name', 20, 30, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -306,7 +307,7 @@ CREATE TABLE `rx_orders` (
   `item_id` int(11) NOT NULL,
   `item_name` text NOT NULL,
   `billing_address` text NOT NULL,
-  `description` text NOT NULL,
+  `description` text DEFAULT NULL,
   `treatment` text NOT NULL,
   `tint_service` text NOT NULL,
   `od_sph` text NOT NULL,
@@ -315,7 +316,7 @@ CREATE TABLE `rx_orders` (
   `od_add` text NOT NULL,
   `od_base` text NOT NULL,
   `od_fh` text NOT NULL,
-  `od_prism_no` text NOT NULL,
+  `od_prism_no` text DEFAULT NULL,
   `od_prism_detail` text NOT NULL,
   `os_sph` text NOT NULL,
   `os_cyl` text NOT NULL,
@@ -323,7 +324,7 @@ CREATE TABLE `rx_orders` (
   `os_add` text NOT NULL,
   `os_base` text NOT NULL,
   `os_fh` text NOT NULL,
-  `os_prism_no` text NOT NULL,
+  `os_prism_no` text DEFAULT NULL,
   `os_prism_detail` text NOT NULL,
   `bvd_mm` text NOT NULL,
   `face_angle` text NOT NULL,
@@ -341,15 +342,20 @@ CREATE TABLE `rx_orders` (
   `reading` text NOT NULL,
   `mobile` text NOT NULL,
   `gaming` text NOT NULL,
-  `status` text NOT NULL
+  `status` text NOT NULL,
+  `od_size` text NOT NULL,
+  `os_size` text NOT NULL,
+  `cost_price` float NOT NULL,
+  `sales_price` float NOT NULL,
+  `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rx_orders`
 --
 
-INSERT INTO `rx_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `status`) VALUES
-(8, '2022-07-23', '2ref2', 'order3', 1, 'Groot', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'R-1231293 PECHS', 'desc', 'treat', 'tints', '1', '1', '1', '1', '1', '10', '1t', '1t', '1', '1', '1', '1', '1', '10', '1t', '1t', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', '111', 'ready');
+INSERT INTO `rx_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `status`, `od_size`, `os_size`, `cost_price`, `sales_price`, `qty`) VALUES
+(16, '2022-08-04', 'Noref', 'gos-16', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', 'pending', 'tex', 'tex', 20, 30, 2);
 
 -- --------------------------------------------------------
 
@@ -676,13 +682,13 @@ ALTER TABLE `rx_invoices`
 -- AUTO_INCREMENT for table `rx_items`
 --
 ALTER TABLE `rx_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `rx_orders`
 --
 ALTER TABLE `rx_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `rx_orders_old`

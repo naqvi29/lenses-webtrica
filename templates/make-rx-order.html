@@ -87,7 +87,8 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
-                                    <select onchange="lenseselect()" id="lenseSelect" name="item_id" class="form-control">
+                                    <select onchange="lenseselect()" id="lenseSelect" name="item_id"
+                                        class="form-control">
                                         <option value="">Select Lense Type</option>
                                         {% for i in rx_items %}
                                         <option value="{{i[0]}}">{{i[2]}}</option>
@@ -101,11 +102,13 @@
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Cost Price</label>
-                                    <input type="number" min="0" step="any" name="cost_price" class="form-control" id="cost_price">
+                                    <input type="number" min="0" step="any" name="cost_price" class="form-control"
+                                        id="cost_price">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Sales Price</label>
-                                    <input type="number" min="0" step="any" name="sales_price" class="form-control" id="sales_price">
+                                    <input type="number" min="0" step="any" name="sales_price" class="form-control"
+                                        id="sales_price">
                                 </div>
                                 <!-- <div class="col-md-12 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Description</label>
@@ -133,7 +136,7 @@
                                                 <tr class="col-md-12">
                                                     <td>OD</td>
                                                     <td><input class="col-md-6" style="max-width: 68%;" type="text"
-                                                             class="my-order-inp" name="od_size"></td>
+                                                            class="my-order-inp" name="od_size"></td>
                                                     <td><input class="col-md-6" style="max-width: 68%;" type="number"
                                                             step="0.25" class="my-order-inp" name="od_sph"></td>
                                                     <td><input class="col-md-6" style="max-width: 68%;" type="number"
@@ -158,7 +161,7 @@
                                                 <tr class="col-md-12">
                                                     <td>OS</td>
                                                     <td><input class="col-md-6" style="max-width: 68%;" type="text"
-                                                        class="my-order-inp" name="os_size"></td>
+                                                            class="my-order-inp" name="os_size"></td>
                                                     <td><input class="col-md-6" style="max-width: 68%;" step="0.25"
                                                             type="number" class="my-order-inp" name="os_sph"></td>
                                                     <td><input class="col-md-6" style="max-width: 68%;" step="0.25"
@@ -187,9 +190,9 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="exampleFormControlInput1" class="form-label">Treatment</label>
+                                    <label for="exampleFormControlInput1" class="form-label">Coating</label>
                                     <select name="treatment" class="form-control" required>
-                                        <option value="" selected disabled>Select Treatment</option>
+                                        <option value="" selected disabled>Select Coating</option>
                                         {% for i in treatments %}
                                         <option value="{{i[1]}}">{{i[1]}}</option>
                                         {% endfor %}
@@ -199,9 +202,9 @@
 
 
                                 <div class="col-md-6">
-                                    <label for="exampleFormControlInput1" class="form-label">Tints of Services</label>
+                                    <label for="exampleFormControlInput1" class="form-label">Services</label>
                                     <select name="tint_service" class="form-control" required>
-                                        <option value="" selected disabled>Select Treatment</option>
+                                        <option value="" selected disabled>Select Services</option>
                                         {% for i in tints_of_services %}
                                         <option value="{{i[1]}}">{{i[1]}}</option>
                                         {% endfor %}
@@ -211,102 +214,95 @@
                                 <h4 class="w-100 mb-2 mt-4">Special Measurement For Digital Surfacing</h4>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">BVD</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="bvd_mm"
-                                        > <!--Enter BVD in mm -->
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="bvd_mm">
+                                    <!--Enter BVD in mm -->
 
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">FFA</label>
                                     <!-- <label for="exampleFormControlInput1" class="form-label">Face from Angle</label> -->
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="face_angle"
-                                        > <!--Enter Face from Angle-->
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="face_angle">
+                                    <!--Enter Face from Angle-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">PA</label>
                                     <input style="max-width: 50%;" type="text" class="form-control"
-                                        name="pantoscopic_Angle" > <!--pantoscopic_Angle-->
+                                        name="pantoscopic_Angle">
+                                    <!--pantoscopic_Angle-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">NRD</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="nrd"
-                                        > <!--Enter NRD(Near Reading Distance)-->
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="nrd">
+                                    <!--Enter NRD(Near Reading Distance)-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Decentr.</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="decentration"
-                                        ><!--Enter Decentration mm-->
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="decentration">
+                                    <!--Enter Decentration mm-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">CT or ET</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="center_edge"
-                                        ><!--Enter Center Thickness or Edge Thickness-->
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="center_edge">
+                                    <!--Enter Center Thickness or Edge Thickness-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <!-- <label for="exampleFormControlInput1" class="form-label">Frame Size Horizontal
                                         mm</label> -->
                                     <label for="exampleFormControlInput1" class="form-label">FrSH</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_h"
-                                        ><!--Enter Frame Size Horizontal mm-->
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_h">
+                                    <!--Enter Frame Size Horizontal mm-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">OC Height</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="oc_height"
-                                       ><!--Enter OC Height-->
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="oc_height">
+                                    <!--Enter OC Height-->
                                 </div>
 
                                 <!-- <h4 class="w-100 mb-2">Monocular PD mm</h4> -->
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">OD</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="od1"
-                                        >
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="od1">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">OS</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="os1"
-                                        >
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="os1">
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Occupation</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="occupation"
-                                        >
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="occupation">
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Driving %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="driving"
-                                        >
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="driving">
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Computer %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="computer"
-                                        >
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="computer">
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Reading %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="reading"
-                                        >
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="reading">
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Mobile %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="mobile"
-                                        >
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="mobile">
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Gaming %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="gaming"
-                                        >
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="gaming">
                                 </div>
                                 <!-- <div id="item-div" style="display: contents;">
                                     <div class="col-md-3 mb-3">
@@ -381,12 +377,12 @@
         })
     }
 
-    
+
     function lenseselect() {
         console.log("change")
         let e = document.getElementById("lenseSelect");
         let lense_id = e.value;
-        console.log("lense id is:",lense_id)
+        console.log("lense id is:", lense_id)
         $.ajax({
             type: 'POST',
             url: "/fetch-item-price",

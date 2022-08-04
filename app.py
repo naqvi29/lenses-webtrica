@@ -406,34 +406,40 @@ def make_rx_order():
         date = request.form.get("date")
         reference = request.form.get("reference")
         # order_number = request.form.get("order_number")
-        # todo 
-        order_number = "gos-"+id
-        # ..
+        
         customer_id = request.form.get("customer")
         item_id = request.form.get("item_id")
         billing_address = request.form.get("billing_address")
+        cost_price = request.form.get("cost_price")
+        sales_price = request.form.get("sales_price")
+        qty = request.form.get("qty")
         # description = request.form.get("dsc")
         description = None
         
         treatment = request.form.get("treatment")
         tint_service = request.form.get("tint_service")
 
+        od_size = request.form.get("od_size")
         od_sph = request.form.get("od_sph")
         od_cyl = request.form.get("od_cyl")
         od_axis = request.form.get("od_axis")
         od_add = request.form.get("od_add")
         od_base = request.form.get("od_base")
         od_fh = request.form.get("od_fh")
-        od_prism_no = request.form.get("od_prism_no")
+        # od_prism_no = request.form.get("od_prism_no")
+        od_prism_no = None
         od_prism_detail = request.form.get("od_prism_detail")
         
+        os_size = request.form.get("os_size")
         os_sph = request.form.get("os_sph")
         os_cyl = request.form.get("os_cyl")
         os_axis = request.form.get("os_axis")
         os_add = request.form.get("os_add")
         os_base = request.form.get("os_base")
         os_fh = request.form.get("os_fh")
-        os_prism_no = request.form.get("os_prism_no")
+        # os_prism_no = request.form.get("os_prism_no")
+        
+        os_prism_no = None
         os_prism_detail = request.form.get("os_prism_detail")
         
         bvd_mm = request.form.get("bvd_mm")
@@ -462,9 +468,21 @@ def make_rx_order():
         print("item name is: ",item_name)
         item_name = item_name[0]
         print("item name is: ",item_name)
-        cursor.execute("INSERT INTO rx_orders (date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status))
+        order_number = None
+        cursor.execute("INSERT INTO rx_orders (date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,cost_price,sales_price,qty) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,cost_price,sales_price,qty))
+        
 
         conn.commit()
+        # todo 
+        # cursor.execute("SELECT LAST_INSERT_ID(id) From rx_orders;")
+        cursor.execute("SELECT MAX( id ) FROM rx_orders;")
+        last_row_id = cursor.fetchone()
+        last_row_id = last_row_id[0]
+        print("last row id is:........ ",last_row_id)
+        order_number = "gos-"+str(last_row_id)
+        cursor.execute("UPDATE rx_orders SET order_number=%s WHERE id=%s; ",(order_number,last_row_id))
+        conn.commit()
+        # ..
         return redirect(url_for("make_rx_order"))
     conn = mysql.connect()
     cursor =conn.cursor()
