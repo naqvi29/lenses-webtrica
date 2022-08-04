@@ -10,7 +10,10 @@
 }
 
 .dt-button{
-    background: black!important; 
+    /* background: black!important; 
+    color: white!important;
+    border-radius: 10%!important; */
+    background: #034ea2!important; 
     color: white!important;
     border-radius: 10%!important;
 }

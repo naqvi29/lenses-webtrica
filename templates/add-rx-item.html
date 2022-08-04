@@ -1,11 +1,12 @@
 {% extends 'layout.html' %}
 {% block title %}Add Rx Item{% endblock %}
 {% block content %}
+
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Add Rx Item</h1>
+                <!-- <h1 class="m-0">Add Rx Item</h1> -->
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -23,68 +24,87 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-body px-0 pt-0 pb-2">
-                        <!-- <h3 class="m-4 mb-0">Order To Make</h3> -->
-                        <form class="py-4 px-5 row" action="/add-rx-item" method="POST"
-                            enctype="multipart/form-data">
-                            <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Item Code</label>
-                                <input type="text" class="form-control" name="item_code" placeholder="optional">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
-                                <input type="text" class="form-control" name="lense_type">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Unit Name</label>
-                                <input type="text" class="form-control" name="unit_name">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Purchase Price</label>
-                                <input type="number" step="any" min="0" class="form-control" name="purchase_price">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Sales Price</label>
-                                <input type="number" step="any" min="0" class="form-control" name="sales_price">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Qty On Hand</label>
-                                <input type="number" step="any" min="0" class="form-control" name="qty" value="1">
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Service Cost</label>
-                                <input type="number" step="any" min="0" class="form-control" name="service_cost">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Description</label>
-                                <input type="text" name="dsc" class="form-control" id="">
 
-                            </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Total Cost</label>
-                                <input type="number" step="any" min="0" name="total_cost" class="form-control" id="">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title"><strong>Add Rx Item</strong></h3>
 
-                            </div>
-                            <!-- <div class="col-md-2 mb-3">
-                                <a href="#" onclick="add_line()" class="btn btn-sm btn-outline-success">Add Line</a>
-                                <a href="#" onclick="clear_line()" class="btn btn-sm btn-outline-danger mx-2">Clear</a>
-                            </div> -->
-
-
-
-                            <div class="mt-4 col-md-12">
-                                <button type="submit" class="btn my_btn01 w-100"
-                                    style="background:purple; color:white">Submit</button>
-                            </div>
-                        </form>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button> -->
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="display: block;">
+                        <div class="row">
+                            <form class="py-4 px-5 row" action="/add-rx-item" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+                                
+                                <div class="col-md-9 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
+                                    <input type="text" class="form-control" name="lense_type">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Item Code</label>
+                                    <input type="text" class="form-control" name="item_code" placeholder="optional">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Unit Name</label>
+                                    <input type="text" class="form-control" name="unit_name">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Purchase Price</label>
+                                    <input type="number" step="any" min="0" class="form-control" name="purchase_price">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Sales Price</label>
+                                    <input type="number" step="any" min="0" class="form-control" name="sales_price">
+                                </div>
+                                <!-- <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Qty On Hand</label>
+                                    <input type="number" step="any" min="0" class="form-control" name="qty" value="1">
+                                </div> -->
+                                <!-- <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Service Cost</label>
+                                    <input type="number" step="any" min="0" class="form-control" name="service_cost">
+                                </div> -->
+                                <!-- <div class="col-md-12 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Description</label>
+                                    <input type="text" name="dsc" class="form-control" id="">
+    
+                                </div> -->
+                                <!-- <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Total Cost</label>
+                                    <input type="number" step="any" min="0" name="total_cost" class="form-control" id="">
+    
+                                </div> -->
+                                <!-- <div class="col-md-2 mb-3">
+                                    <a href="#" onclick="add_line()" class="btn btn-sm btn-outline-success">Add Line</a>
+                                    <a href="#" onclick="clear_line()" class="btn btn-sm btn-outline-danger mx-2">Clear</a>
+                                </div> -->
+    
+    
+    
+                                <div class="mt-4 col-md-12 text-center">
+                                    <button type="submit" class="btn btn-success my_btn01 w-50">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer" style="display: block;">
+                            <a href="/view-rx-inventory" class="btn btn-dark">View All Rx Inventory</a>
                     </div>
                 </div>
+
             </div>
-            <div class="d-flex justify-content-end">
+            <!-- <div class="d-flex justify-content-end">
                 <a href="/view-rx-inventory" class="btn btn-danger">View All Rx Inventory</a>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>

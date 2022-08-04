@@ -1,4 +1,4 @@
-{% extends 'layout.html' %} {% block title %}RX Inventory{% endblock %}
+{% extends 'layout.html' %} {% block title %}Rx Items{% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %} {% block
@@ -7,13 +7,13 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">RX Inventory Items</h1>
+          <!-- <h1 class="m-0">RX Inventory Items</h1> -->
         </div>
         <!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">RX Inventory</li>
+            <li class="breadcrumb-item active">Rx Items</li>
           </ol>
         </div>
         <!-- /.col -->
@@ -29,65 +29,90 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div class="card mb-4">
-            <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive">
-                
-            <table id="example" class="nowrap table table-hover align-middle table-bordered">
-              <thead class="bg-dark text-white text-center">
-                <tr>
-                  <th>ID</th>
-                  <th>View</th>
-                  <th>Item Code</th>
-                  <th>Lense Type</th>
-                  <!-- <th>Description</th> -->
-                  <th>Purchase Price</th>
-                  <th>Sales Price</th>
-                  <th>Unit Name</th>
-                  <th>Qty on Hand</th>
-                  <th>Service Cost</th>
-                  <th>Total Cost</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for i in data %}
-                <tr class="text-center">
-                  <td>{{i[0]}}</td>
-                  <td><a href="/generate-rx-item/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td>
-                  <td>{{i[1]}}</td>
-                  <td>{{i[2]}}</td>
-                  <!-- <td>{{i[3]}}</td> -->
-                  <td>{{i[4]}}</td>
-                  <td>{{i[5]}}</td>
-                  <td>{{i[3]}}</td>
-                  <td>{{i[6]}}</td>
-                  <td>{{i[7]}}</td>
-                  <td>{{i[9]}}</td>
-                  <td>
-                    <div class="btn-group">
-                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      
+          <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title"><strong>Rx Items</strong></h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-rx-inventory/{{i[0]}}">Edit</a>
-                      <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/delete-inventory/{{i[0]}}">
-                        Del
-                      </a>
-                    </div>
+                    <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button> -->
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="display: block;">
+              <div class="card mb-4">
+                <div class="card-body px-0 pt-0 pb-2">
+                  <div class="table-responsive">
+                    
+                <table id="example" class="nowrap table table-hover align-middle table-bordered">
+                  <thead class="bg-dark text-white text-center">
+                    <tr>
+                      <th>ItemID</th>
+                      <!-- <th>View</th> -->
+                      <th>Item Code</th>
+                      <th>Lense Type</th>
+                      <!-- <th>Description</th> -->
+                      <th>Purchase Price</th>
+                      <th>Sales Price</th>
+                      <th>Unit Name</th>
+                      <!-- <th>Qty on Hand</th>
+                      <th>Service Cost</th>
+                      <th>Total Cost</th> -->
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in data %}
+                    <tr class="text-center">
+                      <td>{{i[0]}}</td>
+                      <!-- <td><a href="/generate-rx-item/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td> -->
+                      <td>{{i[1]}}</td>
+                      <td>{{i[2]}}</td>
+                      <!-- <td>{{i[3]}}</td> -->
+                      <td>{{i[4]}}</td>
+                      <td>{{i[5]}}</td>
+                      <td>{{i[3]}}</td>
+                      <!-- <td>{{i[6]}}</td>
+                      <td>{{i[7]}}</td>
+                      <td>{{i[9]}}</td> -->
+                      <td>
+                        <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a style="display: block;" class="btn btn-sm btn-primary mb-2 mx-2" href="/generate-rx-item/{{i[0]}}">View</a>
+                          <a style="display: block;" class="btn btn-sm btn-success mb-2 mx-2" href="/edit-rx-inventory/{{i[0]}}">Edit</a>
+                          <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/delete-inventory/{{i[0]}}">
+                            Del
+                          </a>
+                        </div>
+                      </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
                   </div>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+                </div>
               </div>
             </div>
-          </div>
+            <!-- /.card-body -->
+            <div class="card-footer" style="display: block;">
+                    <a href="/add-rx-item" class="btn btn-success">Add Rx Item</a>
+            </div>
         </div>
-        <div class="d-flex justify-content-end">
+
+
+          
+        </div>
+        <!-- <div class="d-flex justify-content-end">
           <a href="/add-rx-item" class="btn btn-danger">Add Rx Item</a>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>

@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, jsonify
 from flask.helpers import url_for
 from flaskext.mysql import MySQL
 import os
@@ -405,11 +405,15 @@ def make_rx_order():
         cursor =conn.cursor()
         date = request.form.get("date")
         reference = request.form.get("reference")
-        order_number = request.form.get("order_number")
+        # order_number = request.form.get("order_number")
+        # todo 
+        order_number = "gos-"+id
+        # ..
         customer_id = request.form.get("customer")
         item_id = request.form.get("item_id")
         billing_address = request.form.get("billing_address")
-        description = request.form.get("dsc")
+        # description = request.form.get("dsc")
+        description = None
         
         treatment = request.form.get("treatment")
         tint_service = request.form.get("tint_service")
@@ -466,6 +470,11 @@ def make_rx_order():
     cursor =conn.cursor()
     cursor.execute("SELECT * from customers;")
     customers = cursor.fetchall()
+    # customers2=[]    
+    # for i in customers:
+    #     dict = {}
+    #     dict.update({"customerid":i[0],"customer_name":i[1],"billing_address":i[4]})
+    #     customers2.append(dict)
     cursor.execute("SELECT * from rx_items;")
     rx_items = cursor.fetchall()
     cursor.execute("SELECT * from treatments;")
@@ -474,10 +483,10 @@ def make_rx_order():
     tints_of_services = cursor.fetchall()
     # todo write query which fetch the id of last inserted row in rx_orders
     
-    cursor.execute("select id from rx_orders ORDER BY id DESC LIMIT 1;;")
-    last_row_id = cursor.fetchone()
-    reference = last_row_id[0]+1
-    return render_template("make-rx-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services,reference=reference)
+    # cursor.execute("select id from rx_orders ORDER BY id DESC LIMIT 1;;")
+    # last_row_id = cursor.fetchone()
+    # reference = last_row_id[0]+1
+    return render_template("make-rx-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services)
 
 @app.route("/edit-rxorder/<string:id>", methods=['GET','POST'])
 def edit_rxorder(id):
@@ -1431,17 +1440,21 @@ def add_rx_item():
             item_code = request.form.get("item_code")
         else:
             item_code = None
-        if request.form.get("desc"):
-            description = request.form.get("desc")
-        else:
-            description = None
+        # if request.form.get("desc"):
+        #     description = request.form.get("desc")
+        # else:
+        #     description = None
+        description = None
         lense_type = request.form.get("lense_type")
         unit_name = request.form.get("unit_name")
         purchase_price = request.form.get("purchase_price")
         sales_price = request.form.get("sales_price")
-        qty = request.form.get("qty")
-        service_cost = request.form.get("service_cost")
-        total_cost = request.form.get("total_cost") 
+        # qty = request.form.get("qty")
+        qty = None
+        # service_cost = request.form.get("service_cost")
+        service_cost = None
+        # total_cost = request.form.get("total_cost") 
+        total_cost = None
         if not lense_type and not unit_name and not purchase_price and not sales_price and not qty and not service_cost and not total_cost:
             return "Oops! Something is missing"      
         cursor.execute("INSERT INTO rx_items (item_code, lense_type, unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost))
@@ -1490,7 +1503,21 @@ def fetch_billing_address():
     cursor =conn.cursor()
     cursor.execute("SELECT address from customers where id=%s",(customer_id))
     billing_address = cursor.fetchone()
-    return str(billing_address)
+    return billing_address
+
+
+@app.route("/fetch-item-price",methods=["POST"])
+def fetch_item_price():
+    item_id = request.form.get("item_id")
+    print("item_id is: ",item_id)
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT purchase_price,sales_price from rx_items where id=%s",(item_id))
+    data = cursor.fetchone()
+    resp = [data[0],data[1]]
+    print(resp)
+    # print("data is: ",data[0])
+    return str(resp)
 
 @app.route("/update-rxorder-status/<string:id>/<string:status>")
 def update_rxorder_status(id,status):
