@@ -94,7 +94,12 @@
                         <th>reading</th>
                         <th>mobile</th>
                         <th>gaming</th> -->
-                        <th>Sales_Price</th>
+                        <!-- <th>Sales_Price</th> -->
+                        <th>Size(OD-OS)</th>
+                        <th>SPH(OD-OS)</th>
+                        <th>CYL(OD-OS)</th>
+                        <th>AXIS(OD-OS)</th>
+                        <th>ADD(OD-OS)</th>
                         <th>Status</th>
                         <th>Update Status</th>
                         <th>Action</th>
@@ -110,7 +115,12 @@
                         <td>{{i[3]}}</td>
                         <!-- <td>{{i[3]}}</td> -->
                         <td>{{i[5]}}</td>
+                        
+                        {% if i[7] %}
                         <td>{{i[7][:18]}}</td>
+                        {% else %}
+                        <td>{{i[7]}}</td>
+                        {% endif %}
                         <!-- <td>{{i[10]}}</td>
                         <td>{{i[11]}}</td>
                         <td>{{i[12]}}</td>
@@ -145,7 +155,12 @@
                         <td>{{i[41]}}</td>
                         <td>{{i[42]}}</td>
                         <td>{{i[43]}}</td> -->
-                        <td>{{i[48]}}</td>
+                        <!-- <td>{{i[48]}}</td> -->
+                        <td>{{i[45]}} - {{i[46]}}</td>
+                        <td>{{i[12]}} - {{i[20]}}</td>
+                        <td>{{i[13]}} - {{i[21]}}</td>
+                        <td>{{i[14]}} - {{i[22]}}</td>
+                        <td>{{i[15]}} - {{i[23]}}</td>
                         <td>{{i[44]}}</td>
                         <td>
                           <div class="btn-group">

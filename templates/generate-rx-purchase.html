@@ -1,5 +1,8 @@
 {% extends 'layout.html' %}
 {% block title %}Rx Purchase Invoice{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
 {% block content %}
 <div class="content-header">
     <div class="container-fluid">
@@ -26,7 +29,9 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title"><strong>Rx Purchase Invoice # {{rx_purchases[0]}}</strong></h3>
+                        <h3 class="card-title"><strong>Rx Purchase Invoice # {{rx_purchases[0]}}</strong>
+                            <button onclick="printDiv('printableArea')" class="btn btn-sm btn-success ml-4" type="button">Print Invoice</button>
+                        </h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -38,7 +43,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body" style="display: block;">
+                    <div id="printableArea" class="card-body" style="display: block;">
                         <div class="row">
                             
                         <form class="py-4 px-5 row" action="#" method="POST"
@@ -66,13 +71,18 @@
                                     <label for="exampleFormControlInput1" class="form-label">Customer</label>
                                     <input type="text" class="form-control" name="customer" id="customer">
                                 </div> -->
-                                <div class="col-md-3 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Select Supplier</label>
+                                <div class="col-md-6 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Supplier</label>
                                     <input disabled type="text" class="form-control" name="supplier" value="{{rx_purchases[5]}}">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
                                     <input disabled type="text" name="exp_account" class="form-control" id="" value="{{rx_purchases[9]}}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
+                                    <input type="text" name="item_name" id="lense_type" class="form-control" value="{{rx_purchases[8]}}" disabled>
+                                    <!-- <input type="text" name="item_idd" id="item_idd" class="form-control" hidden> -->
                                 </div>
 
 
@@ -83,7 +93,7 @@
 
                                 </div> -->
 
-                                <div class="col-md-4 mb-3">
+                                <!-- <div class="col-md-6 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
                                     <input disabled type="text" name="item" class="form-control" id="" value="{{rx_purchases[8]}}">
                                 </div>
@@ -102,7 +112,7 @@
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Status</label>
                                     <input disabled type="text" class="form-control" name="status" value="{{rx_purchases[13]}}">
-                                </div>
+                                </div> -->
                                 <!-- <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Sales Price</label>
                                     <input type="text" min="0" step="any" name="sales_price" class="form-control"
@@ -115,7 +125,8 @@
                                 </div> -->
                                 <div class="col-md-12 mt-4 mb-4">
                                     <div class="table-responsive">
-                                        <table class="table w-auto" width="100%">
+                                        <!-- <table class="table w-auto" width="100%"> -->
+                                        <table id="example" class="table table-hover align-middle" width="100%">
                                             <thead>
                                                 <tr class="col-md-12">
                                                     <th width="2%"></th>
@@ -127,64 +138,233 @@
                                                     <th width="5%">BASE</th>
                                                     <th width="5%">FH</th>
                                                     <!-- <th>PRISM NO</th> -->
-                                                    <th width="5%">PRISM DETAILS</th>
+                                                    <th width="5%">Prism</th>
+                                                    <th width="5%">PD</th>
+                                                    <th width="5%">Qty</th>
+                                                    <th width="5%">CostPrice</th>
+                                                    <th width="5%">SalesPrice</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr class="col-md-12">
                                                     <td>OD</td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            class="my-order-inp" name="od_size" id="od_size" value="{{rx_purchases[14]}}"></td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            step="0.25" class="my-order-inp" name="od_sph" id="od_sph" value="{{rx_purchases[15]}}" ></td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            step="0.25" class="my-order-inp" name="od_cyl" id="od_cyl" value="{{rx_purchases[16]}}"></td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            min="1" max="180" class="my-order-inp" name="od_axis"id="od_axis" value="{{rx_purchases[17]}}"></td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            class="my-order-inp" name="od_size" id="od_size" value="{{rx_purchases[14]}}" disabled></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            step="0.25" class="my-order-inp" name="od_sph" id="od_sph" value="{{rx_purchases[15]}}" disabled>
+                                                    </td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            step="0.25" class="my-order-inp" name="od_cyl" id="od_cyl" value="{{rx_purchases[16]}}" disabled>
+                                                    </td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            min="1" max="180" class="my-order-inp" name="od_axis"
+                                                            id="od_axis" value="{{rx_purchases[17]}}" disabled></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             step="0.25" min="0" max="10" class="my-order-inp"
-                                                            name="od_add"id="od_add" value="{{rx_purchases[18]}}">
+                                                            name="od_add" id="od_add" value="{{rx_purchases[18]}}" disabled>
                                                     </td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" min="1" max="10"
-                                                            type="text" class="my-order-inp" name="od_base"id="od_base" value="{{rx_purchases[19]}}"></td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            min="10" max="30" step="2" class="my-order-inp"
-                                                            name="od_fh"id="od_fh" value="{{rx_purchases[20]}}">
+                                                    <td><input class="col-md-6" style="min-width:100%;" min="1" max="10"
+                                                            type="text" class="my-order-inp" name="od_base"
+                                                            id="od_base" value="{{rx_purchases[19]}}" disabled></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            min="10" max="30" step="2" class="my-order-inp" name="od_fh"
+                                                            id="od_fh" value="{{rx_purchases[20]}}" disabled>
                                                     </td>
-                                                    <!-- <td><input class="col-md-6" style="max-width: 68%;" type="text"
+                                                    <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             class="my-order-inp" name="od_prism_no"></td> -->
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            class="my-order-inp1" name="od_prism_detail"id="od_prism_detail" value="{{rx_purchases[21]}}"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            class="my-order-inp1" name="od_prism_detail"
+                                                            id="od_prism_detail" value="{{rx_purchases[21]}}" disabled></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            class="my-order-inp1" name="od_pd" id="od_pd" value="{{rx_purchases[49]}}" disabled></td>
+                                                    <td><input onchange="qty_unitP_changed()" type="text" min="0"
+                                                            id="od_qty" name="od_qty" class="col-md-6 my-order-inp"
+                                                            style="min-width:100%;" id="od_qty" value="{{rx_purchases[45]}}" disabled></td>
+                                                    <td><input onchange="qty_unitP_changed()" style="min-width:100%;"
+                                                            type="text" min="0" step="any" name="od_cost_price"
+                                                            class="col-md-6 my-order-inp" id="od_cost_price" value="{{rx_purchases[43]}}" disabled></td>
+                                                    <td><input style="min-width:100%;" type="text" min="0" step="any"
+                                                            name="od_sales_price" class="col-md-6 my-order-inp"
+                                                            id="od_sales_price" value="{{rx_purchases[44]}}" disabled></td>
                                                 </tr>
                                                 <tr class="col-md-12">
                                                     <td>OS</td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            class="my-order-inp" name="os_size" id="os_size"id="os_size" value="{{rx_purchases[22]}}"></td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" step="0.25"
-                                                            type="text" class="my-order-inp" name="os_sph"id="os_sph" value="{{rx_purchases[23]}}"></td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" step="0.25"
-                                                            type="text" class="my-order-inp" name="os_cyl"id="os_cyl" value="{{rx_purchases[24]}}"></td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" min="1"
-                                                            max="180" type="text" class="my-order-inp" name="os_axis"id="os_axis" value="{{rx_purchases[25]}}">
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            class="my-order-inp" name="os_size" id="os_size" value="{{rx_purchases[22]}}" disabled></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" step="0.25"
+                                                            type="text" class="my-order-inp" name="os_sph" id="os_sph" value="{{rx_purchases[23]}}" disabled>
                                                     </td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
+                                                    <td><input class="col-md-6" style="min-width:100%;" step="0.25"
+                                                            type="text" class="my-order-inp" name="os_cyl" id="os_cyl" value="{{rx_purchases[24]}}" disabled>
+                                                    </td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" min="1"
+                                                            max="180" type="text" class="my-order-inp" name="os_axis"
+                                                            id="os_axis" value="{{rx_purchases[25]}}" disabled>
+                                                    </td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             step="0.25" min="0" max="10" class="my-order-inp"
-                                                            name="os_add"id="os_add" value="{{rx_purchases[26]}}">
+                                                            name="os_add" id="os_add" value="{{rx_purchases[26]}}" disabled>
                                                     </td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            min="1" max="10" class="my-order-inp" name="os_base"id="os_base" value="{{rx_purchases[27]}}"></td>
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            min="10" max="30" step="2" class="my-order-inp"
-                                                            name="os_fh"id="os_fh" value="{{rx_purchases[28]}}">
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            min="1" max="10" class="my-order-inp" name="os_base"
+                                                            id="os_base" value="{{rx_purchases[27]}}" disabled></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            min="10" max="30" step="2" class="my-order-inp" name="os_fh"
+                                                            id="os_fh" value="{{rx_purchases[28]}}" disabled>
                                                     </td>
-                                                    <!-- <td><input class="col-md-6" style="max-width: 68%;" type="text"
+                                                    <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             class="my-order-inp" name="os_prism_no"></td> -->
-                                                    <td><input disabled class="col-md-6" style="max-width: 68%;" type="text"
-                                                            class="my-order-inp1" name="os_prism_detail"id="os_prism_detail" value="{{rx_purchases[29]}}"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            class="my-order-inp1" name="os_prism_detail"
+                                                            id="os_prism_detail" value="{{rx_purchases[29]}}" disabled></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                                            class="my-order-inp1" name="os_pd" id="os_pd" value="{{rx_purchases[50]}}" disabled></td>
+                                                    <td><input onchange="qty_unitP_changed()" type="text" min="0"
+                                                            name="os_qty" id="os_qty" class="col-md-6 my-order-inp"
+                                                            style="min-width:100%;" value="{{rx_purchases[48]}}" disabled></td>
+                                                    <td><input onchange="qty_unitP_changed()" style="min-width:100%;"
+                                                            type="text" min="0" step="any" name="os_cost_price"
+                                                            class="col-md-6 my-order-inp" id="os_cost_price" value="{{rx_purchases[46]}}" disabled></td>
+                                                    <td><input style="min-width:100%;" type="text" min="0" step="any"
+                                                            name="os_sales_price" class="col-md-6 my-order-inp"
+                                                            id="os_sales_price" value="{{rx_purchases[47]}}" disabled></td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Coating</label>
+                                    <input style="min-width:100%;" type="text" min="0" step="any" name="treatment"
+                                        class="form-control" id="treatment" value="{{rx_purchases[54]}}" disabled>
+                                    <!-- <select name="treatment" class="form-control" required>
+                                        <option value="" selected disabled>Select Coating</option>
+                                        {% for i in treatments %}
+                                        <option value="{{i[1]}}">{{i[1]}}</option>
+                                        {% endfor %}
+
+                                    </select> -->
+                                </div>
+
+
+                                <div class="col-md-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Services</label>
+                                    <input style="min-width:100%;" type="text" min="0" step="any" name="tint_service"
+                                        class="form-control" id="tint_service" value="{{rx_purchases[55]}}" disabled>
+                                    <!-- <select name="tint_service" class="form-control" required>
+                                        <option value="" selected disabled>Select Services</option>
+                                        {% for i in tints_of_services %}
+                                        <option value="{{i[1]}}">{{i[1]}}</option>
+                                        {% endfor %}
+
+                                    </select> -->
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Total Amount</label>
+                                    <input type="number" step="any" name="total_amount" class="form-control"
+                                        id="total_amount" value="{{rx_purchases[12]}}" disabled>
+                                </div>
+                                <h4 class="w-100 mb-2 mt-4">Special Measurement For Digital Surfacing</h4>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">BVD</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="bvd_mm" id="bvd_mm" value="{{rx_purchases[30]}}" disabled>
+                                    <!--Enter BVD in mm -->
+
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">FFA</label>
+                                    <!-- <label for="exampleFormControlInput1" class="form-label">Face from Angle</label> -->
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="face_angle" id="face_angle" value="{{rx_purchases[31]}}" disabled>
+                                    <!--Enter Face from Angle-->
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">PA</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control"
+                                        name="pantoscopic_Angle" id="pantoscopic_Angle" value="{{rx_purchases[32]}}" disabled>
+                                    <!--pantoscopic_Angle-->
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">NRD</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="nrd" id="nrd" value="{{rx_purchases[33]}}" disabled>
+                                    <!--Enter NRD(Near Reading Distance)-->
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Decentr.</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="decentration" id="decentration" value="{{rx_purchases[34]}}" disabled>
+                                    <!--Enter Decentration mm-->
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">CT or ET</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="center_edge" id="center_edge" value="{{rx_purchases[35]}}" disabled>
+                                    <!--Enter Center Thickness or Edge Thickness-->
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <!-- <label for="exampleFormControlInput1" class="form-label">Frame Size Horizontal
+                                        mm</label> -->
+                                    <!-- <label for="exampleFormControlInput1" class="form-label">FrSH</label> -->
+                                    <label for="exampleFormControlInput1" class="form-label">FS Horizontal</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_h" id="frame_size_h" value="{{rx_purchases[51]}}" disabled>
+                                    <!--Enter Frame Size Horizontal mm-->
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">FS Vertical</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_v" id="frame_size_v" value="{{rx_purchases[52]}}" disabled>
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">FS Diagonal</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_d" id="frame_size_d" value="{{rx_purchases[53]}}" disabled>
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">OC Height</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="oc_height" id="oc_height" value="{{rx_purchases[36]}}" disabled>
+                                    <!--Enter OC Height-->
+                                </div>
+
+                                <!-- <h4 class="w-100 mb-2">Monocular PD mm</h4> -->
+                                <!-- <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">OD</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="od1">
+                                </div>
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">OS</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="os1">
+                                </div> -->
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Occupation</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="occupation" id="occupation" value="{{rx_purchases[37]}}" disabled>
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Driving %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="driving" id="driving" value="{{rx_purchases[38]}}" disabled>
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Computer %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="computer" id="computer" value="{{rx_purchases[39]}}" disabled>
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Reading %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="reading" id="reading" value="{{rx_purchases[40]}}" disabled>
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Mobile %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="mobile" id="mobile" value="{{rx_purchases[41]}}" disabled>
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Gaming %</label>
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="gaming" id="gaming" value="{{rx_purchases[42]}}" disabled>
                                 </div>
 
                                 <!-- <div class="col-md-6">
@@ -339,5 +519,27 @@
     </div>
 </section>
 <!-- /.content -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+</script>
 
+<script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
 {% endblock %}

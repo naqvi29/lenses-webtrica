@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 04, 2022 at 05:05 PM
+-- Generation Time: Aug 13, 2022 at 01:59 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -246,22 +246,40 @@ CREATE TABLE `rx_invoices` (
   `customer_id` int(11) NOT NULL,
   `customer_name` text NOT NULL,
   `billing_address` text NOT NULL,
-  `description` text NOT NULL,
+  `description` text DEFAULT NULL,
   `item_id` int(11) NOT NULL,
   `item_name` text DEFAULT NULL,
   `exp_account` text NOT NULL,
   `item_qty` int(11) NOT NULL,
-  `item_price` float NOT NULL,
-  `total` float NOT NULL
+  `sales_price` float NOT NULL,
+  `total` float NOT NULL,
+  `od_size` text DEFAULT NULL,
+  `od_sph` text DEFAULT NULL,
+  `od_cyl` text DEFAULT NULL,
+  `od_axis` text DEFAULT NULL,
+  `od_add` text DEFAULT NULL,
+  `od_base` text DEFAULT NULL,
+  `od_fh` text DEFAULT NULL,
+  `os_size` text DEFAULT NULL,
+  `os_sph` text DEFAULT NULL,
+  `os_cyl` text DEFAULT NULL,
+  `os_axis` text DEFAULT NULL,
+  `os_add` text DEFAULT NULL,
+  `os_base` text DEFAULT NULL,
+  `os_fh` text DEFAULT NULL,
+  `os_prism_detail` text DEFAULT NULL,
+  `od_prism_detail` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rx_invoices`
 --
 
-INSERT INTO `rx_invoices` (`id`, `issue_date`, `due_date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `item_price`, `total`) VALUES
-(4, '2022-07-29', '2022-07-09', 'ref', 3, 'Groot', 'R-1231293 PECHS', 'sold 2 optolux for 300', 4, 'developer lense', 'Accounting feesExpenses', 1, 150, 150),
-(5, '2022-07-29', '2022-06-30', 'order3', 2, 'abc', 'asdsadsad', 'desc', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Accounting feesExpenses', 20, 2, 40);
+INSERT INTO `rx_invoices` (`id`, `issue_date`, `due_date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `sales_price`, `total`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`, `od_prism_detail`) VALUES
+(4, '2022-07-29', '2022-07-09', 'ref2', 3, 'Groot', 'R-1231293 PECHS', NULL, 4, 'developer lense', 'Advertising and promotion', 1, 150, 150, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'),
+(5, '2022-07-29', '2022-06-30', 'order3', 2, 'abc', 'asdsadsad', 'desc', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Accounting feesExpenses', 20, 2, 40, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'),
+(8, '2022-08-05', '2022-08-12', '17', 3, ' Groot', ' R-1231293 PECHS', NULL, 5, ' grootex lens', 'Accounts receivable', 2, 30, 60, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'),
+(9, '2022-08-05', '2022-08-12', '16', 3, ' Groot', ' R-1231293 PECHS', NULL, 5, ' grootex lens', 'Advertising and promotion', 2, 50, 100, ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' de');
 
 -- --------------------------------------------------------
 
@@ -308,16 +326,16 @@ CREATE TABLE `rx_orders` (
   `item_name` text NOT NULL,
   `billing_address` text NOT NULL,
   `description` text DEFAULT NULL,
-  `treatment` text NOT NULL,
-  `tint_service` text NOT NULL,
-  `od_sph` text NOT NULL,
-  `od_cyl` text NOT NULL,
-  `od_axis` text NOT NULL,
-  `od_add` text NOT NULL,
-  `od_base` text NOT NULL,
-  `od_fh` text NOT NULL,
+  `treatment` text DEFAULT NULL,
+  `tint_service` text DEFAULT NULL,
+  `od_sph` text DEFAULT NULL,
+  `od_cyl` text DEFAULT NULL,
+  `od_axis` text DEFAULT NULL,
+  `od_add` text DEFAULT NULL,
+  `od_base` text DEFAULT NULL,
+  `od_fh` text DEFAULT NULL,
   `od_prism_no` text DEFAULT NULL,
-  `od_prism_detail` text NOT NULL,
+  `od_prism_detail` text DEFAULT NULL,
   `os_sph` text NOT NULL,
   `os_cyl` text NOT NULL,
   `os_axis` text NOT NULL,
@@ -334,8 +352,8 @@ CREATE TABLE `rx_orders` (
   `center_edge` text NOT NULL,
   `frame_size_h` text NOT NULL,
   `oc_height` text NOT NULL,
-  `od1` text NOT NULL,
-  `os1` text NOT NULL,
+  `od1` text DEFAULT NULL,
+  `os1` text DEFAULT NULL,
   `occupation` text NOT NULL,
   `driving` text NOT NULL,
   `computer` text NOT NULL,
@@ -345,18 +363,28 @@ CREATE TABLE `rx_orders` (
   `status` text NOT NULL,
   `od_size` text NOT NULL,
   `os_size` text NOT NULL,
-  `cost_price` float NOT NULL,
-  `sales_price` float NOT NULL,
-  `qty` int(11) NOT NULL
+  `od_cost_price` float NOT NULL,
+  `od_sales_price` float NOT NULL,
+  `od_qty` int(11) NOT NULL,
+  `os_cost_price` float NOT NULL,
+  `os_sales_price` float NOT NULL,
+  `os_qty` int(11) NOT NULL,
+  `od_pd` text NOT NULL,
+  `os_pd` text NOT NULL,
+  `total_amount` float NOT NULL,
+  `frame_size_v` text NOT NULL,
+  `frame_size_d` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rx_orders`
 --
 
-INSERT INTO `rx_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `status`, `od_size`, `os_size`, `cost_price`, `sales_price`, `qty`) VALUES
-(16, '2022-08-04', 'Noref', 'gos-16', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', 'pending', 'tex', 'tex', 20, 30, 2),
-(17, '2022-08-04', 'Noref', 'gos-15', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', 'pending', 'tex', 'tex', 20, 30, 2);
+INSERT INTO `rx_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `status`, `od_size`, `os_size`, `od_cost_price`, `od_sales_price`, `od_qty`, `os_cost_price`, `os_sales_price`, `os_qty`, `od_pd`, `os_pd`, `total_amount`, `frame_size_v`, `frame_size_d`) VALUES
+(16, '2022-08-04', 'Noref', 'gos-16', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', NULL, NULL, '12', '12', '12', '12', '12', '12', 'pending', 'tex2', 'tex2', 20, 30, 2, 0, 0, 0, '', '', 0, '0', '0'),
+(17, '2022-08-04', 'Noref', 'gos-15', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', 'pending', 'tex', 'tex', 20, 30, 2, 0, 0, 0, '', '', 0, '0', '0'),
+(18, '2022-08-12', 'myyref', 'gos-18', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '-0.25', '0.25', '1', '0.25', '2', '14', NULL, 'r', '-0.25', '0.25', '1', '0.25', '2', '12', NULL, 'r', 'bc', 'ffa', 'dad', 'as', 's', 's', 'a', 'a', NULL, NULL, 'a', 'as', 's', 'c', 'c', 'g', 'pending', 'sz', 'sz', 20, 30, 2, 20, 30, 3, 'dd', 'dd', 0, '0', '0'),
+(19, '2022-08-12', 'REF', 'gos-19', 2, 'abc', 5, 'grootex lens', 'asdsadsad', NULL, 'treatment no12', 'service b', '1', '2', '3', '4', '5', '10', NULL, '7', '8', '7', '6', '5', '4', '10', NULL, '2', 'bvd', 'ffa', 'pa', 'nrd', 'dec', 'ct', 'fsh', 'och', NULL, NULL, 'occ', 'dr', 'com', 'read', 'mob', 'gam', 'pending', 'od_size', 'os_size', 20, 30, 40, 20, 30, 38, '8', '1', 1560, 'fsv', 'fsd');
 
 -- --------------------------------------------------------
 
@@ -395,45 +423,70 @@ INSERT INTO `rx_orders_old` (`id`, `date`, `reference`, `customer_id`, `customer
 
 CREATE TABLE `rx_purchases` (
   `id` int(11) NOT NULL,
-  `issue_date` text NOT NULL,
-  `due_date` text NOT NULL,
-  `reference` text NOT NULL,
-  `supplier_id` int(11) NOT NULL,
-  `supplier_name` text NOT NULL,
+  `issue_date` text DEFAULT NULL,
+  `due_date` text DEFAULT NULL,
+  `reference` text DEFAULT NULL,
+  `supplier_id` int(11) DEFAULT NULL,
+  `supplier_name` text DEFAULT NULL,
   `description` text DEFAULT NULL,
   `item_id` int(11) DEFAULT NULL,
-  `item_name` text NOT NULL,
-  `exp_account` text NOT NULL,
-  `item_qty` int(11) NOT NULL,
-  `cost_price` float NOT NULL,
-  `total` float NOT NULL,
-  `status` text NOT NULL,
-  `od_size` text NOT NULL,
-  `od_sph` text NOT NULL,
-  `od_cyl` text NOT NULL,
-  `od_axis` text NOT NULL,
-  `od_add` text NOT NULL,
-  `od_base` text NOT NULL,
-  `od_fh` text NOT NULL,
-  `od_prism_detail` text NOT NULL,
-  `os_size` text NOT NULL,
-  `os_sph` text NOT NULL,
+  `item_name` text DEFAULT NULL,
+  `exp_account` text DEFAULT NULL,
+  `item_qty` int(11) DEFAULT NULL,
+  `cost_price` float DEFAULT NULL,
+  `total_amount` float DEFAULT NULL,
+  `status` text DEFAULT NULL,
+  `od_size` text DEFAULT NULL,
+  `od_sph` text DEFAULT NULL,
+  `od_cyl` text DEFAULT NULL,
+  `od_axis` text DEFAULT NULL,
+  `od_add` text DEFAULT NULL,
+  `od_base` text DEFAULT NULL,
+  `od_fh` text DEFAULT NULL,
+  `od_prism_detail` text DEFAULT NULL,
+  `os_size` text DEFAULT NULL,
+  `os_sph` text DEFAULT NULL,
   `os_cyl` text NOT NULL,
   `os_axis` text NOT NULL,
   `os_add` text NOT NULL,
   `os_base` text NOT NULL,
   `os_fh` text NOT NULL,
-  `os_prism_detail` text NOT NULL
+  `os_prism_detail` text NOT NULL,
+  `bvd_mm` text NOT NULL,
+  `face_angle` text NOT NULL,
+  `pantoscopic_Angle` text NOT NULL,
+  `nrd` text NOT NULL,
+  `decentration` text NOT NULL,
+  `center_edge` text NOT NULL,
+  `oc_height` text NOT NULL,
+  `occupation` text NOT NULL,
+  `driving` text NOT NULL,
+  `computer` text NOT NULL,
+  `reading` text NOT NULL,
+  `mobile` text NOT NULL,
+  `gaming` text NOT NULL,
+  `od_cost_price` float NOT NULL,
+  `od_sales_price` float NOT NULL,
+  `od_qty` text NOT NULL,
+  `os_cost_price` float NOT NULL,
+  `os_sales_price` float NOT NULL,
+  `os_qty` text NOT NULL,
+  `od_pd` text NOT NULL,
+  `os_pd` text NOT NULL,
+  `frame_size_h` text NOT NULL,
+  `frame_size_v` text NOT NULL,
+  `frame_size_d` text NOT NULL,
+  `treatment` text DEFAULT NULL,
+  `tint_service` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rx_purchases`
 --
 
-INSERT INTO `rx_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `cost_price`, `total`, `status`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_detail`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`) VALUES
-(2, '2022-07-29', '2022-07-02', 'ref', 1, 'sup 1 ', 'purchased 10 opt for 40000', 4, 'developer lense', 'Accounting feesExpenses', 10, 4000, 32000, 'pending', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(4, '2022-07-29', '2022-06-29', 'order3', 1, 'sup 1', NULL, NULL, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Accounting feesExpenses', 50, 100, 5000, 'pending', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(13, '2022-08-04', '2022-08-12', '16', 1, 'sup 1', NULL, NULL, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Bank charges', 0, 0, 40, 'inprocess', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de');
+INSERT INTO `rx_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `cost_price`, `total_amount`, `status`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_detail`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `oc_height`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `od_cost_price`, `od_sales_price`, `od_qty`, `os_cost_price`, `os_sales_price`, `os_qty`, `od_pd`, `os_pd`, `frame_size_h`, `frame_size_v`, `frame_size_d`, `treatment`, `tint_service`) VALUES
+(22, '2022-08-13', '2022-08-04', '19', 1, 'sup 1', NULL, NULL, ' grootex lens', 'GOS SHAFAY SOFTWARE', NULL, NULL, 1500, NULL, ' od_size', ' 1', ' 2', ' 3', ' 4', ' 5', ' 10', ' 7', ' os_size', ' 8', ' 7', ' 6', ' 5', ' 4', ' 10', ' 2', ' bvd', ' ffa', ' pa', ' nrd', ' dec', ' ct', ' och', ' occ', ' dr', ' com', ' read', ' mob', ' gam', 20, 30, ' 40', 20, 30, ' 38', ' 8', ' 1', ' fsh', ' fsv', ' fsd', ' treatment no12', ' service b'),
+(23, '2022-08-13', '2022-08-12', '18', 1, 'sup 1', NULL, NULL, ' grootex lens', 'Advertising and promotion', NULL, NULL, 200, NULL, ' sz', ' -0.25', ' 0.25', ' 1', ' 0.25', ' 2', ' 14', ' r', ' sz', ' -0.25', ' 0.25', ' 1', ' 0.25', ' 2', ' 12', ' r', ' bc', ' ffa', ' dad', ' as', ' s', ' s', ' a', ' a', ' as', ' s', ' c', ' c', ' g', 20, 30, '4', 20, 30, '4', ' dd', ' dd', ' a', ' 0', ' 0', ' treatment no12', ' service b');
 
 -- --------------------------------------------------------
 
@@ -447,16 +500,17 @@ CREATE TABLE `suppliers` (
   `email` text NOT NULL,
   `phone` text NOT NULL,
   `address` text NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `actual_bal` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `suppliers`
 --
 
-INSERT INTO `suppliers` (`id`, `name`, `email`, `phone`, `address`, `description`) VALUES
-(1, 'sup 1', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr'),
-(3, 'sup 1 2', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr');
+INSERT INTO `suppliers` (`id`, `name`, `email`, `phone`, `address`, `description`, `actual_bal`) VALUES
+(1, 'sup 1', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr', 1700),
+(3, 'sup 2', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr', 0);
 
 -- --------------------------------------------------------
 
@@ -694,7 +748,7 @@ ALTER TABLE `pricing`
 -- AUTO_INCREMENT for table `rx_invoices`
 --
 ALTER TABLE `rx_invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `rx_items`
@@ -706,7 +760,7 @@ ALTER TABLE `rx_items`
 -- AUTO_INCREMENT for table `rx_orders`
 --
 ALTER TABLE `rx_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `rx_orders_old`
@@ -718,13 +772,13 @@ ALTER TABLE `rx_orders_old`
 -- AUTO_INCREMENT for table `rx_purchases`
 --
 ALTER TABLE `rx_purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tints_of_services`

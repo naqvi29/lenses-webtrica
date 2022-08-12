@@ -1,0 +1,139 @@
+{% extends 'layout.html' %}
+{% block title %}Supplier{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <!-- <h1 class="m-0">Rx Purchase Invoice # {{supplier[0]}}</h1> -->
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Supplier # {{supplier[0]}}</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title"><strong>Supplier # {{supplier[0]}}</strong>
+                            <button onclick="printDiv('printableArea')" class="btn btn-sm btn-success ml-4"
+                                type="button">Print Supplier</button>
+                        </h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button> -->
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div id="printableArea" class="card-body" style="display: block;">
+                        <div class="row">
+
+                            <form class="py-4 px-5" action="#" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+                                <div class="row g-4">
+                                    <div class="col-md-12 mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Supplier Name</label>
+                                        <input type="text" class="form-control" name="name" placeholder="Supplier Name"
+                                            value="{{supplier[1]}}" disabled>
+                                    </div>
+
+                                    <div class="col-md-12 mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Supplier Email</label>
+                                        <input type="email" class="form-control" name="email"
+                                            placeholder="Supplier Email" value="{{supplier[2]}}"  disabled>
+                                    </div>
+
+                                    <div class="col-md-12 mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Supplier Phone
+                                            Number</label>
+                                        <input type="number" class="form-control" name="phone"
+                                            placeholder="Supplier Phone Number" value="{{supplier[3]}}"  disabled>
+                                    </div>
+
+                                    <div class="col-md-12 mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Supplier
+                                            Address</label>
+                                        <input type="text" class="form-control" name="address"
+                                            placeholder="Supplier Address" value="{{supplier[4]}}" disabled>
+                                    </div>
+
+
+                                    <div class="col-md-12 mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Supplier
+                                            Description</label>
+                                        
+                                            <input type="number" step="any" class="form-control" name="desc"
+                                            placeholder="Starting Balance" value="{{supplier[5]}}" disabled>
+                                    </div>
+
+                                    <div class="col-md-12 mb-2">
+                                        <label for="exampleFormControlInput1" class="form-label">Balance</label>
+                                        <input type="number" step="any" class="form-control" name="starting_bal"
+                                            placeholder="Starting Balance" value="{{supplier[6]}}" disabled>
+                                    </div>
+
+                                    <!-- <div class="mt-4 col-md-12 mb-2">
+                                                <button type="submit" class="btn my_btn01 w-100" style="background:purple; color:white">Submit</button>
+                                            </div> -->
+                                    <!-- <div class="mt-4 col-md-12 text-center">
+                                        <button type="submit" class="btn btn-success my_btn01 w-50">Add</button>
+                                    </div> -->
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer" style="display: block;">
+                        <a href="/all-suppliers" class="btn btn-dark">Back</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+</script>
+
+<script>
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
+{% endblock %}

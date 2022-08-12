@@ -9,10 +9,10 @@
   <title>{% block title %}{% endblock %}</title>
   <style>
     body {
-      font-size: 0.7rem;
+      font-size: 0.8rem !important;
     }
     .content{
-        font-size: 0.9rem;
+        font-size: 0.8rem !important;
     }
   </style>
 
@@ -160,17 +160,11 @@
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
                 <p>
-                  Payments
+                  Transactions
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/view-bank-and-cash-accounts" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Bank & Cash Accounts</p>
-                  </a>
-                </li>
                 <li class="nav-item">
                     <a href="/view-receipts" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
@@ -179,6 +173,29 @@
                   <a href="/view-payments" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Payments</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  Accounts
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/view-bank-and-cash-accounts" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Bank Accounts</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/view-bank-and-cash-accounts" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Cash Accounts</p>
                   </a>
                 </li>
               </ul>

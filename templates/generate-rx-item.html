@@ -25,7 +25,8 @@
             <div class="col-12">
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title"><strong>Rx Item # {{rx_items[0]}}</strong></h3>
+                        <h3 class="card-title"><strong>Rx Item # {{rx_items[0]}}</strong>
+                            <button onclick="printDiv('printableArea')" class="btn btn-sm btn-success ml-4" type="button">Print Item</button></h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -37,7 +38,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body" style="display: block;">
+                    <div id="printableArea" class="card-body" style="display: block;">
                         <div class="row">
                             <form class="py-4 px-5 row" action="#" method="POST"
                             enctype="multipart/form-data">
@@ -95,5 +96,16 @@
         </div>
     </div>
 </section>
+<script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
 
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
 {% endblock %}

@@ -1,11 +1,11 @@
-{% extends 'layout.html' %} 
+{% extends 'layout.html' %}
 {% block title %}Add Supplier{% endblock %}
 {% block content %}
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Add Supplier</h1>
+        <!-- <h1 class="m-0">Add Supplier</h1> -->
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -20,53 +20,80 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-body px-0 pt-0 pb-2">
-                        <h3 class="m-4 mb-0">Add Supplier</h3>
-                        <form class="py-4 px-5" action="/add-supplier" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">                            <div class="row g-4">
-                                <div class="col-md-12 mb-2">
-                                    <label for="exampleFormControlInput1" class="form-label">Supplier Name</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Supplier Name" value="">
-                                                                    </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-default">
+          <div class="card-header">
+            <h3 class="card-title"><strong>Add Supplier</strong></h3>
 
-                                <div class="col-md-12 mb-2">
-                                    <label for="exampleFormControlInput1" class="form-label">Supplier Email</label>
-                                    <input type="email" class="form-control" name="email" placeholder="Supplier Email" value="">
-                                                                    </div>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button> -->
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body" style="display: block;">
+            <div class="row">
+              <form class="py-4 px-5" action="/add-supplier" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+                <div class="row g-4">
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Supplier Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Supplier Name" value="" required>
+                  </div>
 
-                                <div class="col-md-12 mb-2">
-                                    <label for="exampleFormControlInput1" class="form-label">Supplier Phone Number</label>
-                                    <input type="number" class="form-control" name="phone" placeholder="Supplier Phone Number" value="">
-                                                                    </div>
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Supplier Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Supplier Email" value="" required>
+                  </div>
 
-                                <div class="col-md-12 mb-2">
-                                    <label for="exampleFormControlInput1" class="form-label">Supplier Address</label>
-                                    <input type="text" class="form-control" name="address" placeholder="Supplier Address" value="">
-                                                                    </div>
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Supplier Phone Number</label>
+                    <input type="number" class="form-control" name="phone" placeholder="Supplier Phone Number" value="" required>
+                  </div>
 
-                                
-                                <div class="col-md-12 mb-2">
-                                    <label for="exampleFormControlInput1" class="form-label">Supplier Description</label>
-                                    <textarea class="form-control" name="desc" id="" cols="30" rows="4" placeholder="Supplier Description"></textarea>
-                                                                    </div>
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Supplier Address</label>
+                    <input type="text" class="form-control" name="address" placeholder="Supplier Address" value="">
+                  </div>
 
-                                <div class="mt-4 col-md-12 mb-2">
-                                    <button type="submit" class="btn my_btn01 w-100" style="background:purple; color:white">Submit</button>
-                                </div>
-                        
-                    </div></form>
+
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Supplier Description</label>
+                    <textarea class="form-control" name="desc" id="" cols="30" rows="4"
+                      placeholder="Supplier Description"></textarea>
+                  </div>
+
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Starting Balance</label>
+                    <input type="number" step="any" class="form-control" name="starting_bal" placeholder="Starting Balance" value="0" >
+                  </div>
+
+                  <!-- <div class="mt-4 col-md-12 mb-2">
+                                <button type="submit" class="btn my_btn01 w-100" style="background:purple; color:white">Submit</button>
+                            </div> -->
+                  <div class="mt-4 col-md-12 text-center">
+                    <button type="submit" class="btn btn-success my_btn01 w-50">Add</button>
+                  </div>
+
                 </div>
+              </form>
             </div>
-            <div class="d-flex justify-content-end">
-                <a href="/all-suppliers" class="btn btn-danger">All Suppliers</a>
-            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer" style="display: block;">
+
+            <a href="/all-suppliers" class="btn btn-dark">All Suppliers</a>
+          </div>
         </div>
+      </div>
     </div>
-    </div>
+  </div>
 </section>
 <!-- /.content -->
 

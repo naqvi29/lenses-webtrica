@@ -1,0 +1,295 @@
+{% extends 'layout.html' %}
+{% block title %}Make Rx Invoice{% endblock %}
+{% block content %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Make Rx Invoice</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Make Rx Invoice</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <!-- <h3 class="m-4 mb-0">Order To Make</h3> -->
+                        <form class="py-4 px-5 row" action="/make-rx-invoice" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Issue Date</label>
+                                <input id="datebox" type="date" class="form-control" name="issue_date" value="{{today}}">
+                                <script>
+                                    Date.prototype.toDateInputValue = (function () {
+                                        var local = new Date(this);
+                                        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                                        return local.toJSON().slice(0, 10);
+                                    });
+                                    document.getElementById('datebox').value = new Date().toDateInputValue();
+                                </script>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" name="due_date">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Reference</label>
+                                <select name="reference" class="form-control" id="">
+                                    {% for i in rx_orders %}
+                                    <option value="{{i[3]}}">{{i[3]}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Select Customer</label>
+                                <select onchange="customerselect()" id="customerSelect" name="customer"
+                                    class="form-control">
+                                    <option value="">Select Customer</option>
+                                    {% for i in customers %}
+                                    <option value="{{i[0]}}">{{i[1]}}</option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Billing Address</label>
+                                <input type="text" name="billing_address" class="form-control" id="bill_address">
+
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Description</label>
+                                <input type="text" name="dsc" class="form-control" id="">
+
+                            </div>
+                            <div id="item-div" style="display: contents;">
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Item</label>
+                                <select name="item" class="form-control" id="">
+                                    {% for i in rx_items %}
+                                        <option value="{{i[0]}}">{{i[2]}}</option>
+                                        {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
+                                <select name="exp_account" class="form-control" id="">
+                                    <option value="Accounting feesExpenses">Accounting feesExpenses</option>
+                                    <option value="Accounts receivable">Accounts receivable</option>
+                                    <option value="Advertising and promotion">Advertising and promotion</option>
+                                    <option value="Bank charges">Bank charges</option>
+                                    <option value="Capital gains on investments">Capital gains on investments</option>
+                                    <option value="Computer equipment">Computer equipment</option>
+                                    <option value="Donations">Donations</option>
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Employee clearing account">Employee clearing account</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
+                                    <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
+                                    <option value="Interest received">Interest received</option>
+                                    <option value="Inventory - cost">Inventory - cost</option>
+                                    <option value="Inventory - sales">Inventory - sales</option>
+                                    <option value="Inventory on hand">Inventory on hand</option>
+                                    <option value="Legal fees">Legal fees</option>
+                                    <option value="Motor vehicle expenses">Motor vehicle expenses</option>
+                                    <option value="Printing and stationery">Printing and stationery</option>
+                                    <option value="Rent">Rent</option>
+                                    <option value="Repairs and maintenance">Repairs and maintenance</option>
+                                    <option value="Retained earnings">Retained earnings</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Telephone">Telephone</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Qty</label>
+                                <input onchange="return qty_unitP_changed()" type="number" class="form-control" name="item_qty" id="Qty">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
+                                <input onchange="return qty_unitP_changed()" type="number" step="any" class="form-control" name="item_price" id="UnitP">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Total</label>
+                                <input type="number" step="any" class="form-control" name="total" id="Total">
+                            </div>
+
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <a href="#" onclick="add_line()" class="btn btn-sm btn-outline-success">Add Line</a>
+                                <a href="#" onclick="clear_line()" class="btn btn-sm btn-outline-danger mx-2">Clear</a>
+                            </div>
+
+
+
+                            <div class="mt-4 col-md-12">
+                                <button type="submit" class="btn my_btn01 w-100"
+                                    style="background:purple; color:white">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <a href="/view-rx-invoice" class="btn btn-danger">View All Rx Invoices</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+<script>
+    function add_line() {
+        item_div = document.getElementById("item-div");
+        console.log(item_div.innerHTML);
+        document.getElementById("item-div").innerHTML = item_div.innerHTML += `<div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Item</label>
+                                <select name="item" class="form-control" id="">
+                                    {% for i in rx_items %}
+                                        <option value="{{i[0]}}">{{i[2]}}</option>
+                                        {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
+                                <select name="exp_account" class="form-control" id="">
+                                    <option value="Accounting feesExpenses">Accounting feesExpenses</option>
+                                    <option value="Accounts receivable">Accounts receivable</option>
+                                    <option value="Advertising and promotion">Advertising and promotion</option>
+                                    <option value="Bank charges">Bank charges</option>
+                                    <option value="Capital gains on investments">Capital gains on investments</option>
+                                    <option value="Computer equipment">Computer equipment</option>
+                                    <option value="Donations">Donations</option>
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Employee clearing account">Employee clearing account</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
+                                    <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
+                                    <option value="Interest received">Interest received</option>
+                                    <option value="Inventory - cost">Inventory - cost</option>
+                                    <option value="Inventory - sales">Inventory - sales</option>
+                                    <option value="Inventory on hand">Inventory on hand</option>
+                                    <option value="Legal fees">Legal fees</option>
+                                    <option value="Motor vehicle expenses">Motor vehicle expenses</option>
+                                    <option value="Printing and stationery">Printing and stationery</option>
+                                    <option value="Rent">Rent</option>
+                                    <option value="Repairs and maintenance">Repairs and maintenance</option>
+                                    <option value="Retained earnings">Retained earnings</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Telephone">Telephone</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Qty</label>
+                                <input type="number" class="form-control" name="item_qty" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
+                                <input type="number" step="any" class="form-control" name="item_price" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Total</label>
+                                <input type="number" step="any" class="form-control" name="total" id="">
+                            </div>`;
+    }
+    function clear_line() {
+        item_div = document.getElementById("item-div");
+        console.log(item_div.innerHTML);
+        document.getElementById("item-div").innerHTML = `
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Item</label>
+                                <select name="item" class="form-control" id="">
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
+                                <select name="exp_account" class="form-control" id="">
+                                    <option value="Accounting feesExpenses">Accounting feesExpenses</option>
+                                    <option value="Accounts receivable">Accounts receivable</option>
+                                    <option value="Advertising and promotion">Advertising and promotion</option>
+                                    <option value="Bank charges">Bank charges</option>
+                                    <option value="Capital gains on investments">Capital gains on investments</option>
+                                    <option value="Computer equipment">Computer equipment</option>
+                                    <option value="Donations">Donations</option>
+                                    <option value="Electricity">Electricity</option>
+                                    <option value="Employee clearing account">Employee clearing account</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
+                                    <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
+                                    <option value="Interest received">Interest received</option>
+                                    <option value="Inventory - cost">Inventory - cost</option>
+                                    <option value="Inventory - sales">Inventory - sales</option>
+                                    <option value="Inventory on hand">Inventory on hand</option>
+                                    <option value="Legal fees">Legal fees</option>
+                                    <option value="Motor vehicle expenses">Motor vehicle expenses</option>
+                                    <option value="Printing and stationery">Printing and stationery</option>
+                                    <option value="Rent">Rent</option>
+                                    <option value="Repairs and maintenance">Repairs and maintenance</option>
+                                    <option value="Retained earnings">Retained earnings</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Telephone">Telephone</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Qty</label>
+                                <input type="number" class="form-control" name="item_qty" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Unit Price</label>
+                                <input type="number" step="any" class="form-control" name="item_price" id="">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Total</label>
+                                <input type="number" step="any" class="form-control" name="total" id="">
+                            </div>`;
+    }
+</script>
+<script>
+    function customerselect() {
+        console.log("change")
+        let e = document.getElementById("customerSelect");
+        let customer_id = e.value;
+
+        // ajax 
+        $.ajax({
+            type: 'POST',
+            url: "/fetch-billing-address",
+            data: { "customer_id": customer_id },
+            success: function (response) {
+                console.log(response)
+                let bill_address = document.getElementById("bill_address")
+                bill_address.value = response;
+            },
+            error: function (response) {
+                // alert the error if any error occured
+                console.log(response)
+            }
+        })
+    }
+</script>
+<script>
+    function qty_unitP_changed(){
+        let Qty = document.getElementById('Qty').value;
+        let UnitP = document.getElementById("UnitP").value;
+        let Total = document.getElementById("Total");
+        let result = Qty * UnitP;
+        Total.value = result;
+    }
+</script>
+
+{% endblock %}
