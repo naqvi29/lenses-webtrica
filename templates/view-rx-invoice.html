@@ -58,11 +58,11 @@ content %}
                           <!-- <th>Description</th> -->
                           <th>Item</th>
                           <th>Exp Account</th>
-                          <th>Item Qty</th>
+                          <th>Qty (OD-OS)</th>
                           <th>Issue Date</th>
                           <th>Due Date</th>
-                          <th>Sales Price</th>
-                          <th>Total Price</th>
+                          <th>SalesPrice (OD-OS)</th>
+                          <th>Total Amount</th>
                           <!-- <th>Status</th> -->
                           <th>Action</th>
                         </tr>
@@ -83,10 +83,10 @@ content %}
                             <td>{{i[9]}}</td>
                           {% endif %}
                           <td>{{i[10]}}</td>
-                          <td>{{i[11]}}</td>
+                          <td>{{i[45]}} - {{i[48]}}</td>
                           <td>{{i[1]}}</td>
                           <td>{{i[2]}}</td>
-                          <td>{{i[12]}} Rs</td>
+                          <td>{{i[44]}} Rs - {{i[47]}} Rs</td>
                           <td>{{i[13]}} Rs</td>
                           <!-- <td>{{i[13]}}</td> -->
                           <td>

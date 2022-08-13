@@ -1,6 +1,12 @@
 {% extends 'layout.html' %} {% block title %}RX Orders{% endblock %}
 {% block head %}
 {{ super() }}
+<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"> -->
+<!-- <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css"> -->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script> -->
 {% endblock %}
 {% block content %}
 <div class="content-header">
@@ -47,6 +53,16 @@
             <div class="card mb-4">
               <div class="card-body px-0 pt-0 pb-2">
                 <div class="table-responsive">
+                  <table border="0" cellspacing="5" cellpadding="5">
+                    <tbody><tr>
+                        <td>Minimum date:</td>
+                        <td><input type="text" id="min" name="min"></td>
+                    </tr>
+                    <tr>
+                        <td>Maximum date:</td>
+                        <td><input type="text" id="max" name="max"></td>
+                    </tr>
+                </tbody></table>
                   <table id="example" class="table table-hover align-middle table-bordered">
                     <thead class="bg-dark text-white text-center">
                       <tr>
@@ -161,7 +177,7 @@
                         <td>{{i[13]}} - {{i[21]}}</td>
                         <td>{{i[14]}} - {{i[22]}}</td>
                         <td>{{i[15]}} - {{i[23]}}</td>
-                        <td>{{i[44]}}</td>
+                        <td>{{i[44] | capitalize}}</td>
                         <td>
                           <div class="btn-group">
                           <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -214,19 +230,15 @@
             <a href="/make-rx-order" class="btn btn-success">Make Order</a>
           </div>
         </div>
+
         
       </div>
     </div>
   </div>
 </section>
-<!-- /.content -->
 
 {% endblock %}
 {%block scripts %}
-<!-- <script type="text/javascript" src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script> -->
 <script type="text/javascript">
   $(document).ready(function () {
     $('#example').DataTable({
@@ -236,5 +248,47 @@
       ]
     });
   });
+</script>
+<script>
+  var minDate, maxDate;
+ 
+ // Custom filtering function which will search data in column four between two values
+ $.fn.dataTable.ext.search.push(
+     function( settings, data, dataIndex ) {
+         var min = minDate.val();
+         var max = maxDate.val();
+         var date = new Date( data[1] );
+  
+         if (
+             ( min === null && max === null ) ||
+             ( min === null && date <= max ) ||
+             ( min <= date   && max === null ) ||
+             ( min <= date   && date <= max )
+         ) {
+             return true;
+         }
+         return false;
+     }
+ );
+  
+ $(document).ready(function() {
+     // Create date inputs
+     minDate = new DateTime($('#min'), {
+         format: 'MMMM Do YYYY'
+        //  format: 'YYYY Do MMMM'
+     });
+     maxDate = new DateTime($('#max'), {
+         format: 'MMMM Do YYYY'
+        //  format: 'YYYY Do MMMM'
+     });
+  
+     // DataTables initialisation
+     var table = $('#example').DataTable();
+  
+     // Refilter the table
+     $('#min, #max').on('change', function () {
+         table.draw();
+     });
+ });
 </script>
 {% endblock %}

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 13, 2022 at 04:44 PM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.10
+-- Generation Time: Aug 13, 2022 at 01:59 AM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,25 +24,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bank_accounts`
+-- Table structure for table `bankandcashaccounts`
 --
 
-CREATE TABLE `bank_accounts` (
+CREATE TABLE `bankandcashaccounts` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
   `code` varchar(255) DEFAULT NULL,
-  `actual_balance` float NOT NULL
+  `actual_balance` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `bank_accounts`
+-- Dumping data for table `bankandcashaccounts`
 --
 
-INSERT INTO `bank_accounts` (`id`, `name`, `code`, `actual_balance`) VALUES
+INSERT INTO `bankandcashaccounts` (`id`, `name`, `code`, `actual_balance`) VALUES
+(1, 'Cash in Hand', 'CIH', 200),
 (3, 'account1', '1', 0),
 (4, 'account2', '2', 400),
-(5, 'testing', 'TEST', 1000),
-(6, 'Meezan Bank', 'MB', 9000);
+(5, 'testing', 'TEST', 1000);
 
 -- --------------------------------------------------------
 
@@ -84,26 +84,6 @@ CREATE TABLE `brands` (
 INSERT INTO `brands` (`id`, `name`, `description`) VALUES
 (1, 'groot brand', 'this is desc'),
 (3, 'asiasd', 'asdasd');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cash_accounts`
---
-
-CREATE TABLE `cash_accounts` (
-  `id` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `code` varchar(255) DEFAULT NULL,
-  `actual_balance` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `cash_accounts`
---
-
-INSERT INTO `cash_accounts` (`id`, `name`, `code`, `actual_balance`) VALUES
-(1, 'Cash In Hand', 'CIH', 5000);
 
 -- --------------------------------------------------------
 
@@ -270,9 +250,9 @@ CREATE TABLE `rx_invoices` (
   `item_id` int(11) NOT NULL,
   `item_name` text DEFAULT NULL,
   `exp_account` text NOT NULL,
-  `item_qty` int(11) DEFAULT NULL,
-  `sales_price` float DEFAULT NULL,
-  `total_amount` float NOT NULL,
+  `item_qty` int(11) NOT NULL,
+  `sales_price` float NOT NULL,
+  `total` float NOT NULL,
   `od_size` text DEFAULT NULL,
   `od_sph` text DEFAULT NULL,
   `od_cyl` text DEFAULT NULL,
@@ -288,42 +268,18 @@ CREATE TABLE `rx_invoices` (
   `os_base` text DEFAULT NULL,
   `os_fh` text DEFAULT NULL,
   `os_prism_detail` text DEFAULT NULL,
-  `od_prism_detail` text DEFAULT NULL,
-  `bvd_mm` text DEFAULT NULL,
-  `face_angle` text DEFAULT NULL,
-  `pantoscopic_Angle` text DEFAULT NULL,
-  `nrd` text DEFAULT NULL,
-  `decentration` text DEFAULT NULL,
-  `center_edge` text DEFAULT NULL,
-  `oc_height` text DEFAULT NULL,
-  `occupation` text DEFAULT NULL,
-  `driving` text DEFAULT NULL,
-  `computer` text DEFAULT NULL,
-  `reading` text DEFAULT NULL,
-  `mobile` text DEFAULT NULL,
-  `gaming` text DEFAULT NULL,
-  `od_cost_price` float DEFAULT NULL,
-  `od_sales_price` float DEFAULT NULL,
-  `od_qty` int(11) DEFAULT NULL,
-  `os_cost_price` float DEFAULT NULL,
-  `os_sales_price` float DEFAULT NULL,
-  `os_qty` int(11) DEFAULT NULL,
-  `od_pd` text DEFAULT NULL,
-  `os_pd` text DEFAULT NULL,
-  `frame_size_h` text DEFAULT NULL,
-  `frame_size_v` text DEFAULT NULL,
-  `frame_size_d` text DEFAULT NULL,
-  `treatment` text DEFAULT NULL,
-  `tint_service` text DEFAULT NULL
+  `od_prism_detail` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `rx_invoices`
 --
 
-INSERT INTO `rx_invoices` (`id`, `issue_date`, `due_date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `sales_price`, `total_amount`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`, `od_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `oc_height`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `od_cost_price`, `od_sales_price`, `od_qty`, `os_cost_price`, `os_sales_price`, `os_qty`, `od_pd`, `os_pd`, `frame_size_h`, `frame_size_v`, `frame_size_d`, `treatment`, `tint_service`) VALUES
-(10, '2022-08-01', '2022-08-01', '10', 0, ' abc', ' asdsadsad', NULL, 5, ' grootex lens', 'Accounting feesExpenses', NULL, NULL, 2340, ' od_size', ' 1', ' 2', ' 3', ' 4', ' 5', ' 10', ' os_size', ' 8', ' 7', ' 6', ' 5', ' 4', ' 10', ' 2', ' 7', ' bvd', ' ffa', ' pa', ' nrd', ' dec', ' ct', ' och', ' occ', ' dr', ' com', ' read', ' mob', ' gam', NULL, 30, 40, NULL, 30, 38, ' 8', ' 1', ' fsh', ' fsv', ' fsd', ' treatment no12', ' service b'),
-(15, '2022-08-13', '2022-08-11', '19', 0, ' abc', ' asdsadsad', NULL, 5, ' grootex lens', 'Capital gains on investments', NULL, NULL, 2340, ' od_size', ' 1', ' 2', ' 3', ' 4', ' 5', ' 10', ' os_size', ' 8', ' 7', ' 6', ' 5', ' 4', ' 10', ' 2', ' 7', ' bvd', ' ffa', ' pa', ' nrd', ' dec', ' ct', ' och', ' occ', ' dr', ' com', ' read', ' mob', ' gam', NULL, 30, 40, NULL, 30, 38, ' 8', ' 1', ' fsh', ' fsv', ' fsd', ' treatment no12', ' service b');
+INSERT INTO `rx_invoices` (`id`, `issue_date`, `due_date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `sales_price`, `total`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`, `od_prism_detail`) VALUES
+(4, '2022-07-29', '2022-07-09', 'ref2', 3, 'Groot', 'R-1231293 PECHS', NULL, 4, 'developer lense', 'Advertising and promotion', 1, 150, 150, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'),
+(5, '2022-07-29', '2022-06-30', 'order3', 2, 'abc', 'asdsadsad', 'desc', 1, 'OPTOLUX 3.0 UHD 1.67 LITE++ BLUE FIGHTER CLARION', 'Accounting feesExpenses', 20, 2, 40, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'),
+(8, '2022-08-05', '2022-08-12', '17', 3, ' Groot', ' R-1231293 PECHS', NULL, 5, ' grootex lens', 'Accounts receivable', 2, 30, 60, '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'),
+(9, '2022-08-05', '2022-08-12', '16', 3, ' Groot', ' R-1231293 PECHS', NULL, 5, ' grootex lens', 'Advertising and promotion', 2, 50, 100, ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' de');
 
 -- --------------------------------------------------------
 
@@ -425,10 +381,10 @@ CREATE TABLE `rx_orders` (
 --
 
 INSERT INTO `rx_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `status`, `od_size`, `os_size`, `od_cost_price`, `od_sales_price`, `od_qty`, `os_cost_price`, `os_sales_price`, `os_qty`, `od_pd`, `os_pd`, `total_amount`, `frame_size_v`, `frame_size_d`) VALUES
-(16, '2022-07-16', 'Noref', 'gos-16', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', NULL, NULL, '12', '12', '12', '12', '12', '12', 'pending', 'tex2', 'tex2', 20, 30, 2, 0, 0, 0, '', '', 0, '0', '0'),
+(16, '2022-08-04', 'Noref', 'gos-16', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', NULL, NULL, '12', '12', '12', '12', '12', '12', 'pending', 'tex2', 'tex2', 20, 30, 2, 0, 0, 0, '', '', 0, '0', '0'),
 (17, '2022-08-04', 'Noref', 'gos-15', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '0.25', '0.25', '1', '0.25', '1', '10', NULL, 'de', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', '12', 'pending', 'tex', 'tex', 20, 30, 2, 0, 0, 0, '', '', 0, '0', '0'),
 (18, '2022-08-12', 'myyref', 'gos-18', 3, 'Groot', 5, 'grootex lens', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '-0.25', '0.25', '1', '0.25', '2', '14', NULL, 'r', '-0.25', '0.25', '1', '0.25', '2', '12', NULL, 'r', 'bc', 'ffa', 'dad', 'as', 's', 's', 'a', 'a', NULL, NULL, 'a', 'as', 's', 'c', 'c', 'g', 'pending', 'sz', 'sz', 20, 30, 2, 20, 30, 3, 'dd', 'dd', 0, '0', '0'),
-(19, '2022-08-12', 'REF', 'gos-19', 2, 'abc', 5, 'grootex lens', 'asdsadsad', NULL, 'treatment no12', 'service b', '1', '2', '3', '4', '5', '10', NULL, '7', '8', '7', '6', '5', '4', '10', NULL, '2', 'bvd', 'ffa', 'pa', 'nrd', 'dec', 'ct', 'fsh', 'och', NULL, NULL, 'occ', 'dr', 'com', 'read', 'mob', 'gam', 'ready', 'od_size', 'os_size', 20, 30, 40, 20, 30, 38, '8', '1', 1560, 'fsv', 'fsd');
+(19, '2022-08-12', 'REF', 'gos-19', 2, 'abc', 5, 'grootex lens', 'asdsadsad', NULL, 'treatment no12', 'service b', '1', '2', '3', '4', '5', '10', NULL, '7', '8', '7', '6', '5', '4', '10', NULL, '2', 'bvd', 'ffa', 'pa', 'nrd', 'dec', 'ct', 'fsh', 'och', NULL, NULL, 'occ', 'dr', 'com', 'read', 'mob', 'gam', 'pending', 'od_size', 'os_size', 20, 30, 40, 20, 30, 38, '8', '1', 1560, 'fsv', 'fsd');
 
 -- --------------------------------------------------------
 
@@ -623,9 +579,9 @@ INSERT INTO `users` (`id`, `name`, `email`, `branch`, `password`, `security_code
 --
 
 --
--- Indexes for table `bank_accounts`
+-- Indexes for table `bankandcashaccounts`
 --
-ALTER TABLE `bank_accounts`
+ALTER TABLE `bankandcashaccounts`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -638,12 +594,6 @@ ALTER TABLE `branch`
 -- Indexes for table `brands`
 --
 ALTER TABLE `brands`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `cash_accounts`
---
-ALTER TABLE `cash_accounts`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -741,10 +691,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `bank_accounts`
+-- AUTO_INCREMENT for table `bankandcashaccounts`
 --
-ALTER TABLE `bank_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `bankandcashaccounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `branch`
@@ -757,12 +707,6 @@ ALTER TABLE `branch`
 --
 ALTER TABLE `brands`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `cash_accounts`
---
-ALTER TABLE `cash_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -804,7 +748,7 @@ ALTER TABLE `pricing`
 -- AUTO_INCREMENT for table `rx_invoices`
 --
 ALTER TABLE `rx_invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `rx_items`

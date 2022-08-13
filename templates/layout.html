@@ -47,6 +47,8 @@
     href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css">
   <link rel="stylesheet" type="text/css"
     href="https://editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css">
+    
+ 
 
   <!-- mycustom css  -->
   <link rel="stylesheet" href="/static/css/style.css">
@@ -187,13 +189,13 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="/view-bank-and-cash-accounts" class="nav-link">
+                    <a href="/view-bank-accounts" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Bank Accounts</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/view-bank-and-cash-accounts" class="nav-link">
+                    <a href="/view-cash-accounts" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Cash Accounts</p>
                   </a>
@@ -241,13 +243,13 @@
                 <li class="nav-item">
                   <a href="/view-rx-purchase" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Rx Purchases</p>
+                    <p>Rx Purchase Invoices</p>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a href="/view-rx-invoice" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Rx Invoices</p>
+                    <p>Rx Sales Invoices</p>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -448,6 +450,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+  
+  <script src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
   <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.12.1/b-2.2.3/sl-1.4.0/datatables.min.js"></script> -->
 
   {% block scripts %}{% endblock %}
