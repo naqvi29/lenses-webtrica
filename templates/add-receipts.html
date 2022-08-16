@@ -53,14 +53,28 @@
                       <option value="supplier">Supplier</option>
                     </select>   
                 </div> 
-                <div class="col-md-9">
-                  <label for="exampleFormControlInput1" class="form-label"><span style="color: red;">*</span></label>
+                <div class="col-md-6">
+                  <label for="exampleFormControlInput1" class="form-label"><span style="color: red;">*</span>Select Name</label>
                   <span id="paid_by_name">
                       <input type="text" class="form-control" name="other_name" >
                     </span>
                   </div>
+                  <div class="col-md-3" id="rx_invoices" >
+                    <label for="exampleFormControlInput1" class="form-label"><span style="color: red;">*</span>invoice #</label>
+                    <span id="paid_by_name">
+                          <select class="form-control"  name="rx_invoice" id="rx_invoice">
+                          </select>  
+                      </span>
+                    </div>
+                  <div class="col-md-3" >
+                    <label for="exampleFormControlInput1" class="form-label">Received Account Type <span style="color: red;">*</span></label>
+                      <select class="form-control"  name="received_in_type" id="received_in_type" onchange="changevalueofreceivedintype()">
+                        <option value="bank">Bank Accounts</option>
+                        <option value="cash">Cash Accounts</option>
+                      </select>   
+                  </div> 
                 <div class="col-md-3" >
-                  <label for="exampleFormControlInput1" class="form-label">Received in <span style="color: red;">*</span></label>
+                  <label for="exampleFormControlInput1" class="form-label">Received Account <span style="color: red;">*</span></label>
                     <select class="form-control" name="received_in_account" id="contact">
                       {% for i in bank_accounts %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
@@ -134,11 +148,24 @@
             div = document.getElementById("paid_by_name");
             div.innerHTML=``
             div.innerHTML =`
-                        <select class="form-control" name="customer" id="">
+                        <select onchange="func3()"= class="form-control" name="customer" id="customerS">
                       {% for i in customers %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
                       {% endfor %}
-                    </select>   `
+                    </select>`
+            div = document.getElementById("rx_invoices");
+            div.innerHTML=``
+            div.innerHTML =`
+                        
+                      <label for="exampleFormControlInput1" class="form-label"><span style="color: red;">*</span>invoice #</label>
+                    <span id="paid_by_name">
+                      <select class="form-control"  name="customer_invoice" id="customer_invoice">
+                        {% for i in rx_invoices %}
+                        <option value="{{i[0]}}">{{i[0]}}</option>
+                        <option value="{{i[0]}}">{{i[0]}}</option>
+                        {% endfor %}
+                      </select>
+                      </span>`
           }
           if (value == "supplier"){
             div = document.getElementById("paid_by_name");
@@ -157,6 +184,54 @@
                         <input type="text" class="form-control" name="other_name" >`
           }
           console.log(value);
+  }
+    function changevalueofreceivedintype(){
+          var select2 = document.getElementById('received_in_type');
+          var value2 = select2.options[select2.selectedIndex].value;
+          if (value2 == "bank"){
+            div = document.getElementById("contact");
+            div.innerHTML=``
+            div.innerHTML =`
+                      {% for i in bank_accounts %}
+                      <option value="{{i[0]}}">{{i[1]}}</option>
+                      {% endfor %}   `
+          }
+          if (value2 == "cash"){
+            div = document.getElementById("contact");
+            div.innerHTML=``
+            div.innerHTML =`
+            {% for i in cash_accounts %}
+                      <option value="{{i[0]}}">{{i[1]}}</option>
+                      {% endfor %}  `
+          }
+          console.log(value2);
+  }
+  function func3(){
+    
+    var select3 = document.getElementById('customerS');
+    var value3 = select3.options[select3.selectedIndex].value;
+    console.log(value3);
+    $.ajax({
+            type: 'POST',
+            url: "/fetch-rxinvoices-by-customer",
+            data: { "customer_id": value3 },
+            success: function (response) {
+              console.log(response);
+                // let string = response.replace("(", "");
+                // string = string.replace(")", "");
+                // string = string.replace("'", "");
+                // string = string.replace("'", "");
+                // string = string.replace(",", "");
+                // var array = string.split(",").map(String);
+                // console.log(array);
+                // let bill_address = document.getElementById("bill_address")
+                // bill_address.value = array;
+            },
+            error: function (response) {
+                // alert the error if any error occured
+                console.log(response)
+            }
+        });
   }
 </script>
 

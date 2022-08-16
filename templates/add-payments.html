@@ -45,9 +45,16 @@
                   <label for="exampleFormControlInput1" class="form-label">Reference</label>
                   <input type="text" class="form-control" name="reference" >
                 </div>
-                <div class="col-md-12" >
-                  <label for="exampleFormControlInput1" class="form-label">Paid From <span style="color: red;">*</span></label>
-                    <select class="form-control" name="paid_from" id="contact">
+                <div class="col-md-6" >
+                  <label for="exampleFormControlInput1" class="form-label">Paid From Type <span style="color: red;">*</span></label>
+                  <select class="form-control"  name="paid_from_type" id="paid_from_type" onchange="changevalueofpaid_from_type()">
+                    <option value="bank">Bank Accounts</option>
+                    <option value="cash">Cash Accounts</option>
+                  </select>                   
+                </div>
+                <div class="col-md-6" >
+                  <label for="exampleFormControlInput1" class="form-label">Paid From Account <span style="color: red;">*</span></label>
+                    <select class="form-control" name="paid_from_account" id="paid_from_account">
                       {% for i in bank_accounts %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
                       {% endfor %}
@@ -158,6 +165,28 @@
           }
           console.log(value);
   }
+  function changevalueofpaid_from_type(){
+          var select2 = document.getElementById('paid_from_type');
+          var value2 = select2.options[select2.selectedIndex].value;
+          if (value2 == "bank"){
+            div = document.getElementById("paid_from_account");
+            div.innerHTML=``
+            div.innerHTML =`
+                      {% for i in bank_accounts %}
+                      <option value="{{i[0]}}">{{i[1]}}</option>
+                      {% endfor %}   `
+          }
+          if (value2 == "cash"){
+            div = document.getElementById("paid_from_account");
+            div.innerHTML=``
+            div.innerHTML =`
+            {% for i in cash_accounts %}
+                      <option value="{{i[0]}}">{{i[1]}}</option>
+                      {% endfor %}  `
+          }
+          console.log(value2);
+    
+  };
 </script>
 
 {% endblock %}

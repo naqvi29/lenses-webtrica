@@ -1409,7 +1409,8 @@ def add_receipts():
             supplier = cursor.fetchone()
             paid_by_account_name = supplier[0]
         received_in_account_id= request.form.get("received_in_account")                     
-        cursor.execute("SELECT name from bankandcashaccounts where id=%s",(received_in_account_id))
+        cursor.execute("SELECT name from bank_accounts where id=%s",(received_in_account_id))
+        # cursor.execute("SELECT name from bankandcashaccounts where id=%s",(received_in_account_id))
         received_in_account_name = cursor.fetchone()
         received_in_account_name=received_in_account_name[0]
         description= request.form.get("desc")
@@ -1421,11 +1422,13 @@ def add_receipts():
         cursor =conn.cursor()
         cursor.execute("INSERT INTO inoutreceipts (date,reference,paid_by_account_type, paid_by_account_id, paid_by_account_name, received_in_account_id, 	received_in_account_name, description, exp_account, total_amount) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,paid_by_account_type,paid_by_account_id,paid_by_account_name,received_in_account_id,received_in_account_name,description,exp_account,total_amount))
         conn.commit()
-        cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(received_in_account_id))
+        cursor.execute("SELECT actual_balance from bank_accounts where id=%s",(received_in_account_id))
+        # cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(received_in_account_id))
         actual_balance = cursor.fetchone()
         actual_balance=actual_balance[0]
         update_balance = actual_balance + total_amount
-        cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
+        cursor.execute("UPDATE bank_accounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
+        # cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
         conn.commit()
         return redirect(url_for("add_receipts"))
     conn = mysql.connect()
@@ -1434,9 +1437,12 @@ def add_receipts():
     customers = cursor.fetchall()
     cursor.execute("SELECT * from suppliers")
     suppliers = cursor.fetchall()
-    cursor.execute("SELECT * from bankandcashaccounts")
+    cursor.execute("SELECT * from bank_accounts")
+    # cursor.execute("SELECT * from bankandcashaccounts")
     bank_accounts = cursor.fetchall()
-    return render_template("add-receipts.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts)
+    cursor.execute("SELECT * from cash_accounts")
+    cash_accounts = cursor.fetchall()
+    return render_template("add-receipts.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,cash_accounts=cash_accounts)
 
 @app.route("/edit-receipts/<string:id>", methods=['GET','POST'])
 def edit_receipts(id):
@@ -1630,9 +1636,12 @@ def add_payments():
     customers = cursor.fetchall()
     cursor.execute("SELECT * from suppliers")
     suppliers = cursor.fetchall()
-    cursor.execute("SELECT * from bankandcashaccounts")
+    # cursor.execute("SELECT * from bankandcashaccounts")
+    cursor.execute("SELECT * from bank_accounts")
     bank_accounts = cursor.fetchall()
-    return render_template("add-payments.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts)
+    cursor.execute("SELECT * from cash_accounts")
+    cash_accounts = cursor.fetchall()
+    return render_template("add-payments.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,cash_accounts=cash_accounts)
 
 @app.route("/add-bank-accounts", methods=['GET','POST'])
 def add_bank_accounts():
@@ -1880,6 +1889,22 @@ def fetch_item_price():
     resp = [data[0],data[1]]
     print(resp)
     # print("data is: ",data[0])
+    return str(resp)
+
+@app.route("/fetch-rxinvoices-by-customer",methods=["POST"])
+def fetch_rxinvoices_by_customer():
+    import json
+    customer_id = request.form.get("customer_id")
+    print(customer_id)
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT id,description,total_amount from rx_invoices where customer_id=%s",(customer_id))
+    data = cursor.fetchall()
+    print(data)
+    resp = json.dumps(data)
+    print(resp)
+    # resp = [data[0],data[1]]
+    # print(resp)
     return str(resp)
 
 @app.route("/update-rxorder-status/<string:id>/<string:status>")
