@@ -9,6 +9,9 @@ from os.path import join, dirname, realpath
 from importlib_metadata import method_cache
 from werkzeug.utils import redirect, secure_filename
 from PIL import Image
+import csv
+
+UPLOAD_FOLDER = join(dirname(realpath(__file__)), 'static/data/')
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -17,8 +20,11 @@ app.config['MYSQL_DATABASE_PASSWORD'] = ''
 # app.config['MYSQL_DATABASE_PASSWORD'] = 'LAwrence1234**'
 app.config['MYSQL_DATABASE_DB'] = 'lenses'
 app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
-# app.config['MYSQL_DATABASE_PORT'] = 3307
+app.config['MYSQL_DATABASE_PORT'] = 3307
 mysql.init_app(app)
+
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # configure secret key for session protection)
 app.secret_key = '_5#y2L"F4Q8z\n\xec]/'
@@ -2561,14 +2567,37 @@ def view_rx_inventory():
     data = cursor.fetchall()
     return render_template("view-rx-inventory.html",data=data)
 
-@app.route("/view-stock-inventory1")
+@app.route("/view-stock-inventory1", methods=["GET", "POST"])
 def view_stock_inventory1():
-    conn = mysql.connect()
-    cursor =conn.cursor()
-    # cursor.execute("SELECT * from stock_items;")
-    # data = cursor.fetchall()
-    date = datetime.now().date()
-    return render_template("view-stock-inventory1.html",today=date)
+    if request.method == "POST":
+        records = []
+        filename = secure_filename("stock_items.csv")
+        with open(os.path.join(UPLOAD_FOLDER, filename), 'w') as csvfile:
+            writer = csv.writer(csvfile)
+        writer = csv.writer(csvfile)
+        for i in range(25):
+            index_i = i + 1 
+            data = request.form.getlist("row_"+str(index_i))
+            # write the data
+            print(data)
+            writer.writerow(data)
+
+        return redirect(url_for("view_stock_inventory1"))
+    else:
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        # cursor.execute("SELECT * from stock_items;")
+        # data = cursor.fetchall()
+        records = []
+        with open(os.path.join(UPLOAD_FOLDER, "stock_items.csv")) as data:
+            file = csv.reader(data)
+            newuserids = []
+            error = []
+            for index, rows in enumerate(file):
+                records.append(rows)
+        date = datetime.now().date()
+        return render_template("stock_inventory.html",today=date, records = records)
+    
 @app.route("/view-stock-inventory2")
 def view_stock_inventory2():
     conn = mysql.connect()

@@ -48,7 +48,7 @@ content %}
               <div class="card-body px-0 pt-0 pb-2">
                 <div class="table-responsive">
 
-                  <table id="example2" class="nowrap table table-hover align-middle table-bordered">
+                  <table id="example" class="nowrap table table-hover align-middle table-bordered">
                     <thead class="bg-dark text-white text-center">
                       <tr>
                         <th>/</th>
@@ -1029,7 +1029,7 @@ content %}
           </div>
           <!-- /.card-body -->
           <div class="card-footer" style="display: block;">
-            <button href="#" class="btn btn-success" id="export">Update</button>
+            <button href="#" class="btn btn-success" id="export" onclick="Confirm()">Update</button>
             
           </div>
         </div>
@@ -1057,5 +1057,10 @@ content %}
       ]
     });
   });
+
+  function Confirm()
+    {
+      return confirm("Are you sure you want to delete?");
+    }
 </script>
 {%endblock%}
