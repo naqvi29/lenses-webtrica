@@ -1,19 +1,19 @@
 {% extends 'layout.html' %}
-{% block title %}Receipts{% endblock %}
+{% block title %}Income Accounts{% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %}
 {% block content %}
-
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
+        <!-- <h1 class="m-0">Bank Accounts</h1> -->
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item active">Receipts</li>
+          <li class="breadcrumb-item active">Income Accounts</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -26,10 +26,11 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
+
         <div class="card mb-4">
           <div class="card card-default">
             <div class="card-header">
-              <h3 class="card-title"><strong>Receipts</strong></h3>
+              <h3 class="card-title"><strong>Income Accounts</strong></h3>
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -45,41 +46,42 @@
               <div class="card mb-4">
                 <div class="card-body px-0 pt-0 pb-2">
                   <div class="table-responsive">
-                    <table id="example" class="table nowrap table-hover align-middle table-bordered">
-                      <thead class="bg-dark text-white" >
+                    <table id="example" class="nowrap table table-hover align-middle table-bordered">
+                      <thead class="bg-dark text-white text-center">
                         <tr>
-                          <th>#</th>
-                          <th>View</th>
-                          <th>Date</th>
-                          <th>Paid By</th>
-                          <th>Received In</th>
-                          <th>Description</th>
-                          <th>Amount</th>
+                          <th>Id</th>
+                          <th>Name</th>
+                          <th>Code</th>
+                          <!-- <th>Cleared Balance</th>
+                          <th>Pending Deposits</th>
+                          <th>Pending Withdrawals</th> -->
+                          <th>Actual Balance</th>
                           <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
                         {% for i in data %}
-                        <tr >
-                          <td>{{loop.index}}</td>
-                          <td><a href="/generate-receipt/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td>
+                        <tr class="text-center">
+                          <td>{{i[0]}}</td>
                           <td>{{i[1]}}</td>
-                          <td>{{i[5]}}</td>
-                          <td>{{i[7]}}</td>
-                          <td>{{i[8]}}</td>
-                          <td>{{i[10]}}</td>
+                          <td>{{i[2]}}</td>
+                          <!-- <td></td>
+                          <td></td>
+                          <td></td> -->
+                          <td>{{i[3]}}</td>
                           <td>
                             <div class="btn-group">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-receipts/{{i[0]}}">Edit</a>
-                              <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/deletepay/inout/{{i[0]}}">
-                                Del
-                              </a>
+                              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a style="display: block;" class="btn btn-sm btn-success mb-2 mx-2" href="/edit-bank-and-cash-accounts/income/{{i[0]}}">Edit</a>
+                                
+                                <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/deletepay/income/{{i[0]}}">Del</a>
+
+                              </div>
                             </div>
-                          </div>
+                            
                           </td>
                         </tr>
                         {% endfor %}
@@ -90,25 +92,22 @@
               </div>
             </div>
             <!-- /.card-body -->
-            <div class="card-footer" style="display: block;">            
-            <a href="/add-receipts" class="btn btn-success">Add New</a>
+            <div class="card-footer" style="display: block;">              
+            <a href="/add-account/income" class="btn btn-success">Add New</a>
             </div>
           </div>
 
         </div>
 
+        
+      </div>
     </div>
   </div>
 </section>
 <!-- /.content -->
 
-
 {% endblock %}
 {%block scripts %}
-<!-- <script type="text/javascript" src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/select/1.4.0/js/dataTables.select.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script> -->
 <script type="text/javascript">
   $(document).ready(function() {
     $('#example').DataTable( {

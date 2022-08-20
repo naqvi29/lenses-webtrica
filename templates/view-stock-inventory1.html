@@ -1,0 +1,1061 @@
+{% extends 'layout.html' %} {% block title %}Stock Items{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %} {% block
+content %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <!-- <h1 class="m-0">RX Inventory Items</h1> -->
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Stock Items</li>
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-default">
+          <div class="card-header">
+            <h3 class="card-title"><strong class="mr-5">Date: {{today}}</strong>(New Stock Update 20 Mar 2022) 08:31 AM</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button> -->
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body" style="display: block;">
+            <div class="card mb-4">
+              <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive">
+
+                  <table id="example2" class="nowrap table table-hover align-middle table-bordered">
+                    <thead class="bg-dark text-white text-center">
+                      <tr>
+                        <th>/</th>
+                        <th>0.00</th>
+                        <th>-0.25</th>
+                        <th>-0.50</th>
+                        <th>-0.75</th>
+                        <th>-1.00</th>
+                        <th>-1.25</th>
+                        <th>-1.50</th>
+                        <th>-1.75</th>
+                        <th>-2.00</th>
+                        <th>-2.25</th>
+                        <th>-2.50</th>
+                        <th>-2.75</th>
+                        <th>-3.00</th>
+                        <th>-3.25</th>
+                        <th>-3.50</th>
+                        <th>-3.75</th>
+                        <th>-4.00</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="text-center col-md-12" >
+                        <td class="bg-dark text-white text-left">0.00</td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/0.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/0.00"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-0.25</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-0.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-0.25"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-0.50</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-0.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-0.50"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-0.75</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-0.75"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-1.00</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-0.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-1.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-1.00"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-1.25</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-1.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-1.25"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-1.50</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-1.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-1.50"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-1.75</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-1.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-1.75"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-2.00</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-2.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-2.00"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-2.25</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-2.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-2.25"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-2.50</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-2.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-2.50"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-2.75</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-2.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-2.75"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-3.00</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-3.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-3.00"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-3.25</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-3.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-3.25"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-3.50</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-3.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-3.50"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-3.75</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-3.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-3.75"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-4.00</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-4.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-4.00"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-4.25</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-4.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-4.25"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-4.50</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-4.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-4.50"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-4.75</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-4.75"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-4.75"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-5.00</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-5.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-5.00"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-5.25</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-5.25"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-5.25"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-5.50</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-5.50"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-5.50"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-5.75</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-5.70"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-5.70"></td>
+                      </tr>
+                      <tr class="text-center">
+                        <td class="bg-dark text-white text-left">-6.00</td>
+                        
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="0.00/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.25/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.50/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-0.75/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.00/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.25/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.50/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-1.75/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.00/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.25/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.50/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-2.75/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.00/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.25/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.50/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-3.75/-6.00"></td>
+                        <td><input class="col-md-6" style="min-width:100%;" type="text"
+                          class="my-order-inp" name="-4.00/-6.00"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer" style="display: block;">
+            <button href="#" class="btn btn-success" id="export">Update</button>
+            
+          </div>
+        </div>
+
+
+
+      </div>
+      <!-- <div class="d-flex justify-content-end">
+          <a href="/add-rx-item" class="btn btn-danger">Add Rx Item</a>
+        </div> -->
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+
+{%endblock%}
+{%block scripts %}
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#example').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ]
+    });
+  });
+</script>
+{%endblock%}

@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% block title %}Make Rx Purchase{% endblock %}
+{% block title %}Make Stock Invoice{% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %}
@@ -14,7 +14,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Make Rx Purchase</li>
+                    <li class="breadcrumb-item active">Make Stock Invoice</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -30,7 +30,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title"><strong>Make Rx Purchase</strong></h3>
+                        <h3 class="card-title"><strong>Make Stock Invoice</strong></h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -44,7 +44,7 @@
                     <!-- /.card-header -->
                     <div class="card-body" style="display: block;">
                         <div class="row">
-                            <form class="py-4 px-5 row" action="/make-rx-purchase" method="POST"
+                            <form class="py-4 px-5 row" action="/make-stock-invoice" method="POST"
                                 enctype="multipart/form-data">
                                 <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
                                 <div class="col-md-2 mb-3">
@@ -69,13 +69,13 @@
                                     {% if copy %}
                                     <select disabled name="reference" onchange="referenceselect()" id="reference"
                                         class="form-control">
-                                        <option selected value="{{rx_orders[0]}}">{{rx_orders[3]}}</option>
+                                        <option value="{{stock_orders[0]}}">{{stock_orders[3]}}</option>
                                     </select>
                                     {% else %}
                                     <select name="reference" onchange="referenceselect()" id="reference"
                                         class="form-control">
                                         <option selected value="" disabled>Select Order</option>
-                                        {% for i in rx_orders %}
+                                        {% for i in stock_orders %}
                                         <option value="{{i[0]}}">{{i[3]}}</option>
                                         {% endfor %}
                                     </select>
@@ -92,19 +92,50 @@
                                     <input type="text" class="form-control" name="customer" id="customer">
                                 </div> -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Select Supplier</label>
-                                    <select name="supplier" class="form-control" id="" required>
-                                        <option value="" selected disabled>Select Supplier</option>
-                                        {% for i in suppliers %}
+                                    <label for="exampleFormControlInput1" class="form-label">Customer</label>
+                                    <!-- <select onchange="customerselect()" id="customerSelect" name="customer"
+                                        class="form-control">
+                                        <option value="">Select Customer</option>
+                                        {% for i in customers %}
                                         <option value="{{i[0]}}">{{i[1]}}</option>
                                         {% endfor %}
 
-                                    </select>
+                                    </select> -->
+                                    <input type="text" class="form-control" id="customer" name="customer_name">
+                                    <input type="text" class="form-control" id="customer_id" name="customer_id" hidden>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                                    <input class="form-control" name="exp_account" id="exp_account"></input>
+                                    <select name="exp_account" class="form-control" id="" required>
+                                        <option value="" selected disabled>Select Exp Account</option>
+                                        <option value="Accounting feesExpenses">Accounting feesExpenses</option>
+                                        <option value="Accounts receivable">Accounts receivable</option>
+                                        <option value="Advertising and promotion">Advertising and promotion</option>
+                                        <option value="Bank charges">Bank charges</option>
+                                        <option value="Capital gains on investments">Capital gains on investments
+                                        </option>
+                                        <option value="Computer equipment">Computer equipment</option>
+                                        <option value="Donations">Donations</option>
+                                        <option value="Electricity">Electricity</option>
+                                        <option value="Employee clearing account">Employee clearing account</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                        <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
+                                        <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
+                                        <option value="Interest received">Interest received</option>
+                                        <option value="Inventory - cost">Inventory - cost</option>
+                                        <option value="Inventory - sales">Inventory - sales</option>
+                                        <option value="Inventory on hand">Inventory on hand</option>
+                                        <option value="Legal fees">Legal fees</option>
+                                        <option value="Motor vehicle expenses">Motor vehicle expenses</option>
+                                        <option value="Printing and stationery">Printing and stationery</option>
+                                        <option value="Rent">Rent</option>
+                                        <option value="Repairs and maintenance">Repairs and maintenance</option>
+                                        <option value="Retained earnings">Retained earnings</option>
+                                        <option value="Sales">Sales</option>
+                                        <option value="Telephone">Telephone</option>
+                                    </select>
                                 </div>
+                                
 
 
 
@@ -127,14 +158,21 @@
                                     <input type="text" name="item_name" id="lense_type" class="form-control">
                                     <input type="text" name="item_idd" id="item_idd" class="form-control" hidden>
                                 </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Billing Address</label>
+                                    <input type="text" name="billing_address" class="form-control" id="billing_address">
+
+                                </div>
                                 <!-- <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Qty</label>
-                                    <input onchange="return qty_unitP_changed()" type="text" min="0" name="qty" id="qty" class="form-control">
+                                    <input onchange="return qty_unitP_changed()" type="text" min="0" name="qty" id="qty"
+                                        class="form-control">
                                 </div>
                                 <div class="col-md-2 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Cost Price</label>
-                                    <input onchange="return qty_unitP_changed()" type="text" min="0" step="any" name="cost_price" class="form-control"
-                                        id="cost_price">
+                                    <label for="exampleFormControlInput1" class="form-label">Selling Price</label>
+                                    <input onchange="return qty_unitP_changed()" type="text" min="0" step="any"
+                                        name="sales_price" class="form-control" id="sales_price">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Total</label>
@@ -163,7 +201,6 @@
                                 </div> -->
                                 <div class="col-md-12 mt-4 mb-4">
                                     <div class="table-responsive">
-                                        <!-- <table class="table w-auto" width="100%"> -->
                                         <table id="example" class="table table-hover align-middle" width="100%">
                                             <thead>
                                                 <tr class="col-md-12">
@@ -179,93 +216,52 @@
                                                     <th width="5%">Prism</th>
                                                     <th width="5%">PD</th>
                                                     <th width="5%">Qty</th>
-                                                    <th width="5%">CostPrice</th>
                                                     <th width="5%">SalesPrice</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr class="col-md-12">
                                                     <td>OD</td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp" name="od_size" id="od_size"></td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            step="0.25" class="my-order-inp" name="od_sph" id="od_sph">
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" name="od_size" id="od_size"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" step="0.25" name="od_sph" id="od_sph">
                                                     </td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            step="0.25" class="my-order-inp" name="od_cyl" id="od_cyl">
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" step="0.25" name="od_cyl" id="od_cyl">
                                                     </td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            min="1" max="180" class="my-order-inp" name="od_axis"
-                                                            id="od_axis"></td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            step="0.25" min="0" max="10" class="my-order-inp"
-                                                            name="od_add" id="od_add">
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" min="1" max="180" name="od_axis" id="od_axis"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" step="0.25" min="0" max="10" name="od_add" id="od_add">
                                                     </td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" min="1" max="10"
-                                                            type="text" class="my-order-inp" name="od_base"
-                                                            id="od_base"></td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            min="10" max="30" step="2" class="my-order-inp" name="od_fh"
-                                                            id="od_fh">
+                                                    <td><input class="col-md-6" style="min-width:100%;" min="1" max="10" type="text" name="od_base" id="od_base"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" min="10" max="30" step="2" name="od_fh" id="od_fh">
                                                     </td>
                                                     <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             class="my-order-inp" name="od_prism_no"></td> -->
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp1" name="od_prism_detail"
-                                                            id="od_prism_detail"></td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp1" name="od_pd" id="od_pd"></td>
-                                                    <td><input onchange="qty_unitP_changed()" type="text" min="0"
-                                                            id="od_qty" name="od_qty" class="col-md-6 my-order-inp"
-                                                            style="min-width:100%;" id="od_sph"></td>
-                                                    <td><input onchange="qty_unitP_changed()" style="min-width:100%;"
-                                                            type="text" min="0" step="any" name="od_cost_price"
-                                                            class="col-md-6 my-order-inp" id="od_cost_price"></td>
-                                                    <td><input style="min-width:100%;" type="text" min="0" step="any"
-                                                            name="od_sales_price" class="col-md-6 my-order-inp"
-                                                            id="od_sales_price"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" name="od_prism_detail" id="od_prism_detail"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" name="od_pd" id="od_pd"></td>
+                                                    <td><input onchange="qty_unitP_changed()" type="text" min="0" id="od_qty" name="od_qty" class="col-md-6 my-order-inp" style="min-width:100%;"></td>
+                                                    <!-- <td><input onchange="qty_unitP_changed()" style="min-width:100%;" type="text" min="0" step="any" name="od_cost_price" class="col-md-6 my-order-inp" id="od_cost_price"></td> -->
+                                                    <td><input onchange="qty_unitP_changed()" style="min-width:100%;" type="text" min="0" step="any" name="od_sales_price" class="col-md-6 my-order-inp" id="od_sales_price"></td>
                                                 </tr>
                                                 <tr class="col-md-12">
                                                     <td>OS</td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp" name="os_size" id="os_size"></td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" step="0.25"
-                                                            type="text" class="my-order-inp" name="os_sph" id="os_sph">
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" name="os_size" id="os_size"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" step="0.25" type="text" name="os_sph" id="os_sph">
                                                     </td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" step="0.25"
-                                                            type="text" class="my-order-inp" name="os_cyl" id="os_cyl">
+                                                    <td><input class="col-md-6" style="min-width:100%;" step="0.25" type="text" name="os_cyl" id="os_cyl">
                                                     </td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" min="1"
-                                                            max="180" type="text" class="my-order-inp" name="os_axis"
-                                                            id="os_axis">
+                                                    <td><input class="col-md-6" style="min-width:100%;" min="1" max="180" type="text" name="os_axis" id="os_axis">
                                                     </td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            step="0.25" min="0" max="10" class="my-order-inp"
-                                                            name="os_add" id="os_add">
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" step="0.25" min="0" max="10" name="os_add" id="os_add">
                                                     </td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            min="1" max="10" class="my-order-inp" name="os_base"
-                                                            id="os_base"></td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            min="10" max="30" step="2" class="my-order-inp" name="os_fh"
-                                                            id="os_fh">
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" min="1" max="10" name="os_base" id="os_base"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" min="10" max="30" step="2" name="os_fh" id="os_fh">
                                                     </td>
                                                     <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             class="my-order-inp" name="os_prism_no"></td> -->
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp1" name="os_prism_detail"
-                                                            id="os_prism_detail"></td>
-                                                    <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp1" name="os_pd" id="os_pd"></td>
-                                                    <td><input onchange="qty_unitP_changed()" type="text" min="0"
-                                                            name="os_qty" id="os_qty" class="col-md-6 my-order-inp"
-                                                            style="min-width:100%;"></td>
-                                                    <td><input onchange="qty_unitP_changed()" style="min-width:100%;"
-                                                            type="text" min="0" step="any" name="os_cost_price"
-                                                            class="col-md-6 my-order-inp" id="os_cost_price"></td>
-                                                    <td><input style="min-width:100%;" type="text" min="0" step="any"
-                                                            name="os_sales_price" class="col-md-6 my-order-inp"
-                                                            id="os_sales_price"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" name="os_prism_detail" id="os_prism_detail"></td>
+                                                    <td><input class="col-md-6" style="min-width:100%;" type="text" name="os_pd" id="os_pd"></td>
+                                                    <td><input onchange="qty_unitP_changed()" type="text" min="0" name="os_qty" id="os_qty" class="col-md-6 my-order-inp" style="min-width:100%;"></td>
+                                                    <!-- <td><input onchange="qty_unitP_changed()" style="min-width:100%;" type="text" min="0" step="any" name="os_cost_price" class="col-md-6 my-order-inp" id="os_cost_price"></td> -->
+                                                    <td><input onchange="qty_unitP_changed()" style="min-width:100%;" type="text" min="0" step="any" name="os_sales_price" class="col-md-6 my-order-inp" id="os_sales_price"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -549,7 +545,7 @@
                     <!-- /.card-body -->
                     <div class="card-footer" style="display: block;">
 
-                        <a href="/view-rx-purchase" class="btn btn-dark">View All Purchases</a>
+                        <a href="/view-stock-invoice" class="btn btn-dark">View All Invoices</a>
                     </div>
                 </div>
 
@@ -560,8 +556,6 @@
 </section>
 <!-- /.content -->
 <script>
-
-
     function customerselect() {
         console.log("change")
         let e = document.getElementById("customerSelect");
@@ -573,8 +567,15 @@
             data: { "customer_id": customer_id },
             success: function (response) {
                 console.log(response)
+                let string = response.replace("(", "");
+                string = string.replace(")", "");
+                string = string.replace("'", "");
+                string = string.replace("'", "");
+                string = string.replace(",", "");
+                var array = string.split(",").map(String);
+                console.log(array);
                 let bill_address = document.getElementById("bill_address")
-                bill_address.value = response;
+                bill_address.value = array;
             },
             error: function (response) {
                 // alert the error if any error occured
@@ -600,23 +601,10 @@
                 console.log(array)
                 // console.log(array[0][0])
                 // console.log(array[0][1])
-                // let cost_price = document.getElementById("cost_price")
-                // let sales_price = document.getElementById("sales_price")
-                // cost_price.value = array[0][0];
-                // sales_price.value = array[0][1];
-
-                let od_cost_price = document.getElementById("od_cost_price");
-                let os_cost_price = document.getElementById("os_cost_price");
-                od_cost_price = od_cost_price.value;
-                os_cost_price = os_cost_price.value;
-                let od_sales_price = document.getElementById("od_sales_price");
-                let os_sales_price = document.getElementById("os_sales_price");
-                od_sales_price = od_sales_price.value;
-                os_sales_price = os_sales_price.value;
-                od_cost_price.value = array[0][0];
-                od_sales_price.value = array[0][1];
-                os_cost_price.value = array[0][0];
-                os_sales_price.value = array[0][1];
+                let cost_price = document.getElementById("cost_price")
+                let sales_price = document.getElementById("sales_price")
+                cost_price.value = array[0][0];
+                sales_price.value = array[0][1];
             },
             error: function (response) {
                 // alert the error if any error occured
@@ -625,14 +613,21 @@
         })
 
     }
+    // function qty_unitP_changed() {
+    //     let Qty = document.getElementById('qty').value;
+    //     let sales_price = document.getElementById("sales_price").value;
+    //     let Total = document.getElementById("Total");
+    //     let result = parseFloat(Qty) * parseFloat(sales_price);
+    //     Total.value = result;
+    // }
     function qty_unitP_changed() {
         od_qty = document.getElementById('od_qty').value;
         os_qty = document.getElementById('os_qty').value;
-        od_cost_price = document.getElementById("od_cost_price").value;
-        os_cost_price = document.getElementById("os_cost_price").value;
+        od_sales_price = document.getElementById("od_sales_price").value;
+        os_sales_price = document.getElementById("os_sales_price").value;
 
-        od_total_amount = od_qty * od_cost_price;
-        os_total_amount = os_qty * os_cost_price;
+        od_total_amount = od_qty * od_sales_price;
+        os_total_amount = os_qty * os_sales_price;
         total_amount = od_total_amount + os_total_amount;
 
         Total = document.getElementById("total_amount");
@@ -640,163 +635,233 @@
 
     }
 
+    // function referenceselect() {
+
+    //     console.log("change")
+    //     let e = document.getElementById("reference");
+    //     let order_id = e.value;
+    //     // ajax 
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "/fetch-order",
+    //         data: { "order_id": order_id },
+    //         success: function (response) {
+    //             console.log(response);
+    //             let string = response.replace("(", "");
+    //             string = string.replace(")", "");
+    //             var array = string.split(",").map(String);
+    //             console.log(array);
+    //             // let customer = document.getElementById("customer")
+    //             // customer.value = array[5].replace("'","").replace("'","");
+    //             // let bill_address = document.getElementById("bill_address")
+    //             // bill_address.value = array[8].replace("'","").replace("'","");
+    //             let lense_type = document.getElementById("lense_type")
+    //             lense_type.value = array[7].replace("'", "").replace("'", "");
+    //             let billing_address = document.getElementById("billing_address")
+    //             billing_address.value = array[8].replace("'", "").replace("'", "");
+    //             let item_idd = document.getElementById("item_idd")
+    //             item_idd.value = array[6].replace("'", "").replace("'", "");
+    //             let qty = document.getElementById("qty")
+    //             qty.value = array[49].replace("'", "").replace("'", "");
+    //             sales_price2 = document.getElementById("sales_price")
+    //             sales_price2.value = array[48].replace("'", "").replace("'", "");
+    //             customer = document.getElementById("customer")
+    //             customer.value = array[5].replace("'", "").replace("'", "");
+    //             customer_id = document.getElementById("customer_id")
+    //             customer_id.value = array[4].replace("'", "").replace("'", "");
+    //             console.log(array[48].replace("'", "").replace("'", ""));
+    //             let od_size = document.getElementById("od_size")
+    //             od_size.value = array[45].replace("'", "").replace("'", "");
+    //             let os_size = document.getElementById("os_size")
+    //             os_size.value = array[46].replace("'", "").replace("'", "");
+    //             let od_sph = document.getElementById("od_sph")
+    //             od_sph.value = array[12].replace("'", "").replace("'", "");
+    //             let od_cyl = document.getElementById("od_cyl")
+    //             od_cyl.value = array[13].replace("'", "").replace("'", "");
+    //             let od_axis = document.getElementById("od_axis")
+    //             od_axis.value = array[14].replace("'", "").replace("'", "");
+    //             let od_add = document.getElementById("od_add")
+    //             od_add.value = array[15].replace("'", "").replace("'", "");
+    //             let od_base = document.getElementById("od_base")
+    //             od_base.value = array[16].replace("'", "").replace("'", "");
+    //             let od_fh = document.getElementById("od_fh")
+    //             od_fh.value = array[17].replace("'", "").replace("'", "");
+    //             let od_prism_detail = document.getElementById("od_prism_detail")
+    //             od_prism_detail.value = array[19].replace("'", "").replace("'", "");
+    //             let os_sph = document.getElementById("os_sph")
+    //             os_sph.value = array[20].replace("'", "").replace("'", "");
+    //             let os_cyl = document.getElementById("os_cyl")
+    //             os_cyl.value = array[21].replace("'", "").replace("'", "");
+    //             let os_axis = document.getElementById("os_axis")
+    //             os_axis.value = array[22].replace("'", "").replace("'", "");
+    //             let os_add = document.getElementById("os_add")
+    //             os_add.value = array[23].replace("'", "").replace("'", "");
+    //             let os_base = document.getElementById("os_base")
+    //             os_base.value = array[24].replace("'", "").replace("'", "");
+    //             let os_fh = document.getElementById("os_fh")
+    //             os_fh.value = array[25].replace("'", "").replace("'", "");
+    //             let os_prism_detail = document.getElementById("os_prism_detail")
+    //             os_prism_detail.value = array[27].replace("'", "").replace("'", "");
+    //             // .. 
+
+    //             let Qty = document.getElementById('qty').value;
+    //             let sales_price = document.getElementById("sales_price").value;
+    //             let Total = document.getElementById("Total");
+    //             let result = parseFloat(Qty) * parseFloat(sales_price);
+    //             Total.value = result;
+    //             // .. 
+    //         },
+    //         error: function (response) {
+    //             // alert the error if any error occured
+    //             console.log(response)
+    //         }
+    //     })
+    // }
     function referenceselect() {
 
-        console.log("change")
-        let e = document.getElementById("reference");
-        let order_id = e.value;
-        // ajax 
-        $.ajax({
-            type: 'POST',
-            url: "/fetch-order",
-            data: { "order_id": order_id },
-            success: function (response) {
-                // console.log(response);
-                let string = response.replace("(", "");
-                string = string.replace(")", "");
-                var array = string.split(",").map(String);
-                // let customer = document.getElementById("customer")
-                // customer.value = array[5].replace("'","").replace("'","");
-                // let bill_address = document.getElementById("bill_address")
-                // bill_address.value = array[8].replace("'","").replace("'","");
-                let lense_type = document.getElementById("lense_type");
-                lense_type.value = array[7].replace("'", "").replace("'", "");
-                let item_idd = document.getElementById("item_idd");
-                item_idd.value = array[6].replace("'", "").replace("'", "");
-                let os_qty = document.getElementById("os_qty");
-                let od_qty = document.getElementById("od_qty");
-                os_qty.value = array[52].replace("'", "").replace("'", "");
-                od_qty.value = array[49].replace("'", "").replace("'", "");
-                let od_cost_price = document.getElementById("od_cost_price")
-                let os_cost_price = document.getElementById("os_cost_price")
-                od_cost_price.value = array[47].replace("'", "").replace("'", "");
-                os_cost_price.value = array[50].replace("'", "").replace("'", "");
-                let od_sales_price = document.getElementById("od_sales_price")
-                let os_sales_price = document.getElementById("os_sales_price")
-                od_sales_price.value = array[48].replace("'", "").replace("'", "");
-                os_sales_price.value = array[51].replace("'", "").replace("'", "");
-                let od_size = document.getElementById("od_size")
-                od_size.value = array[45].replace("'", "").replace("'", "");
-                let os_size = document.getElementById("os_size")
-                os_size.value = array[46].replace("'", "").replace("'", "");
-                let od_sph = document.getElementById("od_sph")
-                od_sph.value = array[12].replace("'", "").replace("'", "");
-                let od_cyl = document.getElementById("od_cyl")
-                od_cyl.value = array[13].replace("'", "").replace("'", "");
-                let od_axis = document.getElementById("od_axis")
-                od_axis.value = array[14].replace("'", "").replace("'", "");
-                let od_add = document.getElementById("od_add")
-                od_add.value = array[15].replace("'", "").replace("'", "");
-                let od_base = document.getElementById("od_base")
-                od_base.value = array[16].replace("'", "").replace("'", "");
-                let od_fh = document.getElementById("od_fh")
-                od_fh.value = array[17].replace("'", "").replace("'", "");
-                let od_prism_detail = document.getElementById("od_prism_detail")
-                od_prism_detail.value = array[19].replace("'", "").replace("'", "");
-                let os_sph = document.getElementById("os_sph")
-                os_sph.value = array[20].replace("'", "").replace("'", "");
-                let os_cyl = document.getElementById("os_cyl")
-                os_cyl.value = array[21].replace("'", "").replace("'", "");
-                let os_axis = document.getElementById("os_axis")
-                os_axis.value = array[22].replace("'", "").replace("'", "");
-                let os_add = document.getElementById("os_add")
-                os_add.value = array[23].replace("'", "").replace("'", "");
-                let os_base = document.getElementById("os_base")
-                os_base.value = array[24].replace("'", "").replace("'", "");
-                let os_fh = document.getElementById("os_fh")
-                os_fh.value = array[25].replace("'", "").replace("'", "");
-                let os_prism_detail = document.getElementById("os_prism_detail")
-                os_prism_detail.value = array[27].replace("'", "").replace("'", "");
-                let coating = document.getElementById("treatment")
-                coating.value = array[10].replace("'", "").replace("'", "");
-                let services = document.getElementById("tint_service")
-                services.value = array[11].replace("'", "").replace("'", "");
-                let bvd_mm = document.getElementById("bvd_mm")
-                bvd_mm.value = array[28].replace("'", "").replace("'", "");
-                let face_angle = document.getElementById("face_angle")
-                face_angle.value = array[29].replace("'", "").replace("'", "");
-                let pantoscopic_Angle = document.getElementById("pantoscopic_Angle")
-                pantoscopic_Angle.value = array[30].replace("'", "").replace("'", "");
-                let nrd = document.getElementById("nrd")
-                nrd.value = array[31].replace("'", "").replace("'", "");
-                let decentration = document.getElementById("decentration")
-                decentration.value = array[32].replace("'", "").replace("'", "");
-                let center_edge = document.getElementById("center_edge")
-                center_edge.value = array[33].replace("'", "").replace("'", "");
-                let frame_size_h = document.getElementById("frame_size_h")
-                frame_size_h.value = array[34].replace("'", "").replace("'", "");
-                let frame_size_v = document.getElementById("frame_size_v")
-                frame_size_v.value = array[56].replace("'", "").replace("'", "");
-                let frame_size_d = document.getElementById("frame_size_d")
-                frame_size_d.value = array[57].replace("'", "").replace("'", "");
-                let oc_height = document.getElementById("oc_height")
-                oc_height.value = array[35].replace("'", "").replace("'", "");
-                let occupation = document.getElementById("occupation")
-                occupation.value = array[38].replace("'", "").replace("'", "");
-                let driving = document.getElementById("driving")
-                driving.value = array[39].replace("'", "").replace("'", "");
-                let computer = document.getElementById("computer")
-                computer.value = array[40].replace("'", "").replace("'", "");
-                let reading = document.getElementById("reading")
-                reading.value = array[41].replace("'", "").replace("'", "");
-                let mobile = document.getElementById("mobile")
-                mobile.value = array[42].replace("'", "").replace("'", "");
-                let gaming = document.getElementById("gaming")
-                gaming.value = array[43].replace("'", "").replace("'", "");
-                let od_pd = document.getElementById("od_pd")
-                od_pd.value = array[53].replace("'", "").replace("'", "");
-                let os_pd = document.getElementById("os_pd")
-                os_pd.value = array[54].replace("'", "").replace("'", "");
-                let exp_account = document.getElementById("exp_account")
-                exp_account.value = array[61].replace("'", "").replace("'", "");
-                // .. 
+console.log("change")
+let e = document.getElementById("reference");
+let order_id = e.value;
+// ajax 
+$.ajax({
+    type: 'POST',
+    url: "/fetch-order",
+    data: { "order_id": order_id },
+    success: function (response) {
+        // console.log(response);
+        let string = response.replace("(", "");
+        string = string.replace(")", "");
+        var array = string.split(",").map(String);
+        // let customer = document.getElementById("customer")
+        // customer.value = array[5].replace("'","").replace("'","");
+        // let bill_address = document.getElementById("bill_address")
+        // bill_address.value = array[8].replace("'","").replace("'","");
+        let lense_type = document.getElementById("lense_type");
+        lense_type.value = array[7].replace("'", "").replace("'", "");
+        let customer = document.getElementById("customer");
+        customer.value = array[5].replace("'", "").replace("'", "");
+        let billing_address = document.getElementById("billing_address");
+        billing_address.value = array[8].replace("'", "").replace("'", "");
+        let item_idd = document.getElementById("item_idd");
+        item_idd.value = array[6].replace("'", "").replace("'", "");
+        let os_qty = document.getElementById("os_qty");
+        let od_qty = document.getElementById("od_qty");
+        os_qty.value = array[52].replace("'", "").replace("'", "");
+        od_qty.value = array[49].replace("'", "").replace("'", "");
+        // let od_cost_price = document.getElementById("od_cost_price")
+        // let os_cost_price = document.getElementById("os_cost_price")
+        // od_cost_price.value = array[47].replace("'", "").replace("'", "");
+        // os_cost_price.value = array[50].replace("'", "").replace("'", "");
+        let od_sales_price = document.getElementById("od_sales_price")
+        let os_sales_price = document.getElementById("os_sales_price")
+        od_sales_price.value = array[48].replace("'", "").replace("'", "");
+        os_sales_price.value = array[51].replace("'", "").replace("'", "");
+        let od_size = document.getElementById("od_size")
+        od_size.value = array[45].replace("'", "").replace("'", "");
+        let os_size = document.getElementById("os_size")
+        os_size.value = array[46].replace("'", "").replace("'", "");
+        let od_sph = document.getElementById("od_sph")
+        od_sph.value = array[12].replace("'", "").replace("'", "");
+        let od_cyl = document.getElementById("od_cyl")
+        od_cyl.value = array[13].replace("'", "").replace("'", "");
+        let od_axis = document.getElementById("od_axis")
+        od_axis.value = array[14].replace("'", "").replace("'", "");
+        let od_add = document.getElementById("od_add")
+        od_add.value = array[15].replace("'", "").replace("'", "");
+        let od_base = document.getElementById("od_base")
+        od_base.value = array[16].replace("'", "").replace("'", "");
+        let od_fh = document.getElementById("od_fh")
+        od_fh.value = array[17].replace("'", "").replace("'", "");
+        let od_prism_detail = document.getElementById("od_prism_detail")
+        od_prism_detail.value = array[19].replace("'", "").replace("'", "");
+        let os_sph = document.getElementById("os_sph")
+        os_sph.value = array[20].replace("'", "").replace("'", "");
+        let os_cyl = document.getElementById("os_cyl")
+        os_cyl.value = array[21].replace("'", "").replace("'", "");
+        let os_axis = document.getElementById("os_axis")
+        os_axis.value = array[22].replace("'", "").replace("'", "");
+        let os_add = document.getElementById("os_add")
+        os_add.value = array[23].replace("'", "").replace("'", "");
+        let os_base = document.getElementById("os_base")
+        os_base.value = array[24].replace("'", "").replace("'", "");
+        let os_fh = document.getElementById("os_fh")
+        os_fh.value = array[25].replace("'", "").replace("'", "");
+        let os_prism_detail = document.getElementById("os_prism_detail")
+        os_prism_detail.value = array[27].replace("'", "").replace("'", "");
+        let coating = document.getElementById("treatment")
+        coating.value = array[10].replace("'", "").replace("'", "");
+        let services = document.getElementById("tint_service")
+        services.value = array[11].replace("'", "").replace("'", "");
+        let bvd_mm = document.getElementById("bvd_mm")
+        bvd_mm.value = array[28].replace("'", "").replace("'", "");
+        let face_angle = document.getElementById("face_angle")
+        face_angle.value = array[29].replace("'", "").replace("'", "");
+        let pantoscopic_Angle = document.getElementById("pantoscopic_Angle")
+        pantoscopic_Angle.value = array[30].replace("'", "").replace("'", "");
+        let nrd = document.getElementById("nrd")
+        nrd.value = array[31].replace("'", "").replace("'", "");
+        let decentration = document.getElementById("decentration")
+        decentration.value = array[32].replace("'", "").replace("'", "");
+        let center_edge = document.getElementById("center_edge")
+        center_edge.value = array[33].replace("'", "").replace("'", "");
+        let frame_size_h = document.getElementById("frame_size_h")
+        frame_size_h.value = array[34].replace("'", "").replace("'", "");
+        let frame_size_v = document.getElementById("frame_size_v")
+        frame_size_v.value = array[56].replace("'", "").replace("'", "");
+        let frame_size_d = document.getElementById("frame_size_d")
+        frame_size_d.value = array[57].replace("'", "").replace("'", "");
+        let oc_height = document.getElementById("oc_height")
+        oc_height.value = array[35].replace("'", "").replace("'", "");
+        let occupation = document.getElementById("occupation")
+        occupation.value = array[38].replace("'", "").replace("'", "");
+        let driving = document.getElementById("driving")
+        driving.value = array[39].replace("'", "").replace("'", "");
+        let computer = document.getElementById("computer")
+        computer.value = array[40].replace("'", "").replace("'", "");
+        let reading = document.getElementById("reading")
+        reading.value = array[41].replace("'", "").replace("'", "");
+        let mobile = document.getElementById("mobile")
+        mobile.value = array[42].replace("'", "").replace("'", "");
+        let gaming = document.getElementById("gaming")
+        gaming.value = array[43].replace("'", "").replace("'", "");
+        let od_pd = document.getElementById("od_pd")
+        od_pd.value = array[53].replace("'", "").replace("'", "");
+        let os_pd = document.getElementById("os_pd")
+        os_pd.value = array[54].replace("'", "").replace("'", "");
+        // .. 
 
-                // let Qty = document.getElementById('qty').value;
-                // cost_price = document.getElementById("cost_price").value;
-                // let Total = document.getElementById("Total");
-                // let result = parseFloat(Qty) * parseFloat(cost_price);
-                // Total.value = result;
+        // let Qty = document.getElementById('qty').value;
+        // cost_price = document.getElementById("cost_price").value;
+        // let Total = document.getElementById("Total");
+        // let result = parseFloat(Qty) * parseFloat(cost_price);
+        // Total.value = result;
 
-                od_qty = document.getElementById('od_qty').value;
-                os_qty = document.getElementById('os_qty').value;
-                console.log("od_qty is: ", od_qty)
-                console.log("os_qty is: ", os_qty)
-                od_cost_price = document.getElementById("od_cost_price").value;
-                os_cost_price = document.getElementById("os_cost_price").value;
+        od_qty = document.getElementById('od_qty').value;
+        os_qty = document.getElementById('os_qty').value;
+        console.log("od_qty is: ", od_qty)
+        console.log("os_qty is: ", os_qty)
+        od_sales_price = document.getElementById("od_sales_price").value;
+        os_sales_price = document.getElementById("os_sales_price").value;
 
-                od_total_amount = od_qty * od_cost_price;
-                console.log("od_total_amount is: ", od_total_amount)
-                os_total_amount = os_qty * os_cost_price;
-                console.log("os_total_amount is: ", os_total_amount)
-                total_amount = od_total_amount + os_total_amount;
-                console.log("total amount is: ", total_amount)
+        od_total_amount = od_qty * od_sales_price;
+        console.log("od_total_amount is: ", od_total_amount)
+        os_total_amount = os_qty * os_sales_price;
+        console.log("os_total_amount is: ", os_total_amount)
+        total_amount = od_total_amount + os_total_amount;
+        console.log("total amount is: ", total_amount)
 
-                Total = document.getElementById("total_amount");
-                Total.value = total_amount;
-                // .. 
-            },
-            error: function (response) {
-                // alert the error if any error occured
-                console.log(response)
-            }
-        })
+        Total = document.getElementById("total_amount");
+        Total.value = total_amount;
+        // .. 
+    },
+    error: function (response) {
+        // alert the error if any error occured
+        console.log(response)
     }
-
-
-</script>
-<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#example').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
-    });
+})
+}
 </script>
 {% endblock %}
 {% block scripts %}
-<script>
-    referenceselect()</script>
+<script>referenceselect()</script>
 {% endblock %}

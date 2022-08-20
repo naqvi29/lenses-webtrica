@@ -1,20 +1,19 @@
 {% extends 'layout.html' %}
-{% block title %}Make Rx Purchase{% endblock %}
+{% block title %}Edit Stock Purchase{% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %}
 {% block content %}
-
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <!-- <h1 class="m-0">Make Rx Order</h1> -->
+                <!-- <h1 class="m-0">Rx Purchase Invoice # {{data[0]}}</h1> -->
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Make Rx Purchase</li>
+                    <li class="breadcrumb-item active">Edit Stock Purchase</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -30,7 +29,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title"><strong>Make Rx Purchase</strong></h3>
+                        <h3 class="card-title"><strong>Edit Stock Purchase</strong></h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -44,47 +43,26 @@
                     <!-- /.card-header -->
                     <div class="card-body" style="display: block;">
                         <div class="row">
-                            <form class="py-4 px-5 row" action="/make-rx-purchase" method="POST"
+
+                            <form class="py-4 px-5 row" action="/edit-stock-purchase/{{data[0]}}" method="POST"
                                 enctype="multipart/form-data">
                                 <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Issue Date</label>
-                                    <input id="datebox" type="date" class="form-control" name="issue_date"
-                                        value="{{today}}">
-                                    <script>
-                                        Date.prototype.toDateInputValue = (function () {
-                                            var local = new Date(this);
-                                            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-                                            return local.toJSON().slice(0, 10);
-                                        });
-                                        document.getElementById('datebox').value = new Date().toDateInputValue();
-                                    </script>
+                                    <input type="date" class="form-control" name="issue_date" value="{{data[1]}}">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Due Date</label>
-                                    <input type="date" class="form-control" name="due_date">
+                                    <input type="date" class="form-control" name="due_date" value="{{data[2]}}">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Reference</label>
-                                    {% if copy %}
-                                    <select disabled name="reference" onchange="referenceselect()" id="reference"
-                                        class="form-control">
-                                        <option selected value="{{rx_orders[0]}}">{{rx_orders[3]}}</option>
-                                    </select>
-                                    {% else %}
-                                    <select name="reference" onchange="referenceselect()" id="reference"
-                                        class="form-control">
-                                        <option selected value="" disabled>Select Order</option>
-                                        {% for i in rx_orders %}
-                                        <option value="{{i[0]}}">{{i[3]}}</option>
-                                        {% endfor %}
-                                    </select>
-                                    {% endif %}
+                                    <input type="text" class="form-control" name="reference" value="{{data[3]}}">
                                     <!-- <input type="text" class="form-control" name="reference"> -->
                                 </div>
                                 <!-- <div class="col-md-3 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Order Number</label>
-                                    <input type="text" name="order_number" class="form-control" id="order_number" disabled>
+                                    <input type="text" name="order_number" class="form-control" id="order_number" >
     
                                 </div> -->
                                 <!-- <div class="col-md-3 mb-3">
@@ -92,18 +70,15 @@
                                     <input type="text" class="form-control" name="customer" id="customer">
                                 </div> -->
                                 <div class="col-md-6 mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">Select Supplier</label>
-                                    <select name="supplier" class="form-control" id="" required>
-                                        <option value="" selected disabled>Select Supplier</option>
-                                        {% for i in suppliers %}
-                                        <option value="{{i[0]}}">{{i[1]}}</option>
-                                        {% endfor %}
-
-                                    </select>
+                                    <label for="exampleFormControlInput1" class="form-label">Supplier</label>
+                                    <input type="text" class="form-control" name="supplier_name" value="{{data[5]}}">
+                                    <input type="text" class="form-control" name="supplier_id" value="{{data[4]}}"
+                                        hidden>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                                    <input class="form-control" name="exp_account" id="exp_account"></input>
+                                    <input type="text" name="exp_account" class="form-control" id=""
+                                        value="{{data[9]}}">
                                 </div>
 
 
@@ -116,40 +91,26 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
-                                    <!-- <select onchange="lenseselect()" id="lenseSelect" name="item_id"
-                                        class="form-control">
-                                        <option value="">Select Lense Type</option>
-                                        {% for i in rx_items %}
-                                        <option value="{{i[0]}}">{{i[2]}}</option>
-                                        {% endfor %}
-
-                                    </select> -->
-                                    <input type="text" name="item_name" id="lense_type" class="form-control">
-                                    <input type="text" name="item_idd" id="item_idd" class="form-control" hidden>
+                                    <input type="text" name="item_name" class="form-control" id="" value="{{data[8]}}">
                                 </div>
                                 <!-- <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Qty</label>
-                                    <input onchange="return qty_unitP_changed()" type="text" min="0" name="qty" id="qty" class="form-control">
+                                    <input type="number" class="form-control" name="item_qty" id=""
+                                        value="{{data[10]}}">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Cost Price</label>
-                                    <input onchange="return qty_unitP_changed()" type="text" min="0" step="any" name="cost_price" class="form-control"
-                                        id="cost_price">
+                                    <input type="number" step="any" class="form-control" name="cost_price" id=""
+                                        value="{{data[11]}}">
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Total</label>
-                                    <input type="number" step="any" class="form-control" name="total" id="Total">
-                                </div> -->
-                                <!-- <div class="col-md-2 mb-3">
+                                    <input type="number" step="any" class="form-control" name="total" id=""
+                                        value="{{data[12]}}">
+                                </div>
+                                <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Status</label>
-                                    <select name="status" class="form-control" id="status" required>
-                                        <option selected value="" disabled>Select Status</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="inprocess">In Process</option>
-                                        <option value="ready">Ready</option>
-                                        <option value="delivered">Delivered</option>
-                                        <option value="cancelled">Cancelled</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="status" value="{{data[13]}}">
                                 </div> -->
                                 <!-- <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Sales Price</label>
@@ -187,85 +148,85 @@
                                                 <tr class="col-md-12">
                                                     <td>OD</td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp" name="od_size" id="od_size"></td>
+                                                            class="my-order-inp" name="od_size" id="od_size" value="{{data[14]}}" ></td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            step="0.25" class="my-order-inp" name="od_sph" id="od_sph">
+                                                            step="0.25" class="my-order-inp" name="od_sph" id="od_sph" value="{{data[15]}}" >
                                                     </td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            step="0.25" class="my-order-inp" name="od_cyl" id="od_cyl">
+                                                            step="0.25" class="my-order-inp" name="od_cyl" id="od_cyl" value="{{data[16]}}" >
                                                     </td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             min="1" max="180" class="my-order-inp" name="od_axis"
-                                                            id="od_axis"></td>
+                                                            id="od_axis" value="{{data[17]}}" ></td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             step="0.25" min="0" max="10" class="my-order-inp"
-                                                            name="od_add" id="od_add">
+                                                            name="od_add" id="od_add" value="{{data[18]}}" >
                                                     </td>
                                                     <td><input class="col-md-6" style="min-width:100%;" min="1" max="10"
                                                             type="text" class="my-order-inp" name="od_base"
-                                                            id="od_base"></td>
+                                                            id="od_base" value="{{data[19]}}" ></td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             min="10" max="30" step="2" class="my-order-inp" name="od_fh"
-                                                            id="od_fh">
+                                                            id="od_fh" value="{{data[20]}}" >
                                                     </td>
                                                     <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             class="my-order-inp" name="od_prism_no"></td> -->
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             class="my-order-inp1" name="od_prism_detail"
-                                                            id="od_prism_detail"></td>
+                                                            id="od_prism_detail" value="{{data[21]}}" ></td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp1" name="od_pd" id="od_pd"></td>
+                                                            class="my-order-inp1" name="od_pd" id="od_pd" value="{{data[49]}}" ></td>
                                                     <td><input onchange="qty_unitP_changed()" type="text" min="0"
                                                             id="od_qty" name="od_qty" class="col-md-6 my-order-inp"
-                                                            style="min-width:100%;" id="od_sph"></td>
+                                                            style="min-width:100%;" id="od_qty" value="{{data[45]}}" ></td>
                                                     <td><input onchange="qty_unitP_changed()" style="min-width:100%;"
                                                             type="text" min="0" step="any" name="od_cost_price"
-                                                            class="col-md-6 my-order-inp" id="od_cost_price"></td>
+                                                            class="col-md-6 my-order-inp" id="od_cost_price" value="{{data[43]}}" ></td>
                                                     <td><input style="min-width:100%;" type="text" min="0" step="any"
                                                             name="od_sales_price" class="col-md-6 my-order-inp"
-                                                            id="od_sales_price"></td>
+                                                            id="od_sales_price" value="{{data[44]}}" ></td>
                                                 </tr>
                                                 <tr class="col-md-12">
                                                     <td>OS</td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp" name="os_size" id="os_size"></td>
+                                                            class="my-order-inp" name="os_size" id="os_size" value="{{data[22]}}" ></td>
                                                     <td><input class="col-md-6" style="min-width:100%;" step="0.25"
-                                                            type="text" class="my-order-inp" name="os_sph" id="os_sph">
+                                                            type="text" class="my-order-inp" name="os_sph" id="os_sph" value="{{data[23]}}" >
                                                     </td>
                                                     <td><input class="col-md-6" style="min-width:100%;" step="0.25"
-                                                            type="text" class="my-order-inp" name="os_cyl" id="os_cyl">
+                                                            type="text" class="my-order-inp" name="os_cyl" id="os_cyl" value="{{data[24]}}" >
                                                     </td>
                                                     <td><input class="col-md-6" style="min-width:100%;" min="1"
                                                             max="180" type="text" class="my-order-inp" name="os_axis"
-                                                            id="os_axis">
+                                                            id="os_axis" value="{{data[25]}}" >
                                                     </td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             step="0.25" min="0" max="10" class="my-order-inp"
-                                                            name="os_add" id="os_add">
+                                                            name="os_add" id="os_add" value="{{data[26]}}" >
                                                     </td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             min="1" max="10" class="my-order-inp" name="os_base"
-                                                            id="os_base"></td>
+                                                            id="os_base" value="{{data[27]}}" ></td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             min="10" max="30" step="2" class="my-order-inp" name="os_fh"
-                                                            id="os_fh">
+                                                            id="os_fh" value="{{data[28]}}" >
                                                     </td>
                                                     <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             class="my-order-inp" name="os_prism_no"></td> -->
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                             class="my-order-inp1" name="os_prism_detail"
-                                                            id="os_prism_detail"></td>
+                                                            id="os_prism_detail" value="{{data[29]}}" ></td>
                                                     <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp1" name="os_pd" id="os_pd"></td>
+                                                            class="my-order-inp1" name="os_pd" id="os_pd" value="{{data[50]}}" ></td>
                                                     <td><input onchange="qty_unitP_changed()" type="text" min="0"
                                                             name="os_qty" id="os_qty" class="col-md-6 my-order-inp"
-                                                            style="min-width:100%;"></td>
+                                                            style="min-width:100%;" value="{{data[48]}}" ></td>
                                                     <td><input onchange="qty_unitP_changed()" style="min-width:100%;"
                                                             type="text" min="0" step="any" name="os_cost_price"
-                                                            class="col-md-6 my-order-inp" id="os_cost_price"></td>
+                                                            class="col-md-6 my-order-inp" id="os_cost_price" value="{{data[46]}}" ></td>
                                                     <td><input style="min-width:100%;" type="text" min="0" step="any"
                                                             name="os_sales_price" class="col-md-6 my-order-inp"
-                                                            id="os_sales_price"></td>
+                                                            id="os_sales_price" value="{{data[47]}}" ></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -274,9 +235,9 @@
                                 <div class="col-md-3">
                                     <label for="exampleFormControlInput1" class="form-label">Coating</label>
                                     <input style="min-width:100%;" type="text" min="0" step="any" name="treatment"
-                                        class="form-control" id="treatment">
+                                        class="form-control" id="treatment" value="{{data[54]}}" >
                                     <!-- <select name="treatment" class="form-control" required>
-                                        <option value="" selected disabled>Select Coating</option>
+                                        <option value="" selected >Select Coating</option>
                                         {% for i in treatments %}
                                         <option value="{{i[1]}}">{{i[1]}}</option>
                                         {% endfor %}
@@ -288,9 +249,9 @@
                                 <div class="col-md-3">
                                     <label for="exampleFormControlInput1" class="form-label">Services</label>
                                     <input style="min-width:100%;" type="text" min="0" step="any" name="tint_service"
-                                        class="form-control" id="tint_service">
+                                        class="form-control" id="tint_service" value="{{data[55]}}" >
                                     <!-- <select name="tint_service" class="form-control" required>
-                                        <option value="" selected disabled>Select Services</option>
+                                        <option value="" selected >Select Services</option>
                                         {% for i in tints_of_services %}
                                         <option value="{{i[1]}}">{{i[1]}}</option>
                                         {% endfor %}
@@ -300,12 +261,12 @@
                                 <div class="col-md-3 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Total Amount</label>
                                     <input type="number" step="any" name="total_amount" class="form-control"
-                                        id="total_amount">
+                                        id="total_amount" value="{{data[12]}}" >
                                 </div>
                                 <h4 class="w-100 mb-2 mt-4">Special Measurement For Digital Surfacing</h4>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">BVD</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="bvd_mm" id="bvd_mm">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="bvd_mm" id="bvd_mm" value="{{data[30]}}" >
                                     <!--Enter BVD in mm -->
 
                                 </div>
@@ -313,32 +274,32 @@
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">FFA</label>
                                     <!-- <label for="exampleFormControlInput1" class="form-label">Face from Angle</label> -->
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="face_angle" id="face_angle">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="face_angle" id="face_angle" value="{{data[31]}}" >
                                     <!--Enter Face from Angle-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">PA</label>
                                     <input style="max-width: 50%;" type="text" class="form-control"
-                                        name="pantoscopic_Angle" id="pantoscopic_Angle">
+                                        name="pantoscopic_Angle" id="pantoscopic_Angle" value="{{data[32]}}" >
                                     <!--pantoscopic_Angle-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">NRD</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="nrd" id="nrd">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="nrd" id="nrd" value="{{data[33]}}" >
                                     <!--Enter NRD(Near Reading Distance)-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Decentr.</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="decentration" id="decentration">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="decentration" id="decentration" value="{{data[34]}}" >
                                     <!--Enter Decentration mm-->
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">CT or ET</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="center_edge" id="center_edge">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="center_edge" id="center_edge" value="{{data[35]}}" >
                                     <!--Enter Center Thickness or Edge Thickness-->
                                 </div>
 
@@ -347,21 +308,21 @@
                                         mm</label> -->
                                     <!-- <label for="exampleFormControlInput1" class="form-label">FrSH</label> -->
                                     <label for="exampleFormControlInput1" class="form-label">FS Horizontal</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_h" id="frame_size_h">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_h" id="frame_size_h" value="{{data[51]}}" >
                                     <!--Enter Frame Size Horizontal mm-->
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">FS Vertical</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_v" id="frame_size_v">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_v" id="frame_size_v" value="{{data[52]}}" >
                                 </div>
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">FS Diagonal</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_d" id="frame_size_d">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="frame_size_d" id="frame_size_d" value="{{data[53]}}" >
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">OC Height</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="oc_height" id="oc_height">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="oc_height" id="oc_height" value="{{data[36]}}" >
                                     <!--Enter OC Height-->
                                 </div>
 
@@ -377,38 +338,38 @@
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Occupation</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="occupation" id="occupation">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="occupation" id="occupation" value="{{data[37]}}" >
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Driving %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="driving" id="driving">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="driving" id="driving" value="{{data[38]}}" >
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Computer %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="computer" id="computer">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="computer" id="computer" value="{{data[39]}}" >
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Reading %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="reading" id="reading">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="reading" id="reading" value="{{data[40]}}" >
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Mobile %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="mobile" id="mobile">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="mobile" id="mobile" value="{{data[41]}}" >
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Gaming %</label>
-                                    <input style="max-width: 50%;" type="text" class="form-control" name="gaming" id="gaming">
+                                    <input style="max-width: 50%;" type="text" class="form-control" name="gaming" id="gaming" value="{{data[42]}}" >
                                 </div>
 
                                 <!-- <div class="col-md-6">
                                     <label for="exampleFormControlInput1" class="form-label">Coating</label>
                                     <select name="treatment" class="form-control" required>
-                                        <option value="" selected disabled>Select Coating</option>
+                                        <option value="" selected >Select Coating</option>
                                         {% for i in treatments %}
                                         <option value="{{i[1]}}">{{i[1]}}</option>
                                         {% endfor %}
@@ -420,7 +381,7 @@
                                 <div class="col-md-6">
                                     <label for="exampleFormControlInput1" class="form-label">Services</label>
                                     <select name="tint_service" class="form-control" required>
-                                        <option value="" selected disabled>Select Services</option>
+                                        <option value="" selected >Select Services</option>
                                         {% for i in tints_of_services %}
                                         <option value="{{i[1]}}">{{i[1]}}</option>
                                         {% endfor %}
@@ -540,251 +501,26 @@
 
 
 
-                                <div class="mt-4 col-md-12 text-center">
+                                <!-- <div class="mt-4 col-md-12 text-center">
                                     <button type="submit" class="btn btn-success my_btn01 w-50">Create</button>
+                                </div> -->
+                                <div class="mt-4 col-md-12 text-center">
+                                    <button type="submit" class="btn btn-success my_btn01 w-50">Update</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer" style="display: block;">
-
-                        <a href="/view-rx-purchase" class="btn btn-dark">View All Purchases</a>
+                        <a href="/view-stock-purchase" class="btn btn-dark">Back</a>
                     </div>
                 </div>
-
 
             </div>
         </div>
     </div>
 </section>
 <!-- /.content -->
-<script>
-
-
-    function customerselect() {
-        console.log("change")
-        let e = document.getElementById("customerSelect");
-        let customer_id = e.value;
-        // ajax 
-        $.ajax({
-            type: 'POST',
-            url: "/fetch-billing-address",
-            data: { "customer_id": customer_id },
-            success: function (response) {
-                console.log(response)
-                let bill_address = document.getElementById("bill_address")
-                bill_address.value = response;
-            },
-            error: function (response) {
-                // alert the error if any error occured
-                console.log(response)
-            }
-        })
-    }
-
-
-    function lenseselect() {
-        console.log("change")
-        let e = document.getElementById("lenseSelect");
-        let lense_id = e.value;
-        console.log("lense id is:", lense_id)
-        $.ajax({
-            type: 'POST',
-            url: "/fetch-item-price",
-            data: { "item_id": lense_id },
-            success: function (response) {
-                console.log(response)
-                var array = JSON.parse("[" + response + "]");
-                // var array = response.split();   
-                console.log(array)
-                // console.log(array[0][0])
-                // console.log(array[0][1])
-                // let cost_price = document.getElementById("cost_price")
-                // let sales_price = document.getElementById("sales_price")
-                // cost_price.value = array[0][0];
-                // sales_price.value = array[0][1];
-
-                let od_cost_price = document.getElementById("od_cost_price");
-                let os_cost_price = document.getElementById("os_cost_price");
-                od_cost_price = od_cost_price.value;
-                os_cost_price = os_cost_price.value;
-                let od_sales_price = document.getElementById("od_sales_price");
-                let os_sales_price = document.getElementById("os_sales_price");
-                od_sales_price = od_sales_price.value;
-                os_sales_price = os_sales_price.value;
-                od_cost_price.value = array[0][0];
-                od_sales_price.value = array[0][1];
-                os_cost_price.value = array[0][0];
-                os_sales_price.value = array[0][1];
-            },
-            error: function (response) {
-                // alert the error if any error occured
-                console.log(response)
-            }
-        })
-
-    }
-    function qty_unitP_changed() {
-        od_qty = document.getElementById('od_qty').value;
-        os_qty = document.getElementById('os_qty').value;
-        od_cost_price = document.getElementById("od_cost_price").value;
-        os_cost_price = document.getElementById("os_cost_price").value;
-
-        od_total_amount = od_qty * od_cost_price;
-        os_total_amount = os_qty * os_cost_price;
-        total_amount = od_total_amount + os_total_amount;
-
-        Total = document.getElementById("total_amount");
-        Total.value = total_amount;
-
-    }
-
-    function referenceselect() {
-
-        console.log("change")
-        let e = document.getElementById("reference");
-        let order_id = e.value;
-        // ajax 
-        $.ajax({
-            type: 'POST',
-            url: "/fetch-order",
-            data: { "order_id": order_id },
-            success: function (response) {
-                // console.log(response);
-                let string = response.replace("(", "");
-                string = string.replace(")", "");
-                var array = string.split(",").map(String);
-                // let customer = document.getElementById("customer")
-                // customer.value = array[5].replace("'","").replace("'","");
-                // let bill_address = document.getElementById("bill_address")
-                // bill_address.value = array[8].replace("'","").replace("'","");
-                let lense_type = document.getElementById("lense_type");
-                lense_type.value = array[7].replace("'", "").replace("'", "");
-                let item_idd = document.getElementById("item_idd");
-                item_idd.value = array[6].replace("'", "").replace("'", "");
-                let os_qty = document.getElementById("os_qty");
-                let od_qty = document.getElementById("od_qty");
-                os_qty.value = array[52].replace("'", "").replace("'", "");
-                od_qty.value = array[49].replace("'", "").replace("'", "");
-                let od_cost_price = document.getElementById("od_cost_price")
-                let os_cost_price = document.getElementById("os_cost_price")
-                od_cost_price.value = array[47].replace("'", "").replace("'", "");
-                os_cost_price.value = array[50].replace("'", "").replace("'", "");
-                let od_sales_price = document.getElementById("od_sales_price")
-                let os_sales_price = document.getElementById("os_sales_price")
-                od_sales_price.value = array[48].replace("'", "").replace("'", "");
-                os_sales_price.value = array[51].replace("'", "").replace("'", "");
-                let od_size = document.getElementById("od_size")
-                od_size.value = array[45].replace("'", "").replace("'", "");
-                let os_size = document.getElementById("os_size")
-                os_size.value = array[46].replace("'", "").replace("'", "");
-                let od_sph = document.getElementById("od_sph")
-                od_sph.value = array[12].replace("'", "").replace("'", "");
-                let od_cyl = document.getElementById("od_cyl")
-                od_cyl.value = array[13].replace("'", "").replace("'", "");
-                let od_axis = document.getElementById("od_axis")
-                od_axis.value = array[14].replace("'", "").replace("'", "");
-                let od_add = document.getElementById("od_add")
-                od_add.value = array[15].replace("'", "").replace("'", "");
-                let od_base = document.getElementById("od_base")
-                od_base.value = array[16].replace("'", "").replace("'", "");
-                let od_fh = document.getElementById("od_fh")
-                od_fh.value = array[17].replace("'", "").replace("'", "");
-                let od_prism_detail = document.getElementById("od_prism_detail")
-                od_prism_detail.value = array[19].replace("'", "").replace("'", "");
-                let os_sph = document.getElementById("os_sph")
-                os_sph.value = array[20].replace("'", "").replace("'", "");
-                let os_cyl = document.getElementById("os_cyl")
-                os_cyl.value = array[21].replace("'", "").replace("'", "");
-                let os_axis = document.getElementById("os_axis")
-                os_axis.value = array[22].replace("'", "").replace("'", "");
-                let os_add = document.getElementById("os_add")
-                os_add.value = array[23].replace("'", "").replace("'", "");
-                let os_base = document.getElementById("os_base")
-                os_base.value = array[24].replace("'", "").replace("'", "");
-                let os_fh = document.getElementById("os_fh")
-                os_fh.value = array[25].replace("'", "").replace("'", "");
-                let os_prism_detail = document.getElementById("os_prism_detail")
-                os_prism_detail.value = array[27].replace("'", "").replace("'", "");
-                let coating = document.getElementById("treatment")
-                coating.value = array[10].replace("'", "").replace("'", "");
-                let services = document.getElementById("tint_service")
-                services.value = array[11].replace("'", "").replace("'", "");
-                let bvd_mm = document.getElementById("bvd_mm")
-                bvd_mm.value = array[28].replace("'", "").replace("'", "");
-                let face_angle = document.getElementById("face_angle")
-                face_angle.value = array[29].replace("'", "").replace("'", "");
-                let pantoscopic_Angle = document.getElementById("pantoscopic_Angle")
-                pantoscopic_Angle.value = array[30].replace("'", "").replace("'", "");
-                let nrd = document.getElementById("nrd")
-                nrd.value = array[31].replace("'", "").replace("'", "");
-                let decentration = document.getElementById("decentration")
-                decentration.value = array[32].replace("'", "").replace("'", "");
-                let center_edge = document.getElementById("center_edge")
-                center_edge.value = array[33].replace("'", "").replace("'", "");
-                let frame_size_h = document.getElementById("frame_size_h")
-                frame_size_h.value = array[34].replace("'", "").replace("'", "");
-                let frame_size_v = document.getElementById("frame_size_v")
-                frame_size_v.value = array[56].replace("'", "").replace("'", "");
-                let frame_size_d = document.getElementById("frame_size_d")
-                frame_size_d.value = array[57].replace("'", "").replace("'", "");
-                let oc_height = document.getElementById("oc_height")
-                oc_height.value = array[35].replace("'", "").replace("'", "");
-                let occupation = document.getElementById("occupation")
-                occupation.value = array[38].replace("'", "").replace("'", "");
-                let driving = document.getElementById("driving")
-                driving.value = array[39].replace("'", "").replace("'", "");
-                let computer = document.getElementById("computer")
-                computer.value = array[40].replace("'", "").replace("'", "");
-                let reading = document.getElementById("reading")
-                reading.value = array[41].replace("'", "").replace("'", "");
-                let mobile = document.getElementById("mobile")
-                mobile.value = array[42].replace("'", "").replace("'", "");
-                let gaming = document.getElementById("gaming")
-                gaming.value = array[43].replace("'", "").replace("'", "");
-                let od_pd = document.getElementById("od_pd")
-                od_pd.value = array[53].replace("'", "").replace("'", "");
-                let os_pd = document.getElementById("os_pd")
-                os_pd.value = array[54].replace("'", "").replace("'", "");
-                let exp_account = document.getElementById("exp_account")
-                exp_account.value = array[61].replace("'", "").replace("'", "");
-                // .. 
-
-                // let Qty = document.getElementById('qty').value;
-                // cost_price = document.getElementById("cost_price").value;
-                // let Total = document.getElementById("Total");
-                // let result = parseFloat(Qty) * parseFloat(cost_price);
-                // Total.value = result;
-
-                od_qty = document.getElementById('od_qty').value;
-                os_qty = document.getElementById('os_qty').value;
-                console.log("od_qty is: ", od_qty)
-                console.log("os_qty is: ", os_qty)
-                od_cost_price = document.getElementById("od_cost_price").value;
-                os_cost_price = document.getElementById("os_cost_price").value;
-
-                od_total_amount = od_qty * od_cost_price;
-                console.log("od_total_amount is: ", od_total_amount)
-                os_total_amount = os_qty * os_cost_price;
-                console.log("os_total_amount is: ", os_total_amount)
-                total_amount = od_total_amount + os_total_amount;
-                console.log("total amount is: ", total_amount)
-
-                Total = document.getElementById("total_amount");
-                Total.value = total_amount;
-                // .. 
-            },
-            error: function (response) {
-                // alert the error if any error occured
-                console.log(response)
-            }
-        })
-    }
-
-
-</script>
-<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
 <script type="text/javascript">
     $(document).ready(function () {
         $('#example').DataTable({
@@ -795,8 +531,5 @@
         });
     });
 </script>
-{% endblock %}
-{% block scripts %}
-<script>
-    referenceselect()</script>
+
 {% endblock %}

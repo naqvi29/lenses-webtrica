@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% block title %}Make Rx Purchase{% endblock %}
+{% block title %}Make Stock Purchase{% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %}
@@ -14,7 +14,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Make Rx Purchase</li>
+                    <li class="breadcrumb-item active">Make Stock Purchase</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -30,7 +30,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title"><strong>Make Rx Purchase</strong></h3>
+                        <h3 class="card-title"><strong>Make Stock Purchase</strong></h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -44,7 +44,7 @@
                     <!-- /.card-header -->
                     <div class="card-body" style="display: block;">
                         <div class="row">
-                            <form class="py-4 px-5 row" action="/make-rx-purchase" method="POST"
+                            <form class="py-4 px-5 row" action="/make-stock-purchase" method="POST"
                                 enctype="multipart/form-data">
                                 <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
                                 <div class="col-md-2 mb-3">
@@ -69,13 +69,13 @@
                                     {% if copy %}
                                     <select disabled name="reference" onchange="referenceselect()" id="reference"
                                         class="form-control">
-                                        <option selected value="{{rx_orders[0]}}">{{rx_orders[3]}}</option>
+                                        <option selected value="{{stock_orders[0]}}">{{stock_orders[3]}}</option>
                                     </select>
                                     {% else %}
                                     <select name="reference" onchange="referenceselect()" id="reference"
                                         class="form-control">
                                         <option selected value="" disabled>Select Order</option>
-                                        {% for i in rx_orders %}
+                                        {% for i in stock_orders %}
                                         <option value="{{i[0]}}">{{i[3]}}</option>
                                         {% endfor %}
                                     </select>
@@ -103,7 +103,33 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                                    <input class="form-control" name="exp_account" id="exp_account"></input>
+                                    <select name="exp_account" class="form-control" id="" required>
+                                        <option value="Accounting feesExpenses">Accounting feesExpenses</option>
+                                        <option value="Accounts receivable">Accounts receivable</option>
+                                        <option value="Advertising and promotion">Advertising and promotion</option>
+                                        <option value="Bank charges">Bank charges</option>
+                                        <option value="Capital gains on investments">Capital gains on investments
+                                        </option>
+                                        <option value="Computer equipment">Computer equipment</option>
+                                        <option value="Donations">Donations</option>
+                                        <option value="Electricity">Electricity</option>
+                                        <option value="Employee clearing account">Employee clearing account</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                        <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
+                                        <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
+                                        <option value="Interest received">Interest received</option>
+                                        <option value="Inventory - cost">Inventory - cost</option>
+                                        <option value="Inventory - sales">Inventory - sales</option>
+                                        <option value="Inventory on hand">Inventory on hand</option>
+                                        <option value="Legal fees">Legal fees</option>
+                                        <option value="Motor vehicle expenses">Motor vehicle expenses</option>
+                                        <option value="Printing and stationery">Printing and stationery</option>
+                                        <option value="Rent">Rent</option>
+                                        <option value="Repairs and maintenance">Repairs and maintenance</option>
+                                        <option value="Retained earnings">Retained earnings</option>
+                                        <option value="Sales">Sales</option>
+                                        <option value="Telephone">Telephone</option>
+                                    </select>
                                 </div>
 
 
@@ -549,7 +575,7 @@
                     <!-- /.card-body -->
                     <div class="card-footer" style="display: block;">
 
-                        <a href="/view-rx-purchase" class="btn btn-dark">View All Purchases</a>
+                        <a href="/view-stock-purchase" class="btn btn-dark">View All Purchases</a>
                     </div>
                 </div>
 
@@ -747,8 +773,6 @@
                 od_pd.value = array[53].replace("'", "").replace("'", "");
                 let os_pd = document.getElementById("os_pd")
                 os_pd.value = array[54].replace("'", "").replace("'", "");
-                let exp_account = document.getElementById("exp_account")
-                exp_account.value = array[61].replace("'", "").replace("'", "");
                 // .. 
 
                 // let Qty = document.getElementById('qty').value;

@@ -47,6 +47,8 @@
     href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css">
   <link rel="stylesheet" type="text/css"
     href="https://editor.datatables.net/extensions/Editor/css/editor.dataTables.min.css">
+    
+ 
 
   <!-- mycustom css  -->
   <link rel="stylesheet" href="/static/css/style.css">
@@ -187,15 +189,27 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="/view-bank-and-cash-accounts" class="nav-link">
+                    <a href="/view-bank-accounts" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Bank Accounts</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/view-bank-and-cash-accounts" class="nav-link">
+                    <a href="/view-cash-accounts" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Cash Accounts</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/view-income-accounts" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Income Accounts</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/view-expense-accounts" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Expense Accounts</p>
                   </a>
                 </li>
               </ul>
@@ -227,7 +241,7 @@
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
                 <p>
-                  RX
+                  RX Orders
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
@@ -241,19 +255,84 @@
                 <li class="nav-item">
                   <a href="/view-rx-purchase" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Rx Purchases</p>
+                    <p>Rx Purchase Invoices</p>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a href="/view-rx-invoice" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Rx Invoices</p>
+                    <p>Rx Sales Invoices</p>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a href="/view-rx-inventory" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Rx Items</p>
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
+                <a href="/add-supplier" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Supplier</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/add-sale-receipt" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Sale Receipt</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/add-sale-order" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Sale Order</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/add-purchase-order" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Purchase Order</p>
+                </a>
+              </li> -->
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  Stock Orders
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="/view-stock-orders" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Stock Orders</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/view-stock-purchase" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Stock Purchase Invoices</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/view-stock-invoice" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Stock Sales Invoices</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/view-stock-inventory1" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Stock Inventory 1</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/view-stock-inventory2" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Stock Inventory 2</p>
                   </a>
                 </li>
                 <!-- <li class="nav-item">
@@ -448,6 +527,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
   <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+  
+  <script src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
   <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.4/dt-1.12.1/b-2.2.3/sl-1.4.0/datatables.min.js"></script> -->
 
   {% block scripts %}{% endblock %}

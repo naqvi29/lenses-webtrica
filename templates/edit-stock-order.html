@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
-{% block title %}Edit Rx Order{% endblock %}
+{% block title %}Edit Stock Order{% endblock %}
 {% block content %}
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Edit Rx Order</h1>
+                <h1 class="m-0">Edit Stock Order</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Edit Rx Order</li>
+                    <li class="breadcrumb-item active">Edit Stock Order</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -26,7 +26,7 @@
                 <div class="card mb-4">
                     <div class="card-body px-0 pt-0 pb-2">
                         <!-- <h3 class="m-4 mb-0">Order To Make</h3> -->
-                        <form class="py-4 px-5 row" action="/edit-rxorder/{{data[0]}}" method="POST" enctype="multipart/form-data">
+                        <form class="py-4 px-5 row" action="/edit-stock-order/{{data[0]}}" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Date</label>
@@ -343,7 +343,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <a href="/view-rx-orders" class="btn btn-danger">Back</a>
+                <a href="/view-stock-orders" class="btn btn-danger">Back</a>
             </div>
         </div>
     </div>

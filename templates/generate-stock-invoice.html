@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
-{% block title %}Rx Sales Invoice{% endblock %}
+{% block title %}Stock Sales Invoice{% endblock %}
 {% block content %}
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <!-- <h1 class="m-0">Rx Purchase Invoice # {{rx_invoices[0]}}</h1> -->
+                <!-- <h1 class="m-0">Rx Purchase Invoice # {{stock_invoices[0]}}</h1> -->
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Rx Sales Invoice # {{rx_invoices[0]}}</li>
+                    <li class="breadcrumb-item active">Stock Sales Invoice # {{stock_invoices[0]}}</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -26,7 +26,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title"><strong>Rx Sales Invoice # {{rx_invoices[0]}}</strong></h3>
+                        <h3 class="card-title"><strong>Stock Sales Invoice # {{stock_invoices[0]}}</strong></h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -47,16 +47,16 @@
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Issue Date</label>
                                 <input disabled  id="datebox" type="date" class="form-control" name="issue_date"
-                                    value="{{rx_invoices[1]}}">
+                                    value="{{stock_invoices[1]}}">
                             </div>
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Due Date</label>
-                                <input disabled  type="date" class="form-control" name="due_date" value="{{rx_invoices[2]}}">
+                                <input disabled  type="date" class="form-control" name="due_date" value="{{stock_invoices[2]}}">
                             </div>
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Reference</label>
                                 
-                                <input disabled  type="text" class="form-control" name="reference" value="{{rx_invoices[0]}}">
+                                <input disabled  type="text" class="form-control" name="reference" value="{{stock_invoices[0]}}">
                                 
                                 <!-- <input disabled  type="text" class="form-control" name="reference"> -->
                             </div>
@@ -79,12 +79,12 @@
                                     {% endfor %}
 
                                 </select> -->
-                                <input disabled  type="text" class="form-control" id="customer" name="customer_name" value="{{rx_invoices[5]}}">
+                                <input disabled  type="text" class="form-control" id="customer" name="customer_name" value="{{stock_invoices[5]}}">
                                 <input disabled  type="text" class="form-control" id="customer_id" name="customer_id" hidden>
                             </div>
                             <div class="col-md-6">
                                 <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                                <input disabled  type="text" class="form-control" id="exp_account" name="exp_account" value="{{rx_invoices[10]}}">
+                                <input disabled  type="text" class="form-control" id="exp_account" name="exp_account" value="{{stock_invoices[10]}}">
                                 <!-- <select name="exp_account" class="form-control" id="" required>
                                     <option value="" selected disabled>Select Exp Account</option>
                                     <option value="Accounting feesExpenses">Accounting feesExpenses</option>
@@ -134,13 +134,13 @@
                                     {% endfor %}
 
                                 </select> -->
-                                <input disabled  type="text" name="item_name" id="lense_type" class="form-control" value="{{rx_invoices[9]}}">
+                                <input disabled  type="text" name="item_name" id="lense_type" class="form-control" value="{{stock_invoices[9]}}">
                                 <input disabled  type="text" name="item_idd" id="item_idd" class="form-control" hidden>
                             </div>
                             
                             <div class="col-md-6 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Billing Address</label>
-                                <input disabled  type="text" name="billing_address" class="form-control" id="billing_address" value="{{rx_invoices[6]}}">
+                                <input disabled  type="text" name="billing_address" class="form-control" id="billing_address" value="{{stock_invoices[6]}}">
 
                             </div>
                             <!-- <div class="col-md-2 mb-3">
@@ -201,46 +201,46 @@
                                         <tbody>
                                             <tr class="col-md-12">
                                                 <td>OD</td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="od_size" id="od_size" value="{{rx_invoices[14]}}"></td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" step="0.25" name="od_sph" id="od_sph" value="{{rx_invoices[15]}}">
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="od_size" id="od_size" value="{{stock_invoices[14]}}"></td>
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" step="0.25" name="od_sph" id="od_sph" value="{{stock_invoices[15]}}">
                                                 </td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" step="0.25" name="od_cyl" id="od_cyl" value="{{rx_invoices[16]}}">
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" step="0.25" name="od_cyl" id="od_cyl" value="{{stock_invoices[16]}}">
                                                 </td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" min="1" max="180" name="od_axis" id="od_axis" value="{{rx_invoices[17]}}"></td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" step="0.25" min="0" max="10" name="od_add" id="od_add" value="{{rx_invoices[18]}}">
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" min="1" max="180" name="od_axis" id="od_axis" value="{{stock_invoices[17]}}"></td>
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" step="0.25" min="0" max="10" name="od_add" id="od_add" value="{{stock_invoices[18]}}">
                                                 </td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" min="1" max="10" type="text" name="od_base" id="od_base" value="{{rx_invoices[19]}}"></td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" min="10" max="30" step="2" name="od_fh" id="od_fh" value="{{rx_invoices[20]}}">
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" min="1" max="10" type="text" name="od_base" id="od_base" value="{{stock_invoices[19]}}"></td>
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" min="10" max="30" step="2" name="od_fh" id="od_fh" value="{{stock_invoices[20]}}">
                                                 </td>
                                                 <!-- <td><input disabled  class="col-md-6" style="min-width:100%;" type="text"
                                                         class="my-order-inp" name="od_prism_no"></td> -->
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="od_prism_detail" id="od_prism_detail" value="{{rx_invoices[29]}}"></td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="od_pd" id="od_pd" value="{{rx_invoices[49]}}"></td>
-                                                <td><input disabled  type="text" min="0" id="od_qty" name="od_qty" class="col-md-6 my-order-inp" style="min-width:100%;" value="{{rx_invoices[45]}}"></td>
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="od_prism_detail" id="od_prism_detail" value="{{stock_invoices[29]}}"></td>
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="od_pd" id="od_pd" value="{{stock_invoices[49]}}"></td>
+                                                <td><input disabled  type="text" min="0" id="od_qty" name="od_qty" class="col-md-6 my-order-inp" style="min-width:100%;" value="{{stock_invoices[45]}}"></td>
                                                 <!-- <td><input disabled  onchange="qty_unitP_changed()" style="min-width:100%;" type="text" min="0" step="any" name="od_cost_price" class="col-md-6 my-order-inp" id="od_cost_price"></td> -->
-                                                <td><input disabled  style="min-width:100%;" type="text" min="0" step="any" name="od_sales_price" class="col-md-6 my-order-inp" id="od_sales_price" value="{{rx_invoices[44]}}"></td>
+                                                <td><input disabled  style="min-width:100%;" type="text" min="0" step="any" name="od_sales_price" class="col-md-6 my-order-inp" id="od_sales_price" value="{{stock_invoices[44]}}"></td>
                                             </tr>
                                             <tr class="col-md-12">
                                                 <td>OS</td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="os_size" id="os_size" value="{{rx_invoices[21]}}"></td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" step="0.25" type="text" name="os_sph" id="os_sph" value="{{rx_invoices[22]}}">
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="os_size" id="os_size" value="{{stock_invoices[21]}}"></td>
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" step="0.25" type="text" name="os_sph" id="os_sph" value="{{stock_invoices[22]}}">
                                                 </td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" step="0.25" type="text" name="os_cyl" id="os_cyl" value="{{rx_invoices[23]}}">
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" step="0.25" type="text" name="os_cyl" id="os_cyl" value="{{stock_invoices[23]}}">
                                                 </td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" min="1" max="180" type="text" name="os_axis" id="os_axis" value="{{rx_invoices[24]}}">
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" min="1" max="180" type="text" name="os_axis" id="os_axis" value="{{stock_invoices[24]}}">
                                                 </td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" step="0.25" min="0" max="10" name="os_add" id="os_add" value="{{rx_invoices[25]}}">
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" step="0.25" min="0" max="10" name="os_add" id="os_add" value="{{stock_invoices[25]}}">
                                                 </td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" min="1" max="10" name="os_base" id="os_base" value="{{rx_invoices[26]}}"></td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" min="10" max="30" step="2" name="os_fh" id="os_fh" value="{{rx_invoices[27]}}">
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" min="1" max="10" name="os_base" id="os_base" value="{{stock_invoices[26]}}"></td>
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" min="10" max="30" step="2" name="os_fh" id="os_fh" value="{{stock_invoices[27]}}">
                                                 </td>
                                                 <!-- <td><input disabled  class="col-md-6" style="min-width:100%;" type="text"
                                                         class="my-order-inp" name="os_prism_no"></td> -->
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="os_prism_detail" id="os_prism_detail" value="{{rx_invoices[28]}}"></td>
-                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="os_pd" id="os_pd" value="{{rx_invoices[50]}}"></td>
-                                                <td><input disabled  type="text" min="0" name="os_qty" id="os_qty" class="col-md-6 my-order-inp" style="min-width:100%;" value="{{rx_invoices[48]}}"></td>
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="os_prism_detail" id="os_prism_detail" value="{{stock_invoices[28]}}"></td>
+                                                <td><input disabled  class="col-md-6" style="min-width:100%;" type="text" name="os_pd" id="os_pd" value="{{stock_invoices[50]}}"></td>
+                                                <td><input disabled  type="text" min="0" name="os_qty" id="os_qty" class="col-md-6 my-order-inp" style="min-width:100%;" value="{{stock_invoices[48]}}"></td>
                                                 <!-- <td><input disabled  onchange="qty_unitP_changed()" style="min-width:100%;" type="text" min="0" step="any" name="os_cost_price" class="col-md-6 my-order-inp" id="os_cost_price"></td> -->
-                                                <td><input disabled  style="min-width:100%;" type="text" min="0" step="any" name="os_sales_price" class="col-md-6 my-order-inp" id="os_sales_price" value="{{rx_invoices[47]}}"></td>
+                                                <td><input disabled  style="min-width:100%;" type="text" min="0" step="any" name="os_sales_price" class="col-md-6 my-order-inp" id="os_sales_price" value="{{stock_invoices[47]}}"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -249,7 +249,7 @@
                             <div class="col-md-3">
                                 <label for="exampleFormControlInput1" class="form-label">Coating</label>
                                 <input disabled  style="min-width:100%;" type="text" min="0" step="any" name="treatment"
-                                    class="form-control" id="treatment" value="{{rx_invoices[54]}}">
+                                    class="form-control" id="treatment" value="{{stock_invoices[54]}}">
                                 <!-- <select name="treatment" class="form-control" required>
                                     <option value="" selected disabled>Select Coating</option>
                                     {% for i in treatments %}
@@ -263,7 +263,7 @@
                             <div class="col-md-3">
                                 <label for="exampleFormControlInput1" class="form-label">Services</label>
                                 <input disabled  style="min-width:100%;" type="text" min="0" step="any" name="tint_service"
-                                    class="form-control" id="tint_service" value="{{rx_invoices[55]}}">
+                                    class="form-control" id="tint_service" value="{{stock_invoices[55]}}">
                                 <!-- <select name="tint_service" class="form-control" required>
                                     <option value="" selected disabled>Select Services</option>
                                     {% for i in tints_of_services %}
@@ -275,12 +275,12 @@
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Total Amount</label>
                                 <input disabled  type="number" step="any" name="total_amount" class="form-control"
-                                    id="total_amount" value="{{rx_invoices[13]}}">
+                                    id="total_amount" value="{{stock_invoices[13]}}">
                             </div>
                             <h4 class="w-100 mb-2 mt-4">Special Measurement For Digital Surfacing</h4>
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">BVD</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="bvd_mm" id="bvd_mm" value="{{rx_invoices[30]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="bvd_mm" id="bvd_mm" value="{{stock_invoices[30]}}">
                                 <!--Enter BVD in mm -->
 
                             </div>
@@ -288,32 +288,32 @@
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">FFA</label>
                                 <!-- <label for="exampleFormControlInput1" class="form-label">Face from Angle</label> -->
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="face_angle" id="face_angle" value="{{rx_invoices[31]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="face_angle" id="face_angle" value="{{stock_invoices[31]}}">
                                 <!--Enter Face from Angle-->
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">PA</label>
                                 <input disabled  style="max-width: 50%;" type="text" class="form-control"
-                                    name="pantoscopic_Angle" id="pantoscopic_Angle" value="{{rx_invoices[32]}}">
+                                    name="pantoscopic_Angle" id="pantoscopic_Angle" value="{{stock_invoices[32]}}">
                                 <!--pantoscopic_Angle-->
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">NRD</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="nrd" id="nrd" value="{{rx_invoices[33]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="nrd" id="nrd" value="{{stock_invoices[33]}}">
                                 <!--Enter NRD(Near Reading Distance)-->
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Decentr.</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="decentration" id="decentration" value="{{rx_invoices[34]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="decentration" id="decentration" value="{{stock_invoices[34]}}">
                                 <!--Enter Decentration mm-->
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">CT or ET</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="center_edge" id="center_edge" value="{{rx_invoices[35]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="center_edge" id="center_edge" value="{{stock_invoices[35]}}">
                                 <!--Enter Center Thickness or Edge Thickness-->
                             </div>
 
@@ -322,21 +322,21 @@
                                     mm</label> -->
                                 <!-- <label for="exampleFormControlInput1" class="form-label">FrSH</label> -->
                                 <label for="exampleFormControlInput1" class="form-label">FS Horizontal</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="frame_size_h" id="frame_size_h" value="{{rx_invoices[51]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="frame_size_h" id="frame_size_h" value="{{stock_invoices[51]}}">
                                 <!--Enter Frame Size Horizontal mm-->
                             </div>
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">FS Vertical</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="frame_size_v" id="frame_size_v" value="{{rx_invoices[52]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="frame_size_v" id="frame_size_v" value="{{stock_invoices[52]}}">
                             </div>
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">FS Diagonal</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="frame_size_d" id="frame_size_d" value="{{rx_invoices[53]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="frame_size_d" id="frame_size_d" value="{{stock_invoices[53]}}">
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">OC Height</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="oc_height" id="oc_height" value="{{rx_invoices[36]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="oc_height" id="oc_height" value="{{stock_invoices[36]}}">
                                 <!--Enter OC Height-->
                             </div>
 
@@ -352,32 +352,32 @@
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Occupation</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="occupation" id="occupation" value="{{rx_invoices[37]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="occupation" id="occupation" value="{{stock_invoices[37]}}">
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Driving %</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="driving" id="driving" value="{{rx_invoices[38]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="driving" id="driving" value="{{stock_invoices[38]}}">
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Computer %</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="computer" id="computer" value="{{rx_invoices[39]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="computer" id="computer" value="{{stock_invoices[39]}}">
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Reading %</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="reading" id="reading" value="{{rx_invoices[40]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="reading" id="reading" value="{{stock_invoices[40]}}">
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Mobile %</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="mobile" id="mobile" value="{{rx_invoices[41]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="mobile" id="mobile" value="{{stock_invoices[41]}}">
                             </div>
 
                             <div class="col-md-2 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Gaming %</label>
-                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="gaming" id="gaming" value="{{rx_invoices[42]}}">
+                                <input disabled  style="max-width: 50%;" type="text" class="form-control" name="gaming" id="gaming" value="{{stock_invoices[42]}}">
                             </div>
 
                             <!-- <div class="col-md-6">
@@ -523,7 +523,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer" style="display: block;">
-                            <a href="/view-rx-invoice" class="btn btn-dark">Back</a>
+                            <a href="/view-stock-invoice" class="btn btn-dark">Back</a>
                     </div>
                 </div>
 

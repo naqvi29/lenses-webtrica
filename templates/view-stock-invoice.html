@@ -1,4 +1,4 @@
-{% extends 'layout.html' %} {% block title %}RX Invoices{% endblock %}
+{% extends 'layout.html' %} {% block title %}Stock Invoices{% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %} {% block
@@ -13,7 +13,7 @@ content %}
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">RX Invoices</li>
+          <li class="breadcrumb-item active">Stock Invoices</li>
         </ol>
       </div>
       <!-- /.col -->
@@ -32,7 +32,7 @@ content %}
         <div class="card mb-4">
           <div class="card card-default">
             <div class="card-header">
-              <h3 class="card-title"><strong>RX Invoices</strong></h3>
+              <h3 class="card-title"><strong>Stock Invoices</strong></h3>
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -68,7 +68,7 @@ content %}
                         </tr>
                       </thead>
                       <tbody>
-                        {% for i in rx_invoices %}
+                        {% for i in stock_invoices %}
                         <tr class="text-center">
                           <td>{{i[0]}}</td>
                           <!-- <td><a href="/generate-rx-purchase/{{i[0]}}"><button
@@ -97,11 +97,11 @@ content %}
                               </button>
                               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a style="display: block;" class="btn btn-sm btn-primary mb-2 mx-2"
-                                  href="/generate-rx-invoice/{{i[0]}}">View</a>
+                                  href="/generate-stock-invoice/{{i[0]}}">View</a>
                                 <a style="display: block;" class="btn btn-sm btn-success mb-2 mx-2"
-                                  href="/edit-rx-invoice/{{i[0]}}">Edit</a>
+                                  href="/edit-stock-invoice/{{i[0]}}">Edit</a>
                                 <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2"
-                                  href="/delete-rx-invoice/{{i[0]}}">
+                                  href="/delete-stock-invoice/{{i[0]}}">
                                   Del
                                 </a>
                               </div>
@@ -118,7 +118,7 @@ content %}
             </div>
             <!-- /.card-body -->
             <div class="card-footer" style="display: block;">
-              <a href="/make-rx-invoice" class="btn btn-success">Make Rx Invoice</a>
+              <a href="/make-stock-invoice" class="btn btn-success">Make Stock Invoice</a>
             </div>
           </div>
 
