@@ -29,66 +29,127 @@ content %}
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title"><strong class="mr-5">Date: {{today}}</strong>(New Stock Update 20 Mar 2022) 08:31 AM</h3>
+        <div class="card card-primary card-tabs">
 
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button> -->
-            </div>
+          <div class="card-header p-0 pt-1">
+            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+              <li class="nav-item">
+                {% if last_updated %}
+                <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true"><strong class="mr-5">Date: {{today}}</strong>(Stock Last Updated on {{last_updated}})</a>
+                {% else %}
+                <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true"><strong class="mr-5">Date: {{today}}</strong>(Stock Not Updated Yet.)</a>
+                {% endif %}
+              </li>
+              <li class="nav-item">
+                {% if last_updated %}
+                <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false"><strong class="mr-5">Date: {{today}}</strong>(Stock Last Updated on {{last_updated}})</a>
+                {% else %}
+                <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true"><strong class="mr-5">Date: {{today}}</strong>(Stock Not Updated Yet.)</a>
+                {% endif %}
+              </li>
+              </li>
+            </ul>
           </div>
           <!-- /.card-header -->
-          <div class="card-body" style="display: block;">
-            <form action="/view-stock-inventory1" method="post" enctype="multipart/form-data">
-                <div class="card mb-4">
-                    <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive">
-
-                        <table id="example2" class="nowrap table table-hover align-middle table-bordered">
-                        
-                            <tbody>
-                            {%for record in records%}
-                            {% set another = loop.index %}
-                                {%if loop.index == 1%}
-                                    <tr class="text-center col-md-12" >
-                                        {%for data in record%}
-                                        <!-- <td><strong>{{data}}</strong></td> -->
-                                        <td style="background-color: black;"><input class="col-md-6 my-order-inp" style="min-width:100%; border: 0px;color: white;background-color: black;" type="text"
-                                            value="{{data}}" name="row_{{another}}" readonly></td>
-                                        {%endfor%}
-                                    </tr>
-                                {%else%}
-                                        <tr class="text-center col-md-12" >
-                                            {%for data in record%}
-                                                {%if loop.index == 1%}
-                                                <td style="background-color: black;"><input class="col-md-6 my-order-inp" style="min-width:100%; border: 0px;color: white;background-color: black;" type="text"
-                                                    value="{{data}}" name="row_{{another}}" readonly></td>
-                                                {%else%}
-                                                    <td><input class="col-md-6 my-order-inp" style="min-width:100%;" type="text"
-                                                        value="{{data}}" name="row_{{another}}"></td>
-                                                {%endif%}
-                                            {%endfor%}
-                                        </tr>
-                                {%endif%}
-                            {%endfor%}
-                            
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer" style="display: block;">
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    
-                  </div>
-            </form>
-          </div>
           <!-- /.card-body -->
+
+          <div class="card-body" >
+            <div class="tab-content" id="custom-tabs-one-tabContent">
+              <div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                <form action="/view-stock-inventory/1/{{item_id}}" method="post" enctype="multipart/form-data">
+                  <div class="card mb-4">
+                      <div class="card-body px-0 pt-0 pb-2" id="printableArea1">
+                          <div class="table-responsive">
+  
+                          <table id="example2" class="nowrap table table-hover align-middle table-bordered">
+                          
+                              <tbody>
+                              {%for record in records%}
+                              {% set another = loop.index %}
+                                  {%if loop.index == 1%}
+                                      <tr class="text-center col-md-12" >
+                                          {%for data in record%}
+                                          <!-- <td><strong>{{data}}</strong></td> -->
+                                          <td style="background-color: black;"><input class="col-md-6 my-order-inp" style="min-width:100%; border: 0px;color: white;background-color: black;" type="text"
+                                              value="{{data}}" name="row_{{another}}" readonly></td>
+                                          {%endfor%}
+                                      </tr>
+                                  {%else%}
+                                          <tr class="text-center col-md-12" >
+                                              {%for data in record%}
+                                                  {%if loop.index == 1%}
+                                                  <td style="background-color: black;"><input class="col-md-6 my-order-inp" style="min-width:100%; border: 0px;color: white;background-color: black;" type="text"
+                                                      value="{{data}}" name="row_{{another}}" readonly></td>
+                                                  {%else%}
+                                                      <td><input class="col-md-6 my-order-inp" style="min-width:100%;" type="text"
+                                                          value="{{data}}" name="row_{{another}}"></td>
+                                                  {%endif%}
+                                              {%endfor%}
+                                          </tr>
+                                  {%endif%}
+                              {%endfor%}
+                              
+                              </tbody>
+                          </table>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-footer" style="display: block;">
+                      <button type="submit" class="btn btn-primary">Update</button>      
+                      <a href="/view-stock-items" class="ml-4"><button  class="btn btn-secondary">Back</button></a>                
+                      <button onclick="printDiv('printableArea1')" class="btn btn-dark ml-4">Print</button>             
+                    </div>
+              </form>
+              </div>
+
+              <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                <form action="/view-stock-inventory/2/{{item_id}}" method="post" enctype="multipart/form-data">
+                  <div class="card mb-4">
+                      <div class="card-body px-0 pt-0 pb-2" id="printableArea2">
+                          <div class="table-responsive">
+  
+                          <table id="example2" class="nowrap table table-hover align-middle table-bordered">
+                          
+                              <tbody>
+                              {%for record in records2%}
+                              {% set another = loop.index %}
+                                  {%if loop.index == 1%}
+                                      <tr class="text-center col-md-12" >
+                                          {%for data in record%}
+                                          <!-- <td><strong>{{data}}</strong></td> -->
+                                          <td style="background-color: black;"><input class="col-md-6 my-order-inp" style="min-width:100%; border: 0px;color: white;background-color: black;" type="text"
+                                              value="{{data}}" name="row_{{another}}" readonly></td>
+                                          {%endfor%}
+                                      </tr>
+                                  {%else%}
+                                          <tr class="text-center col-md-12" >
+                                              {%for data in record%}
+                                                  {%if loop.index == 1%}
+                                                  <td style="background-color: black;"><input class="col-md-6 my-order-inp" style="min-width:100%; border: 0px;color: white;background-color: black;" type="text"
+                                                      value="{{data}}" name="row_{{another}}" readonly></td>
+                                                  {%else%}
+                                                      <td><input class="col-md-6 my-order-inp" style="min-width:100%;" type="text"
+                                                          value="{{data}}" name="row_{{another}}"></td>
+                                                  {%endif%}
+                                              {%endfor%}
+                                          </tr>
+                                  {%endif%}
+                              {%endfor%}
+                              
+                              </tbody>
+                          </table>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-footer" style="display: block;">
+                      <button type="submit" class="btn btn-primary">Update</button>            
+                      <a href="/view-stock-items" class="ml-4"><button  class="btn btn-secondary">Back</button></a>              
+                      <button onclick="printDiv('printableArea2')" class="btn btn-dark ml-4">Print</button>            
+                    </div>
+              </form>
+              </div>
+            </div>
+          </div>
          
         </div>
 
@@ -124,5 +185,17 @@ content %}
 
 
 
+</script>
+<script>
+  function printDiv(divName) {
+   var printContents = document.getElementById(divName).innerHTML;
+   var originalContents = document.body.innerHTML;
+
+   document.body.innerHTML = printContents;
+
+   window.print();
+
+   document.body.innerHTML = originalContents;
+}
 </script>
 {%endblock%}

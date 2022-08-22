@@ -101,7 +101,7 @@
 
                                     </select>
                                 </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
                                     <select name="exp_account" class="form-control" id="" required>
                                         <option value="Accounting feesExpenses">Accounting feesExpenses</option>
@@ -130,7 +130,7 @@
                                         <option value="Sales">Sales</option>
                                         <option value="Telephone">Telephone</option>
                                     </select>
-                                </div>
+                                </div> -->
 
 
 
@@ -140,7 +140,7 @@
 
                                 </div> -->
 
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
                                     <!-- <select onchange="lenseselect()" id="lenseSelect" name="item_id"
                                         class="form-control">
@@ -674,7 +674,7 @@
         // ajax 
         $.ajax({
             type: 'POST',
-            url: "/fetch-order",
+            url: "/fetch-stock-order",
             data: { "order_id": order_id },
             success: function (response) {
                 // console.log(response);

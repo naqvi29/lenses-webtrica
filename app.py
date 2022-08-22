@@ -5,11 +5,12 @@ from flask import Flask, render_template, request, session, jsonify
 from flask.helpers import url_for
 from flaskext.mysql import MySQL
 import os
-from os.path import join, dirname, realpath
+from os.path import join, dirname, realpath, exists
 from importlib_metadata import method_cache
 from werkzeug.utils import redirect, secure_filename
 from PIL import Image
 import csv
+import shutil
 
 UPLOAD_FOLDER = join(dirname(realpath(__file__)), 'static/data/')
 
@@ -20,7 +21,7 @@ app.config['MYSQL_DATABASE_PASSWORD'] = ''
 # app.config['MYSQL_DATABASE_PASSWORD'] = 'LAwrence1234**'
 app.config['MYSQL_DATABASE_DB'] = 'lenses'
 app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
-app.config['MYSQL_DATABASE_PORT'] = 3307
+# app.config['MYSQL_DATABASE_PORT'] = 3307
 mysql.init_app(app)
 
 
@@ -225,6 +226,27 @@ def delete_inventory(id):
     cursor.execute("Delete from rx_items where id=%s",(id))
     conn.commit()
     return redirect(url_for("view_rx_inventory"))
+
+@app.route("/delete-stock-inventory/<string:id>")
+def delete_stock_inventory(id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("Delete from stock_items where id=%s",(id))
+    conn.commit()
+    # now delete inventory csvs
+    file_path = os.path.join(UPLOAD_FOLDER, "stock_items1_"+id+".csv")
+    file_path2 = os.path.join(UPLOAD_FOLDER, "stock_items2_"+id+".csv")
+    if os.path.isfile(file_path):
+        os.remove(file_path)
+        print("File has been deleted")
+    else:
+        print("File does not exist")
+    if os.path.isfile(file_path2):
+        os.remove(file_path2)
+        print("File2 has been deleted")
+    else:
+        print("File2 does not exist")
+    return redirect(url_for("view_stock_items"))
 
 @app.route("/add-brand",methods=['GET','POST'])
 def add_brand():
@@ -620,7 +642,7 @@ def make_stock_order():
         cursor.execute("SELECT name from customers where id=%s",(customer_id))
         customer_name = cursor.fetchone()
         customer_name = customer_name[0]
-        cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
+        cursor.execute("SELECT lense_type from stock_items where id=%s",(item_id))
         item_name = cursor.fetchone()
         print("item name is: ",item_name)
         item_name = item_name[0]
@@ -650,8 +672,8 @@ def make_stock_order():
     #     dict = {}
     #     dict.update({"customerid":i[0],"customer_name":i[1],"billing_address":i[4]})
     #     customers2.append(dict)
-    cursor.execute("SELECT * from rx_items;")
-    rx_items = cursor.fetchall()
+    cursor.execute("SELECT * from stock_items;")
+    stock_items = cursor.fetchall()
     cursor.execute("SELECT * from treatments;")
     treatments = cursor.fetchall()
     cursor.execute("SELECT * from tints_of_services;")
@@ -661,7 +683,7 @@ def make_stock_order():
     # cursor.execute("select id from rx_orders ORDER BY id DESC LIMIT 1;;")
     # last_row_id = cursor.fetchone()
     # reference = last_row_id[0]+1
-    return render_template("make-stock-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services)
+    return render_template("make-stock-order.html",customers=customers,stock_items=stock_items,treatments=treatments,tints_of_services=tints_of_services)
 
 
 @app.route("/edit-rxorder/<string:id>", methods=['GET','POST'])
@@ -890,7 +912,8 @@ def make_rx_purchase():
         description = None
         item_id = request.form.get("item_idd")
         item_name = request.form.get("item_name")
-        exp_account = request.form.get("exp_account")
+        # exp_account = request.form.get("exp_account")
+        exp_account = None
         # item_qty = request.form.get("qty")
         item_qty = None
         # cost_price = request.form.get("cost_price")
@@ -1007,7 +1030,8 @@ def make_stock_purchase():
         description = None
         item_id = request.form.get("item_idd")
         item_name = request.form.get("item_name")
-        exp_account = request.form.get("exp_account")
+        # exp_account = request.form.get("exp_account")
+        exp_account = None
         # item_qty = request.form.get("qty")
         item_qty = None
         # cost_price = request.form.get("cost_price")
@@ -1126,7 +1150,8 @@ def edit_rx_purchase(id):
         description = None
         item_id = request.form.get("item_idd")
         item_name = request.form.get("item_name")
-        exp_account = request.form.get("exp_account")
+        # exp_account = request.form.get("exp_account")
+        exp_account = None
         # item_qty = request.form.get("qty")
         item_qty = None
         # cost_price = request.form.get("cost_price")
@@ -1260,7 +1285,8 @@ def edit_stock_purchase(id):
         description = None
         item_id = request.form.get("item_idd")
         item_name = request.form.get("item_name")
-        exp_account = request.form.get("exp_account")
+        # exp_account = request.form.get("exp_account")
+        exp_account = None
         # item_qty = request.form.get("qty")
         item_qty = None
         # cost_price = request.form.get("cost_price")
@@ -1397,7 +1423,8 @@ def make_rx_invoice():
         description = None 
         item_id = request.form.get("item_idd")
         item_name = request.form.get("item_name")
-        exp_account = request.form.get("exp_account")
+        # exp_account = request.form.get("exp_account")
+        exp_account = None
         # item_qty = request.form.get("qty")
         # sales_price = request.form.get("sales_price")
         item_qty = None
@@ -1508,7 +1535,8 @@ def make_stock_invoice():
         description = None 
         item_id = request.form.get("item_idd")
         item_name = request.form.get("item_name")
-        exp_account = request.form.get("exp_account")
+        # exp_account = request.form.get("exp_account")
+        exp_account = None
         # item_qty = request.form.get("qty")
         # sales_price = request.form.get("sales_price")
         item_qty = None
@@ -1617,7 +1645,8 @@ def edit_rx_invoice(id):
         # description = request.form.get("dsc")
         description = None
         item_name = request.form.get("item_name")
-        exp_account = request.form.get("exp_account")
+        # exp_account = request.form.get("exp_account")
+        exp_account = None
         # item_qty = request.form.get("qty")
         item_qty = None
         # sales_price = request.form.get("sales_price")
@@ -1733,7 +1762,8 @@ def edit_stock_invoice(id):
         # description = request.form.get("dsc")
         description = None
         item_name = request.form.get("item_name")
-        exp_account = request.form.get("exp_account")
+        # exp_account = request.form.get("exp_account")
+        exp_account = None
         # item_qty = request.form.get("qty")
         item_qty = None
         # sales_price = request.form.get("sales_price")
@@ -2567,45 +2597,79 @@ def view_rx_inventory():
     data = cursor.fetchall()
     return render_template("view-rx-inventory.html",data=data)
 
-@app.route("/view-stock-inventory1", methods=["GET", "POST"])
-def view_stock_inventory1():
-    if request.method == "POST":
-        records = []
-        filename = secure_filename("stock_items.csv")
-        with open(os.path.join(UPLOAD_FOLDER, filename), 'w') as csvfile:
-            writer = csv.writer(csvfile)
-        writer = csv.writer(csvfile)
-        for i in range(25):
-            index_i = i + 1 
-            data = request.form.getlist("row_"+str(index_i))
-            # write the data
-            print(data)
-            writer.writerow(data)
-
-        return redirect(url_for("view_stock_inventory1"))
-    else:
-        conn = mysql.connect()
-        cursor =conn.cursor()
-        # cursor.execute("SELECT * from stock_items;")
-        # data = cursor.fetchall()
-        records = []
-        with open(os.path.join(UPLOAD_FOLDER, "stock_items.csv")) as data:
-            file = csv.reader(data)
-            newuserids = []
-            error = []
-            for index, rows in enumerate(file):
-                records.append(rows)
-        date = datetime.now().date()
-        return render_template("stock_inventory.html",today=date, records = records)
-    
-@app.route("/view-stock-inventory2")
-def view_stock_inventory2():
+@app.route("/view-stock-items")
+def view_stock_items():
     conn = mysql.connect()
     cursor =conn.cursor()
-    # cursor.execute("SELECT * from stock_items;")
-    # data = cursor.fetchall()
-    date = datetime.now().date()
-    return render_template("view-stock-inventory2.html",today=date)
+    # cursor.execute("SELECT * from rx_items;")
+    cursor.execute("SELECT * from stock_items INNER JOIN income_accounts ON stock_items.income_account = income_accounts.id INNER JOIN expense_accounts ON stock_items.expense_account = expense_accounts.id;")
+    data = cursor.fetchall()
+    return render_template("view-stock-items.html",data=data)
+
+@app.route("/view-stock-inventory/<string:type>/<string:item_id>", methods=["GET", "POST"])
+def view_stock_inventory(type,item_id):
+    if request.method == "POST":
+        records = []
+        if type == '1':
+            filename = secure_filename("stock_items1_"+item_id+".csv")
+        elif type == "2":
+            filename = secure_filename("stock_items2_"+item_id+".csv")
+        with open(os.path.join(UPLOAD_FOLDER, filename), 'w') as csvfile:
+            writer = csv.writer(csvfile)
+            for i in range(26):
+                index_i = i + 1 
+                data = request.form.getlist("row_"+str(index_i))
+                # write the data
+                print(data)
+                writer.writerow(data)
+        
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        date = datetime.now()        
+        date = date.strftime("%Y-%m-%d %H:%M:%S")
+        cursor.execute("UPDATE stock_items SET last_updated=%s WHERE id=%s;",(date,item_id))
+        conn.commit()
+        return redirect ("/view-stock-inventory/1/"+item_id)
+    else:
+        file1_exists = exists(os.path.join(UPLOAD_FOLDER, "stock_items1_"+item_id+".csv"))
+        file2_exists = exists(os.path.join(UPLOAD_FOLDER, "stock_items2_"+item_id+".csv"))
+        if file1_exists:
+            records = []
+            with open(os.path.join(UPLOAD_FOLDER, "stock_items1_"+item_id+".csv")) as data:
+                file = csv.reader(data)
+                for index, rows in enumerate(file):
+                    records.append(rows)
+        else:  
+            original = os.path.join(UPLOAD_FOLDER, "demo.csv")
+            target = os.path.join(UPLOAD_FOLDER, "stock_items1_"+item_id+".csv")
+            shutil.copyfile(original, target)
+            records = []
+            with open(os.path.join(UPLOAD_FOLDER, "stock_items1_"+item_id+".csv")) as data:
+                file = csv.reader(data)
+                for index, rows in enumerate(file):
+                    records.append(rows)
+        if file2_exists:
+            records2 = []
+            with open(os.path.join(UPLOAD_FOLDER, "stock_items2_"+item_id+".csv")) as data:
+                file = csv.reader(data)
+                for index, rows in enumerate(file):
+                    records2.append(rows)
+        else:  
+            original = os.path.join(UPLOAD_FOLDER, "demo2.csv")
+            target = os.path.join(UPLOAD_FOLDER, "stock_items2_"+item_id+".csv")
+            shutil.copyfile(original, target)
+            records2 = []
+            with open(os.path.join(UPLOAD_FOLDER, "stock_items2_"+item_id+".csv")) as data:
+                file = csv.reader(data)
+                for index, rows in enumerate(file):
+                    records2.append(rows)
+        date = datetime.now().date()
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("SELECT last_updated from stock_items where id=%s;",(item_id))
+        last_updated = cursor.fetchone()[0]
+        return render_template("stock_inventory.html",today=date, records = records,item_id=item_id, records2 = records2,last_updated=last_updated)
+
 
 @app.route("/generate-rx-purchase/<int:id>")
 def generate_rx_purchase(id):
@@ -2741,6 +2805,46 @@ def add_rx_item():
     expense_accounts = cursor.fetchall()
     return render_template("add-rx-item.html",income_accounts=income_accounts,expense_accounts=expense_accounts)
 
+@app.route("/add-stock-item", methods=['GET','POST'])
+def add_stock_item():
+    if request.method == "POST": 
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        if request.form.get("item_code"):
+            item_code = request.form.get("item_code")
+        else:
+            item_code = None
+        # if request.form.get("desc"):
+        #     description = request.form.get("desc")
+        # else:
+        #     description = None
+        description = None
+        lense_type = request.form.get("lense_type")
+        unit_name = request.form.get("unit_name")
+        purchase_price = request.form.get("purchase_price")
+        sales_price = request.form.get("sales_price")
+        income_account = request.form.get("income_account")
+        expense_account = request.form.get("expense_account")
+        # qty = request.form.get("qty")
+        qty = None
+        # service_cost = request.form.get("service_cost")
+        service_cost = None
+        # total_cost = request.form.get("total_cost") 
+        total_cost = None
+        if not lense_type and not unit_name and not purchase_price and not sales_price and not qty and not service_cost and not total_cost:
+            return "Oops! Something is missing"      
+        cursor.execute("INSERT INTO stock_items (item_code, lense_type, unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account))
+        conn.commit()
+        return redirect(url_for("view_stock_items"))
+    
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from income_accounts;")
+    income_accounts = cursor.fetchall()
+    cursor.execute("SELECT * from expense_accounts;")
+    expense_accounts = cursor.fetchall()
+    return render_template("add-stock-item.html",income_accounts=income_accounts,expense_accounts=expense_accounts)
+
 @app.route("/edit-rx-inventory/<string:id>", methods=['GET','POST'])
 def edit_rx_inventory(id):
     if request.method == "POST": 
@@ -2776,6 +2880,42 @@ def edit_rx_inventory(id):
     cursor.execute("SELECT * from expense_accounts;")
     expense_accounts = cursor.fetchall()
     return render_template("edit-rx-item.html",data=data,income_accounts=income_accounts,expense_accounts=expense_accounts)
+
+@app.route("/edit-stock-inventory/<string:id>", methods=['GET','POST'])
+def edit_stock_inventory(id):
+    if request.method == "POST": 
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        if request.form.get("item_code"):
+            item_code = request.form.get("item_code")
+        else:
+            item_code = None
+        if request.form.get("desc"):
+            description = request.form.get("desc")
+        else:
+            description = None
+        lense_type = request.form.get("lense_type")
+        unit_name = request.form.get("unit_name")
+        purchase_price = request.form.get("purchase_price")
+        sales_price = request.form.get("sales_price")
+        qty = request.form.get("qty")
+        service_cost = request.form.get("service_cost")
+        total_cost = request.form.get("total_cost") 
+        if not lense_type and not unit_name and not purchase_price and not sales_price and not qty and not service_cost and not total_cost:
+            return "Oops! Something is missing"   
+        cursor.execute("UPDATE stock_items SET item_code=%s,lense_type=%s,unit_name=%s,purchase_price=%s,sales_price=%s,qty=%s,service_cost=%s,description=%s,total_cost=%s WHERE id=%s; ",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,id))
+        conn.commit()
+        return redirect(url_for("view_stock_items"))
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    
+    cursor.execute("SELECT * from stock_items where id=%s",(id))
+    data = cursor.fetchone()
+    cursor.execute("SELECT * from income_accounts;")
+    income_accounts = cursor.fetchall()
+    cursor.execute("SELECT * from expense_accounts;")
+    expense_accounts = cursor.fetchall()
+    return render_template("edit-stock-item.html",data=data,income_accounts=income_accounts,expense_accounts=expense_accounts)
 
 
 @app.route("/fetch-billing-address",methods=["POST"])
@@ -2813,6 +2953,17 @@ def fetch_order():
     print(data)
     return str(data)
 
+@app.route("/fetch-stock-order",methods=["POST"])
+def fetch_stock_order():
+    order_id = request.form.get("order_id")
+    print("order_id is: ",order_id)
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT * from stock_orders where id=%s",(order_id))
+    data = cursor.fetchone()
+    print(data)
+    return str(data)
+
 
 @app.route("/fetch-item-price",methods=["POST"])
 def fetch_item_price():
@@ -2821,6 +2972,19 @@ def fetch_item_price():
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT purchase_price,sales_price from rx_items where id=%s",(item_id))
+    data = cursor.fetchone()
+    resp = [data[0],data[1]]
+    print(resp)
+    # print("data is: ",data[0])
+    return str(resp)
+
+@app.route("/fetch-item-price-stock",methods=["POST"])
+def fetch_item_price_stock():
+    item_id = request.form.get("item_id")
+    print("item_id is: ",item_id)
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT purchase_price,sales_price from stock_items where id=%s",(item_id))
     data = cursor.fetchone()
     resp = [data[0],data[1]]
     print(resp)
@@ -2851,6 +3015,17 @@ def update_rxorder_status(id,status):
         cursor.execute("UPDATE rx_orders SET status=%s WHERE id=%s; ",(status,id))
         conn.commit()
         return redirect(url_for("view_rx_orders"))
+    except Exception as e:
+        return str(e)
+
+@app.route("/update-stock-order-status/<string:id>/<string:status>")
+def update_stock_order_status(id,status):
+    try:
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("UPDATE stock_orders SET status=%s WHERE id=%s; ",(status,id))
+        conn.commit()
+        return redirect(url_for("view_stock_orders"))
     except Exception as e:
         return str(e)
 

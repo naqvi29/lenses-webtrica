@@ -93,7 +93,7 @@
                                     <select onchange="lenseselect()" id="lenseSelect" name="item_id"
                                         class="form-control">
                                         <option value="">Select Lense Type</option>
-                                        {% for i in rx_items %}
+                                        {% for i in stock_items %}
                                         <option value="{{i[0]}}">{{i[2]}}</option>
                                         {% endfor %}
 
@@ -427,7 +427,7 @@
         console.log("lense id is:", lense_id)
         $.ajax({
             type: 'POST',
-            url: "/fetch-item-price",
+            url: "/fetch-item-price-stock",
             data: { "item_id": lense_id },
             success: function (response) {
                 console.log(response)

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 20, 2022 at 03:26 AM
+-- Generation Time: Aug 22, 2022 at 02:39 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -312,7 +312,7 @@ CREATE TABLE `rx_invoices` (
   `description` text DEFAULT NULL,
   `item_id` int(11) NOT NULL,
   `item_name` text DEFAULT NULL,
-  `exp_account` text NOT NULL,
+  `exp_account` text DEFAULT NULL,
   `item_qty` int(11) DEFAULT NULL,
   `sales_price` float DEFAULT NULL,
   `total_amount` float NOT NULL,
@@ -601,7 +601,7 @@ CREATE TABLE `stock_invoices` (
   `description` text DEFAULT NULL,
   `item_id` int(11) NOT NULL,
   `item_name` text DEFAULT NULL,
-  `exp_account` text NOT NULL,
+  `exp_account` text DEFAULT NULL,
   `item_qty` int(11) DEFAULT NULL,
   `sales_price` float DEFAULT NULL,
   `total_amount` float NOT NULL,
@@ -654,7 +654,36 @@ CREATE TABLE `stock_invoices` (
 --
 
 INSERT INTO `stock_invoices` (`id`, `issue_date`, `due_date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `sales_price`, `total_amount`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`, `od_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `oc_height`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `od_cost_price`, `od_sales_price`, `od_qty`, `os_cost_price`, `os_sales_price`, `os_qty`, `od_pd`, `os_pd`, `frame_size_h`, `frame_size_v`, `frame_size_d`, `treatment`, `tint_service`) VALUES
-(15, '2022-08-13', '2022-08-11', '19', 0, ' abc', ' asdsadsad', NULL, 5, ' grootex lens', 'Capital gains on investments', NULL, NULL, 2340, ' od_size', ' 1', ' 2', ' 3', ' 4', ' 5', ' 10', ' os_size', ' 8', ' 7', ' 6', ' 5', ' 4', ' 10', ' 2', ' 7', ' bvd', ' ffa', ' pa', ' nrd', ' dec', ' ct', ' och', ' occ', ' dr', ' com', ' read', ' mob', ' gam', NULL, 30, 40, NULL, 30, 38, ' 8', ' 1', ' fsh', ' fsv', ' fsd', ' treatment no12', ' service b');
+(16, '2022-08-22', '', '2', 0, ' Groot', ' R-1231293 PECHS', NULL, 9, ' Stock item 2', 'Legal fees', NULL, NULL, 12, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', NULL, 3, 2, NULL, 3, 2, ' ', ' ', ' ', ' ', ' ', ' treatment no12', ' service b');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stock_items`
+--
+
+CREATE TABLE `stock_items` (
+  `id` int(11) NOT NULL,
+  `item_code` text DEFAULT NULL,
+  `lense_type` text NOT NULL,
+  `unit_name` text NOT NULL,
+  `purchase_price` float NOT NULL,
+  `sales_price` float NOT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `service_cost` float DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `total_cost` float DEFAULT NULL,
+  `income_account` int(11) NOT NULL,
+  `expense_account` int(11) NOT NULL,
+  `last_updated` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stock_items`
+--
+
+INSERT INTO `stock_items` (`id`, `item_code`, `lense_type`, `unit_name`, `purchase_price`, `sales_price`, `qty`, `service_cost`, `description`, `total_cost`, `income_account`, `expense_account`, `last_updated`) VALUES
+(8, 'OUR', 'Our lense2', 'unit name', 200, 300, NULL, NULL, NULL, NULL, 5, 4, '2022-08-22 03:08:22');
 
 -- --------------------------------------------------------
 
@@ -722,6 +751,13 @@ CREATE TABLE `stock_orders` (
   `frame_size_v` text NOT NULL,
   `frame_size_d` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stock_orders`
+--
+
+INSERT INTO `stock_orders` (`id`, `date`, `reference`, `order_number`, `customer_id`, `customer_name`, `item_id`, `item_name`, `billing_address`, `description`, `treatment`, `tint_service`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_no`, `od_prism_detail`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_no`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `frame_size_h`, `oc_height`, `od1`, `os1`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `status`, `od_size`, `os_size`, `od_cost_price`, `od_sales_price`, `od_qty`, `os_cost_price`, `os_sales_price`, `os_qty`, `od_pd`, `os_pd`, `total_amount`, `frame_size_v`, `frame_size_d`) VALUES
+(2, '2022-08-22', 'ref', 'gos-2', 3, 'Groot', 9, 'Stock item 2', 'R-1231293 PECHS', NULL, 'treatment no12', 'service b', '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', NULL, NULL, '', '', '', '', '', '', 'ready', '', '', 2, 3, 2, 2, 3, 2, '', '', 8, '', '');
 
 -- --------------------------------------------------------
 
@@ -793,7 +829,7 @@ CREATE TABLE `stock_purchases` (
 --
 
 INSERT INTO `stock_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `cost_price`, `total_amount`, `status`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_detail`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `oc_height`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `od_cost_price`, `od_sales_price`, `od_qty`, `os_cost_price`, `os_sales_price`, `os_qty`, `od_pd`, `os_pd`, `frame_size_h`, `frame_size_v`, `frame_size_d`, `treatment`, `tint_service`) VALUES
-(23, '2022-08-13', '2022-08-12', '18', 1, 'sup 1', NULL, NULL, ' grootex lens', 'Advertising and promotion', NULL, NULL, 200, NULL, ' sz', ' -0.25', ' 0.25', ' 1', ' 0.25', ' 2', ' 14', ' r', ' sz', ' -0.25', ' 0.25', ' 1', ' 0.25', ' 2', ' 12', ' r', ' bc', ' ffa', ' dad', ' as', ' s', ' s', ' a', ' a', ' as', ' s', ' c', ' c', ' g', 20, 30, '4', 20, 30, '4', ' dd', ' dd', ' a', ' 0', ' 0', ' treatment no12', ' service b');
+(24, '2022-08-22', '', '2', 3, 'sup 2', NULL, 9, ' Stock item 2', 'Accounting feesExpenses', NULL, NULL, 8, NULL, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 2, 3, ' 2', 2, 3, ' 2', ' ', ' ', ' ', ' ', ' ', ' treatment no12', ' service b');
 
 -- --------------------------------------------------------
 
@@ -817,7 +853,7 @@ CREATE TABLE `suppliers` (
 
 INSERT INTO `suppliers` (`id`, `name`, `email`, `phone`, `address`, `description`, `actual_bal`) VALUES
 (1, 'sup 1', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr', 1700),
-(3, 'sup 2', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr', 0);
+(3, 'sup 2', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr', 8);
 
 -- --------------------------------------------------------
 
@@ -994,6 +1030,12 @@ ALTER TABLE `stock_invoices`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `stock_items`
+--
+ALTER TABLE `stock_items`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `stock_orders`
 --
 ALTER TABLE `stock_orders`
@@ -1139,19 +1181,25 @@ ALTER TABLE `rx_purchases`
 -- AUTO_INCREMENT for table `stock_invoices`
 --
 ALTER TABLE `stock_invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `stock_items`
+--
+ALTER TABLE `stock_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `stock_orders`
 --
 ALTER TABLE `stock_orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `stock_purchases`
 --
 ALTER TABLE `stock_purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
