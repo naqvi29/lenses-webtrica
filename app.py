@@ -21,7 +21,7 @@ app.config['MYSQL_DATABASE_PASSWORD'] = ''
 # app.config['MYSQL_DATABASE_PASSWORD'] = 'LAwrence1234**'
 app.config['MYSQL_DATABASE_DB'] = 'lenses'
 app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
-# app.config['MYSQL_DATABASE_PORT'] = 3307
+app.config['MYSQL_DATABASE_PORT'] = 3307
 mysql.init_app(app)
 
 
@@ -77,7 +77,23 @@ def index():
             branch = cursor.fetchone()[0]
             cursor.execute("SELECT COUNT(*) FROM suppliers;")
             suppliers = cursor.fetchone()[0]
-            return render_template("index2.html",customers=customers,users=users,branches=branch,suppliers=suppliers)
+            cursor.execute("SELECT COUNT(*) FROM rx_orders;")
+            rx_orders = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM rx_items;")
+            rx_items = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM rx_purchases;")
+            rx_purchases = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM rx_invoices;")
+            rx_invoices = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM stock_orders;")
+            stock_orders = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM stock_items;")
+            stock_items = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM stock_purchases;")
+            stock_purchases = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM stock_invoices;")
+            stock_invoices = cursor.fetchone()[0]
+            return render_template("index.html",customers=customers,users=users,branches=branch,suppliers=suppliers,rx_orders=rx_orders,rx_items=rx_items,rx_purchases=rx_purchases,rx_invoices=rx_invoices,stock_orders=stock_orders,stock_items=stock_items,stock_invoices=stock_invoices,stock_purchases=stock_purchases)
         else:
              return redirect(url_for('login'))
     else:
