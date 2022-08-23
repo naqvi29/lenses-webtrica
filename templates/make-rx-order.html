@@ -170,7 +170,7 @@
                                                     <td><input onchange="total_amountt()" type="number" min="0" id="od_qty" name="od_qty" class="col-md-6 my-order-inp" style="min-width:100%;"></td>
                                                     <td><input style="min-width:100%;" type="number" min="0" step="any" name="od_cost_price" class="col-md-6 my-order-inp"
                                                         id="od_cost_price"></td>
-                                                    <td><input style="min-width:100%;" type="number" min="0" step="any" name="od_sales_price" class="col-md-6 my-order-inp"
+                                                    <td><input onchange="total_amountt()" style="min-width:100%;" type="number" min="0" step="any" name="od_sales_price" class="col-md-6 my-order-inp"
                                                         id="od_sales_price"></td>
                                                 </tr>
                                                 <tr class="col-md-12">
@@ -203,7 +203,7 @@
                                                     <td><input onchange="total_amountt()" type="number" min="0" name="os_qty" id="os_qty" class="col-md-6 my-order-inp" style="min-width:100%;"></td>
                                                     <td><input style="min-width:100%;" type="number" min="0" step="any" name="os_cost_price" class="col-md-6 my-order-inp"
                                                         id="os_cost_price"></td>
-                                                    <td><input style="min-width:100%;" type="number" min="0" step="any" name="os_sales_price" class="col-md-6 my-order-inp"
+                                                    <td><input onchange="total_amountt()" style="min-width:100%;" type="number" min="0" step="any" name="os_sales_price" class="col-md-6 my-order-inp"
                                                         id="os_sales_price"></td>
                                                 </tr>
                                             </tbody>
@@ -225,13 +225,15 @@
 
                                 <div class="col-md-3">
                                     <label for="exampleFormControlInput1" class="form-label">Services</label>
-                                    <select name="tint_service" class="form-control" required>
+                                    <!-- <select name="tint_service" class="form-control" required>
                                         <option value="" selected disabled>Select Services</option>
                                         {% for i in tints_of_services %}
                                         <option value="{{i[1]}}">{{i[1]}}</option>
                                         {% endfor %}
 
-                                    </select>
+                                    </select> -->
+                                    
+                                    <input type="text" name="tint_service" class="form-control">
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Total Amount</label>
@@ -444,6 +446,13 @@
                 os_sales_price.value = array[0][1];
                 od_cost_price.value = array[0][0];
                 od_sales_price.value = array[0][1];
+                
+                od_qty = document.getElementById("od_qty");
+                os_qty = document.getElementById("os_qty");                
+                total_amount_input = document.getElementById("total_amount");
+                od_qty.value = 0;
+                os_qty.value = 0;
+                total_amount_input.value= 0 ;
             },
             error: function (response) {
                 // alert the error if any error occured
@@ -458,18 +467,18 @@
         let os_qty = document.getElementById("os_qty");
         od_qty = od_qty.value;
         os_qty = os_qty.value;
-        let od_cost_price = document.getElementById("od_cost_price");
-        let os_cost_price = document.getElementById("os_cost_price");
-        // let od_sales_price = document.getElementById("od_sales_price");
-        // let os_sales_price = document.getElementById("os_sales_price");
-        od_cost_price = od_cost_price.value;
-        os_cost_price = os_cost_price.value;
-        // od_sales_price = od_sales_price.value;
-        // os_sales_price = os_sales_price.value;
+        // let od_cost_price = document.getElementById("od_cost_price");
+        // let os_cost_price = document.getElementById("os_cost_price");
+        let od_sales_price = document.getElementById("od_sales_price");
+        let os_sales_price = document.getElementById("os_sales_price");
+        // od_cost_price = od_cost_price.value;
+        // os_cost_price = os_cost_price.value;
+        od_sales_price = od_sales_price.value;
+        os_sales_price = os_sales_price.value;
         console.log("od_qty is:", od_qty);
         console.log("os_qty is:", os_qty);
-        od_total_amount = od_qty*od_cost_price;
-        os_total_amount = os_qty*os_cost_price;
+        od_total_amount = od_qty*od_sales_price;
+        os_total_amount = os_qty*os_sales_price;
         console.log("od_total_amount is:", od_total_amount);
         console.log("os_total_amount is:", os_total_amount);
         total_amount = od_total_amount+os_total_amount;

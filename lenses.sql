@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 22, 2022 at 02:39 AM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 7.4.27
+-- Generation Time: Aug 23, 2022 at 03:55 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,18 +31,19 @@ CREATE TABLE `bank_accounts` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
   `code` varchar(255) DEFAULT NULL,
-  `actual_balance` float NOT NULL
+  `actual_balance` float NOT NULL,
+  `account_number` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `bank_accounts`
 --
 
-INSERT INTO `bank_accounts` (`id`, `name`, `code`, `actual_balance`) VALUES
-(3, 'account1', '1', 0),
-(4, 'account2', '2', 400),
-(5, 'testing', 'TEST', 1000),
-(6, 'Meezan Bank', 'MB', 9000);
+INSERT INTO `bank_accounts` (`id`, `name`, `code`, `actual_balance`, `account_number`) VALUES
+(3, 'account1', '1', 0, '421541515'),
+(4, 'account2', '2', 400, ''),
+(5, 'testing', 'TEST', 1000, ''),
+(6, 'Meezan Bank', 'MB', 9000, '');
 
 -- --------------------------------------------------------
 
@@ -55,7 +56,7 @@ CREATE TABLE `branch` (
   `name` varchar(255) NOT NULL,
   `phone` text NOT NULL,
   `address` text NOT NULL,
-  `security_code` text NOT NULL
+  `security_code` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -103,7 +104,8 @@ CREATE TABLE `cash_accounts` (
 --
 
 INSERT INTO `cash_accounts` (`id`, `name`, `code`, `actual_balance`) VALUES
-(1, 'Cash In Hand', 'CIH', 5000);
+(1, 'Cash In Hand', 'CIH', 5000),
+(3, 'ZAMANAAT', 'ZAM', 450);
 
 -- --------------------------------------------------------
 
@@ -135,16 +137,19 @@ CREATE TABLE `customers` (
   `name` text NOT NULL,
   `email` text NOT NULL,
   `phone` text NOT NULL,
-  `address` text NOT NULL
+  `address` text NOT NULL,
+  `branch_id` int(11) DEFAULT NULL,
+  `branch_name` text DEFAULT NULL,
+  `credit_limit` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `address`) VALUES
-(2, 'abc', 'asdsa@adsdas.com', '65465456465', 'asdsadsad'),
-(3, 'Groot', 'groot@test.com', '03232323232', 'R-1231293 PECHS');
+INSERT INTO `customers` (`id`, `name`, `email`, `phone`, `address`, `branch_id`, `branch_name`, `credit_limit`) VALUES
+(2, 'abc2', 'asdsa@adsdas.com2', '654654564652', 'asdsadsad2', 1, 'my branch', 90000),
+(4, 'Our customer', 'ourcus@gmail.com', '778797', 'R-1327t3ua', 1, 'my branch', NULL);
 
 -- --------------------------------------------------------
 
@@ -165,7 +170,10 @@ CREATE TABLE `expense_accounts` (
 
 INSERT INTO `expense_accounts` (`id`, `name`, `code`, `actual_balance`) VALUES
 (4, 'account2', '2', 400),
-(5, 'testing', 'TEST', 1000);
+(5, 'testing', 'TEST', 1000),
+(7, 'ZAM EXP', 'ZAM', 450),
+(8, 'khaliq exp', 'ke', 5000),
+(10, 'exp acc', '', 4);
 
 -- --------------------------------------------------------
 
@@ -187,7 +195,8 @@ CREATE TABLE `income_accounts` (
 INSERT INTO `income_accounts` (`id`, `name`, `code`, `actual_balance`) VALUES
 (3, 'account1', '1', 0),
 (4, 'account2', '2', 400),
-(5, 'testing', 'TEST', 1000);
+(5, 'testing', 'TEST', 1000),
+(8, 'Khaliq', 'khq', 2000);
 
 -- --------------------------------------------------------
 
@@ -366,7 +375,8 @@ CREATE TABLE `rx_invoices` (
 
 INSERT INTO `rx_invoices` (`id`, `issue_date`, `due_date`, `reference`, `customer_id`, `customer_name`, `billing_address`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `sales_price`, `total_amount`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`, `od_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `oc_height`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `od_cost_price`, `od_sales_price`, `od_qty`, `os_cost_price`, `os_sales_price`, `os_qty`, `od_pd`, `os_pd`, `frame_size_h`, `frame_size_v`, `frame_size_d`, `treatment`, `tint_service`) VALUES
 (10, '2022-08-01', '2022-08-01', '10', 0, ' abc', ' asdsadsad', NULL, 5, ' grootex lens', 'Accounting feesExpenses', NULL, NULL, 2340, ' od_size', ' 1', ' 2', ' 3', ' 4', ' 5', ' 10', ' os_size', ' 8', ' 7', ' 6', ' 5', ' 4', ' 10', ' 2', ' 7', ' bvd', ' ffa', ' pa', ' nrd', ' dec', ' ct', ' och', ' occ', ' dr', ' com', ' read', ' mob', ' gam', NULL, 30, 40, NULL, 30, 38, ' 8', ' 1', ' fsh', ' fsv', ' fsd', ' treatment no12', ' service b'),
-(15, '2022-08-13', '2022-08-11', '19', 0, ' abc', ' asdsadsad', NULL, 5, ' grootex lens', 'Capital gains on investments', NULL, NULL, 2340, ' od_size', ' 1', ' 2', ' 3', ' 4', ' 5', ' 10', ' os_size', ' 8', ' 7', ' 6', ' 5', ' 4', ' 10', ' 2', ' 7', ' bvd', ' ffa', ' pa', ' nrd', ' dec', ' ct', ' och', ' occ', ' dr', ' com', ' read', ' mob', ' gam', NULL, 30, 40, NULL, 30, 38, ' 8', ' 1', ' fsh', ' fsv', ' fsd', ' treatment no12', ' service b');
+(15, '2022-08-13', '2022-08-11', '19', 0, ' abc', ' asdsadsad', NULL, 5, ' grootex lens', 'Capital gains on investments', NULL, NULL, 2340, ' od_size', ' 1', ' 2', ' 3', ' 4', ' 5', ' 10', ' os_size', ' 8', ' 7', ' 6', ' 5', ' 4', ' 10', ' 2', ' 7', ' bvd', ' ffa', ' pa', ' nrd', ' dec', ' ct', ' och', ' occ', ' dr', ' com', ' read', ' mob', ' gam', NULL, 30, 40, NULL, 30, 38, ' 8', ' 1', ' fsh', ' fsv', ' fsd', ' treatment no12', ' service b'),
+(16, '2022-08-23', '', '19', 0, ' abc', ' asdsadsad', NULL, 5, ' grootex lens', NULL, NULL, NULL, 20, ' od_size', ' 1', ' 2', ' 3', ' 4', ' 5', ' 10', ' os_size', ' 8', ' 7', ' 6', ' 5', ' 4', ' 10', ' 2', ' 7', ' bvd', ' ffa', ' pa', ' nrd', ' dec', ' ct', ' och', ' occ', ' dr', ' com', ' read', ' mob', ' gam', NULL, 10, 1, NULL, 10, 1, ' 8', ' 1', ' fsh', ' fsv', ' fsd', ' treatment no12', ' service b');
 
 -- --------------------------------------------------------
 
@@ -398,7 +408,8 @@ INSERT INTO `rx_items` (`id`, `item_code`, `lense_type`, `unit_name`, `purchase_
 (4, 'Gr', 'developer lense', 'unit name', 2000, 3000, 9, 50, NULL, 2050, 5, 4),
 (5, 'item code', 'grootex lens', 'unit name', 20, 30, NULL, NULL, NULL, NULL, 5, 4),
 (6, '0202', 'example', 'exam', 2, 2, NULL, NULL, NULL, NULL, 5, 4),
-(7, 'L2', 'L2', 'L2', 3, 4, NULL, NULL, NULL, NULL, 4, 5);
+(7, 'L2', 'L2', 'L2', 3, 4, NULL, NULL, NULL, NULL, 4, 5),
+(8, 'None', 'Khaliq', 'pirece', 120, 240, NULL, NULL, NULL, NULL, 8, 8);
 
 -- --------------------------------------------------------
 
@@ -582,7 +593,14 @@ CREATE TABLE `rx_purchases` (
 
 INSERT INTO `rx_purchases` (`id`, `issue_date`, `due_date`, `reference`, `supplier_id`, `supplier_name`, `description`, `item_id`, `item_name`, `exp_account`, `item_qty`, `cost_price`, `total_amount`, `status`, `od_size`, `od_sph`, `od_cyl`, `od_axis`, `od_add`, `od_base`, `od_fh`, `od_prism_detail`, `os_size`, `os_sph`, `os_cyl`, `os_axis`, `os_add`, `os_base`, `os_fh`, `os_prism_detail`, `bvd_mm`, `face_angle`, `pantoscopic_Angle`, `nrd`, `decentration`, `center_edge`, `oc_height`, `occupation`, `driving`, `computer`, `reading`, `mobile`, `gaming`, `od_cost_price`, `od_sales_price`, `od_qty`, `os_cost_price`, `os_sales_price`, `os_qty`, `od_pd`, `os_pd`, `frame_size_h`, `frame_size_v`, `frame_size_d`, `treatment`, `tint_service`) VALUES
 (22, '2022-08-13', '2022-08-04', '19', 1, 'sup 1', NULL, NULL, ' grootex lens', 'GOS SHAFAY SOFTWARE', NULL, NULL, 1500, NULL, ' od_size', ' 1', ' 2', ' 3', ' 4', ' 5', ' 10', ' 7', ' os_size', ' 8', ' 7', ' 6', ' 5', ' 4', ' 10', ' 2', ' bvd', ' ffa', ' pa', ' nrd', ' dec', ' ct', ' och', ' occ', ' dr', ' com', ' read', ' mob', ' gam', 20, 30, ' 40', 20, 30, ' 38', ' 8', ' 1', ' fsh', ' fsv', ' fsd', ' treatment no12', ' service b'),
-(23, '2022-08-13', '2022-08-12', '18', 1, 'sup 1', NULL, NULL, ' grootex lens', 'Advertising and promotion', NULL, NULL, 200, NULL, ' sz', ' -0.25', ' 0.25', ' 1', ' 0.25', ' 2', ' 14', ' r', ' sz', ' -0.25', ' 0.25', ' 1', ' 0.25', ' 2', ' 12', ' r', ' bc', ' ffa', ' dad', ' as', ' s', ' s', ' a', ' a', ' as', ' s', ' c', ' c', ' g', 20, 30, '4', 20, 30, '4', ' dd', ' dd', ' a', ' 0', ' 0', ' treatment no12', ' service b');
+(23, '2022-08-13', '2022-08-12', '18', 1, 'sup 1', NULL, NULL, ' grootex lens', 'Advertising and promotion', NULL, NULL, 200, NULL, ' sz', ' -0.25', ' 0.25', ' 1', ' 0.25', ' 2', ' 14', ' r', ' sz', ' -0.25', ' 0.25', ' 1', ' 0.25', ' 2', ' 12', ' r', ' bc', ' ffa', ' dad', ' as', ' s', ' s', ' a', ' a', ' as', ' s', ' c', ' c', ' g', 20, 30, '4', 20, 30, '4', ' dd', ' dd', ' a', ' 0', ' 0', ' treatment no12', ' service b'),
+(24, '2022-08-23', '', '17', 1, 'sup 1', NULL, 5, ' grootex lens', NULL, NULL, NULL, 0, NULL, ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', 20, 30, ' 2', 0, 0, ' 0', ' ', ' ', ' 12', ' 0', ' 0', ' treatment no12', ' service b'),
+(25, '2022-08-23', '', '17', 1, 'sup 1', NULL, 5, ' grootex lens', NULL, NULL, NULL, 0, NULL, ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', 20, 30, ' 2', 0, 0, ' 0', ' ', ' ', ' 12', ' 0', ' 0', ' treatment no12', ' service b'),
+(26, '2022-08-23', '', '17', 1, 'sup 1', NULL, 5, ' grootex lens', NULL, NULL, NULL, 0, NULL, ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', 20, 30, ' 2', 0, 0, ' 0', ' ', ' ', ' 12', ' 0', ' 0', ' treatment no12', ' service b'),
+(27, '2022-08-23', '', '17', 1, 'sup 1', NULL, 5, ' grootex lens', NULL, NULL, NULL, 0, NULL, ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', 20, 30, ' 2', 0, 0, ' 0', ' ', ' ', ' 12', ' 0', ' 0', ' treatment no12', ' service b'),
+(28, '2022-08-23', '', '17', 1, 'sup 1', NULL, 5, ' grootex lens', NULL, NULL, NULL, 0, NULL, ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', 20, 30, ' 2', 0, 0, ' 0', ' ', ' ', ' 12', ' 0', ' 0', ' treatment no12', ' service b'),
+(29, '2022-08-23', '', '17', 1, 'sup 1', NULL, 5, ' grootex lens', NULL, NULL, NULL, 0, NULL, ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' tex', ' 0.25', ' 0.25', ' 1', ' 0.25', ' 1', ' 10', ' de', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', ' 12', 20, 30, ' 2', 0, 0, ' 0', ' ', ' ', ' 12', ' 0', ' 0', ' treatment no12', ' service b'),
+(30, '2022-08-23', '', '20', 1, 'sup 1', NULL, 7, ' L2', NULL, NULL, NULL, 12, NULL, ' 1', ' 1', ' 4', ' ', ' ', ' ', ' ', ' ', ' 1', ' 1', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 3, 4, ' 2', 3, 4, ' 2', ' ', ' ', ' ', ' ', ' ', ' treatment no12', ' service b');
 
 -- --------------------------------------------------------
 
@@ -683,7 +701,8 @@ CREATE TABLE `stock_items` (
 --
 
 INSERT INTO `stock_items` (`id`, `item_code`, `lense_type`, `unit_name`, `purchase_price`, `sales_price`, `qty`, `service_cost`, `description`, `total_cost`, `income_account`, `expense_account`, `last_updated`) VALUES
-(8, 'OUR', 'Our lense2', 'unit name', 200, 300, NULL, NULL, NULL, NULL, 5, 4, '2022-08-22 03:08:22');
+(8, 'OUR', 'Our lense2', 'unit name', 200, 300, NULL, NULL, NULL, NULL, 5, 4, '2022-08-22 15:38:40'),
+(12, NULL, 'myitem stock', 'priece', 450, 500, NULL, NULL, NULL, NULL, 8, 8, '');
 
 -- --------------------------------------------------------
 
@@ -852,7 +871,7 @@ CREATE TABLE `suppliers` (
 --
 
 INSERT INTO `suppliers` (`id`, `name`, `email`, `phone`, `address`, `description`, `actual_bal`) VALUES
-(1, 'sup 1', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr', 1700),
+(1, 'sup 1', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr', 1712),
 (3, 'sup 2', 'sup1@gmail.com', '23093029', 'R-1332ad', 'descr', 8);
 
 -- --------------------------------------------------------
@@ -1079,7 +1098,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bank_accounts`
 --
 ALTER TABLE `bank_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `branch`
@@ -1097,7 +1116,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `cash_accounts`
 --
 ALTER TABLE `cash_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1109,19 +1128,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `expense_accounts`
 --
 ALTER TABLE `expense_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `income_accounts`
 --
 ALTER TABLE `income_accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `inoutreceipts`
@@ -1151,13 +1170,13 @@ ALTER TABLE `pricing`
 -- AUTO_INCREMENT for table `rx_invoices`
 --
 ALTER TABLE `rx_invoices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `rx_items`
 --
 ALTER TABLE `rx_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `rx_orders`
@@ -1175,7 +1194,7 @@ ALTER TABLE `rx_orders_old`
 -- AUTO_INCREMENT for table `rx_purchases`
 --
 ALTER TABLE `rx_purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `stock_invoices`
@@ -1187,7 +1206,7 @@ ALTER TABLE `stock_invoices`
 -- AUTO_INCREMENT for table `stock_items`
 --
 ALTER TABLE `stock_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `stock_orders`

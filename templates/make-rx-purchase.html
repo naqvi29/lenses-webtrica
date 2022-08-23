@@ -299,7 +299,7 @@
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Total Amount</label>
-                                    <input type="number" step="any" name="total_amount" class="form-control"
+                                    <input type="text" step="any" name="total_amount" class="form-control"
                                         id="total_amount">
                                 </div>
                                 <h4 class="w-100 mb-2 mt-4">Special Measurement For Digital Surfacing</h4>
@@ -747,8 +747,10 @@
                 od_pd.value = array[53].replace("'", "").replace("'", "");
                 let os_pd = document.getElementById("os_pd")
                 os_pd.value = array[54].replace("'", "").replace("'", "");
-                let exp_account = document.getElementById("exp_account")
-                exp_account.value = array[61].replace("'", "").replace("'", "");
+                // let exp_account = document.getElementById("exp_account")
+                // exp_account.value = array[61].replace("'", "").replace("'", "");
+                let total_amount = document.getElementById("total_amount")
+                total_amount.value = array[55].replace("'", "").replace("'", "");
                 // .. 
 
                 // let Qty = document.getElementById('qty').value;
@@ -764,15 +766,15 @@
                 od_cost_price = document.getElementById("od_cost_price").value;
                 os_cost_price = document.getElementById("os_cost_price").value;
 
-                od_total_amount = od_qty * od_cost_price;
-                console.log("od_total_amount is: ", od_total_amount)
-                os_total_amount = os_qty * os_cost_price;
-                console.log("os_total_amount is: ", os_total_amount)
-                total_amount = od_total_amount + os_total_amount;
-                console.log("total amount is: ", total_amount)
+                // od_total_amount = od_qty * od_cost_price;
+                // console.log("od_total_amount is: ", od_total_amount)
+                // os_total_amount = os_qty * os_cost_price;
+                // console.log("os_total_amount is: ", os_total_amount)
+                // total_amount = od_total_amount + os_total_amount;
+                // console.log("total amount is: ", total_amount)
 
-                Total = document.getElementById("total_amount");
-                Total.value = total_amount;
+                // Total = document.getElementById("total_amount");
+                // Total.value = total_amount;
                 // .. 
             },
             error: function (response) {

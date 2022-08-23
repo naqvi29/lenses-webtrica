@@ -395,17 +395,26 @@ def add_customer():
         customer_email= request.form.get("customer_email")
         customer_phone= request.form.get("customer_phone")
         customer_address= request.form.get("customer_address")
+        branch_id= request.form.get("branch_id")
+        credit_limit= request.form.get("credit_limit")
         # customer_description= request.form.get("customer_description")
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("INSERT INTO customers (name, email,phone,address) VALUES (%s,%s,%s,%s);",(customer_name,customer_email,customer_phone,customer_address))
+
+        
+        cursor.execute("SELECT name from branch where id=%s",(branch_id))        
+        branch_name = cursor.fetchone()[0]
+
+        cursor.execute("INSERT INTO customers (name, email,phone,address,branch_id,branch_name,credit_limit) VALUES (%s,%s,%s,%s,%s,%s,%s);",(customer_name,customer_email,customer_phone,customer_address,branch_id,branch_name,credit_limit))
         conn.commit()
-        return redirect(url_for("add_customer"))
+        return redirect(url_for("all_customers"))
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT * from customers")
     customers = cursor.fetchall()
-    return render_template("add-customer.html",customers=customers)
+    cursor.execute("SELECT * from branch")
+    branches = cursor.fetchall()
+    return render_template("add-customer.html",customers=customers,branches=branches)
 
 @app.route("/edit-customer/<string:id>", methods=['GET','POST'])
 def edit_customer(id):
@@ -414,10 +423,17 @@ def edit_customer(id):
         customer_email= request.form.get("customer_email")
         customer_phone= request.form.get("customer_phone")
         customer_address= request.form.get("customer_address")
+        branch_id= request.form.get("branch_id")
+        credit_limit= request.form.get("credit_limit")
         # customer_description= request.form.get("customer_description")
         conn = mysql.connect()
-        cursor =conn.cursor()        
-        cursor.execute("UPDATE customers SET name=%s,email=%s,phone=%s,address=%s WHERE id=%s; ",(customer_name,customer_email,customer_phone,customer_address,id))
+        cursor =conn.cursor()
+
+        
+        cursor.execute("SELECT name from branch where id=%s",(branch_id))        
+        branch_name = cursor.fetchone()[0]
+
+        cursor.execute("UPDATE customers SET name=%s,email=%s,phone=%s,address=%s,branch_id=%s,branch_name=%s,credit_limit=%s WHERE id=%s; ",(customer_name,customer_email,customer_phone,customer_address,branch_id,branch_name,credit_limit,id))
         conn.commit()
         return redirect(url_for("all_customers"))
     conn = mysql.connect()
@@ -425,7 +441,9 @@ def edit_customer(id):
     
     cursor.execute("SELECT * from customers where id=%s",(id))
     data = cursor.fetchone()
-    return render_template("edit-customer.html",data=data)
+    cursor.execute("SELECT * from branch")
+    branches = cursor.fetchall()
+    return render_template("edit-customer.html",data=data,branches=branches)
 
 @app.route("/view-all-customers")
 def all_customers():
@@ -606,12 +624,12 @@ def make_stock_order():
         od_cyl = request.form.get("od_cyl")
         od_axis = request.form.get("od_axis")
         od_add = request.form.get("od_add")
-        od_base = request.form.get("od_base")
-        od_fh = request.form.get("od_fh")
+        od_base = None
+        od_fh = None
         # od_prism_no = request.form.get("od_prism_no")
         od_prism_no = None
-        od_prism_detail = request.form.get("od_prism_detail")
-        od_pd = request.form.get("od_pd")
+        od_prism_detail = None
+        od_pd = None
         od_cost_price = request.form.get("od_cost_price")
         od_sales_price = request.form.get("od_sales_price")
         od_qty = request.form.get("od_qty")
@@ -621,37 +639,37 @@ def make_stock_order():
         os_cyl = request.form.get("os_cyl")
         os_axis = request.form.get("os_axis")
         os_add = request.form.get("os_add")
-        os_base = request.form.get("os_base")
-        os_fh = request.form.get("os_fh")
+        os_base = None
+        os_fh = None
         # os_prism_no = request.form.get("os_prism_no")
         
         os_prism_no = None
-        os_prism_detail = request.form.get("os_prism_detail")
-        os_pd = request.form.get("os_pd")
+        os_prism_detail = None
+        os_pd = None
         os_cost_price = request.form.get("os_cost_price")
         os_sales_price = request.form.get("os_sales_price")
         os_qty = request.form.get("os_qty")
         
-        bvd_mm = request.form.get("bvd_mm")
-        face_angle = request.form.get("face_angle")
-        pantoscopic_Angle = request.form.get("pantoscopic_Angle")
-        nrd = request.form.get("nrd")
-        decentration = request.form.get("decentration")
-        center_edge = request.form.get("center_edge")
-        frame_size_h = request.form.get("frame_size_h")
-        frame_size_v = request.form.get("frame_size_v")
-        frame_size_d = request.form.get("frame_size_d")
-        oc_height = request.form.get("oc_height")
+        bvd_mm = None
+        face_angle = None
+        pantoscopic_Angle = None
+        nrd = None
+        decentration = None
+        center_edge = None
+        frame_size_h = None
+        frame_size_v = None
+        frame_size_d = None
+        oc_height = None
         # od1 = request.form.get("od1")
         # os1 = request.form.get("os1")
         od1 = None
         os1 = None
-        occupation = request.form.get("occupation")
-        driving = request.form.get("driving")
-        computer = request.form.get("computer")
-        reading = request.form.get("reading")
-        mobile = request.form.get("mobile")
-        gaming = request.form.get("gaming")
+        occupation = None
+        driving = None
+        computer = None
+        reading = None
+        mobile = None
+        gaming = None
         status = "pending"
         total_amount = request.form.get("total_amount")
 
@@ -822,20 +840,20 @@ def edit_stock_order(id):
         # description = request.form.get("dsc")
         description = None
         
-        treatment = request.form.get("treatment")
-        tint_service = request.form.get("tint_service")
+        treatment = None
+        tint_service = None
 
         od_size = request.form.get("od_size")
         od_sph = request.form.get("od_sph")
         od_cyl = request.form.get("od_cyl")
         od_axis = request.form.get("od_axis")
         od_add = request.form.get("od_add")
-        od_base = request.form.get("od_base")
-        od_fh = request.form.get("od_fh")
+        od_base = None
+        od_fh = None
         # od_prism_no = request.form.get("od_prism_no")
         od_prism_no = None
-        od_prism_detail = request.form.get("od_prism_detail")
-        od_pd = request.form.get("od_pd")
+        od_prism_detail = None
+        od_pd = None
         od_cost_price = request.form.get("od_cost_price")
         od_sales_price = request.form.get("od_sales_price")
         od_qty = request.form.get("od_qty")
@@ -845,37 +863,37 @@ def edit_stock_order(id):
         os_cyl = request.form.get("os_cyl")
         os_axis = request.form.get("os_axis")
         os_add = request.form.get("os_add")
-        os_base = request.form.get("os_base")
-        os_fh = request.form.get("os_fh")
+        os_base = None
+        os_fh = None
         # os_prism_no = request.form.get("os_prism_no")
         
         os_prism_no = None
-        os_prism_detail = request.form.get("os_prism_detail")
-        os_pd = request.form.get("os_pd")
+        os_prism_detail = None
+        os_pd = None
         os_cost_price = request.form.get("os_cost_price")
         os_sales_price = request.form.get("os_sales_price")
         os_qty = request.form.get("os_qty")
         
-        bvd_mm = request.form.get("bvd_mm")
-        face_angle = request.form.get("face_angle")
-        pantoscopic_Angle = request.form.get("pantoscopic_Angle")
-        nrd = request.form.get("nrd")
-        decentration = request.form.get("decentration")
-        center_edge = request.form.get("center_edge")
-        frame_size_h = request.form.get("frame_size_h")
-        frame_size_v = request.form.get("frame_size_v")
-        frame_size_d = request.form.get("frame_size_d")
-        oc_height = request.form.get("oc_height")
+        bvd_mm = None
+        face_angle = None
+        pantoscopic_Angle = None
+        nrd = None
+        decentration = None
+        center_edge = None
+        frame_size_h = None
+        frame_size_v = None
+        frame_size_d = None
+        oc_height = None
         # od1 = request.form.get("od1")
         # os1 = request.form.get("os1")
         od1 = None
         os1 = None
-        occupation = request.form.get("occupation")
-        driving = request.form.get("driving")
-        computer = request.form.get("computer")
-        reading = request.form.get("reading")
-        mobile = request.form.get("mobile")
-        gaming = request.form.get("gaming")
+        occupation = None
+        driving = None
+        computer = None
+        reading = None
+        mobile = None
+        gaming = None
         status = "pending"
         total_amount = request.form.get("total_amount")
 
@@ -1984,7 +2002,8 @@ def add_branch():
         name= request.form.get("name")
         phone= request.form.get("phone")
         address= request.form.get("address")
-        security_code= request.form.get("security_code")
+        # security_code= request.form.get("security_code")
+        security_code= None
         conn = mysql.connect()
         cursor =conn.cursor()
         cursor.execute("INSERT INTO branch (name, phone,address,security_code) VALUES (%s,%s,%s,%s);",(name,phone,address,security_code))
@@ -2002,7 +2021,8 @@ def edit_branch(id):
         name= request.form.get("name")
         phone= request.form.get("phone")
         address= request.form.get("address")
-        security_code= request.form.get("security_code")
+        # security_code= request.form.get("security_code")
+        security_code= None
         conn = mysql.connect()
         cursor =conn.cursor()
         cursor.execute("UPDATE branch SET name=%s,phone=%s,address=%s,security_code=%s WHERE id=%s; ",(name,phone,address,security_code,id))
@@ -2489,10 +2509,11 @@ def add_bank_accounts():
         cursor =conn.cursor()
         name= request.form.get("name")
         code= request.form.get("code")
+        account_number= request.form.get("account_number")
         starting_bal= float(request.form.get("starting_bal"))
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("INSERT INTO bank_accounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
+        cursor.execute("INSERT INTO bank_accounts (name, code, actual_balance,account_number) VALUES (%s,%s,%s,%s);",(name,code,starting_bal,account_number))
         conn.commit()
         return redirect(url_for("view_bank_accounts"))
     return render_template("add-bank-accounts.html")
@@ -2524,13 +2545,13 @@ def add_accounts(type):
         conn = mysql.connect()
         cursor =conn.cursor()
         if type == "income":
-            cursor.execute("INSERT INTO cash_accounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
+            cursor.execute("INSERT INTO income_accounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
             conn.commit()
-            return redirect(url_for("view_cash_accounts"))
+            return redirect(url_for("view_income_accounts"))
         elif type == "expense":
-            cursor.execute("INSERT INTO cash_accounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
+            cursor.execute("INSERT INTO expense_accounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
             conn.commit()
-            return redirect(url_for("view_cash_accounts"))
+            return redirect(url_for("view_expense_accounts"))
     
     if type == "income":
         return render_template("add-income-accounts.html")
@@ -2547,7 +2568,9 @@ def edit_bank_and_cash_accounts(type,id):
         conn = mysql.connect()
         cursor =conn.cursor()
         if type=="bank":
-            cursor.execute("UPDATE bank_accounts SET name=%s, code=%s WHERE id=%s;",(name,code,id))
+            
+            account_number= request.form.get("account_number")
+            cursor.execute("UPDATE bank_accounts SET name=%s, code=%s,account_number=%s WHERE id=%s;",(name,code,account_number,id))
             conn.commit()
             return redirect(url_for("view_bank_accounts"))
         elif type=="cash":
@@ -2811,7 +2834,7 @@ def add_rx_item():
             return "Oops! Something is missing"      
         cursor.execute("INSERT INTO rx_items (item_code, lense_type, unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account))
         conn.commit()
-        return redirect(url_for("add_rx_item"))
+        return redirect(url_for("view_rx_inventory"))
     
     conn = mysql.connect()
     cursor =conn.cursor()

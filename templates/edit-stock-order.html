@@ -130,11 +130,11 @@
                                             <th width="5%">CYL</th>
                                             <th width="5%">AXIS</th>
                                             <th width="5%">ADD</th>
-                                            <th width="5%">BASE</th>
-                                            <th width="5%">FH</th>
+                                            <!-- <th width="5%">BASE</th>
+                                            <th width="5%">FH</th> -->
                                             <!-- <th>PRISM NO</th> -->
-                                            <th width="5%">Prism</th>
-                                            <th width="5%">PD</th>
+                                            <!-- <th width="5%">Prism</th>
+                                            <th width="5%">PD</th> -->
                                             <th width="5%">Qty</th>
                                             <th width="5%">CostPrice</th>
                                             <th width="5%">SalesPrice</th>
@@ -155,18 +155,18 @@
                                                     step="0.25" min="0" max="10" class="my-order-inp"
                                                     name="od_add" value="{{data[15]}}">
                                             </td>
-                                            <td><input class="col-md-6" style="min-width:100%;" min="1" max="10"
+                                            <!-- <td><input class="col-md-6" style="min-width:100%;" min="1" max="10"
                                                     type="number" class="my-order-inp" name="od_base" value="{{data[16]}}"></td>
                                             <td><input class="col-md-6" style="min-width:100%;" type="number"
                                                     min="10" max="30" step="2" class="my-order-inp"
                                                     name="od_fh" value="{{data[17]}}">
-                                            </td>
+                                            </td> -->
                                             <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                     class="my-order-inp" name="od_prism_no"></td> -->
-                                            <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                            <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                     class="my-order-inp1" name="od_prism_detail" value="{{data[19]}}"></td>
                                             <td><input class="col-md-6" style="min-width:100%;" type="text"
-                                                    class="my-order-inp1" name="od_pd" value="{{data[53]}}"></td>
+                                                    class="my-order-inp1" name="od_pd" value="{{data[53]}}"></td> -->
                                             <td><input onchange="total_amountt()" value="{{data[49]}}" type="number" min="0" id="od_qty" name="od_qty" class="col-md-6 my-order-inp" style="min-width:100%;"></td>
                                             <td><input style="min-width:100%;" type="number" min="0" step="any" name="od_cost_price" class="col-md-6 my-order-inp"
                                                 id="od_cost_price" value="{{data[47]}}"></td>
@@ -188,18 +188,18 @@
                                                     step="0.25" min="0" max="10" class="my-order-inp"
                                                     name="os_add" value="{{data[23]}}">
                                             </td>
-                                            <td><input class="col-md-6" style="min-width:100%;" type="number"
+                                            <!-- <td><input class="col-md-6" style="min-width:100%;" type="number"
                                                     min="1" max="10" class="my-order-inp" name="os_base" value="{{data[24]}}"></td>
                                             <td><input class="col-md-6" style="min-width:100%;" type="number"
                                                     min="10" max="30" step="2" class="my-order-inp"
                                                     name="os_fh" value="{{data[25]}}">
-                                            </td>
+                                            </td> -->
                                             <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                     class="my-order-inp" name="os_prism_no"></td> -->
-                                            <td><input class="col-md-6" style="min-width:100%;" type="text"
+                                            <!-- <td><input class="col-md-6" style="min-width:100%;" type="text"
                                                     class="my-order-inp1" name="os_prism_detail" value="{{data[27]}}"></td>
                                                     <td><input  class="col-md-6" style="min-width:100%;" type="text"
-                                                            class="my-order-inp1" name="os_pd" value="{{data[54]}}"></td>
+                                                            class="my-order-inp1" name="os_pd" value="{{data[54]}}"></td> -->
                                             <td><input onchange="total_amountt()" value="{{data[52]}}" type="number" min="0" name="os_qty" id="os_qty" class="col-md-6 my-order-inp" style="min-width:100%;"></td>
                                             <td><input style="min-width:100%;" type="number" min="0" step="any" name="os_cost_price" class="col-md-6 my-order-inp"
                                                 id="os_cost_price" value="{{data[50]}}"></td>
@@ -211,7 +211,7 @@
                             </div>
                             
 
-                            <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                                 <label for="exampleFormControlInput1" class="form-label">Coating</label>
                                 <input type="text" name="treatment" class="form-control"
                                     value="{{data[10]}}">
@@ -222,116 +222,12 @@
                                 <label for="exampleFormControlInput1" class="form-label">Services</label>
                                 <input type="text" name="tint_service" class="form-control"
                                     value="{{data[11]}}">
-                            </div>
+                            </div> -->
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Total Amount</label>
                                 <input type="number" step="any" name="total_amount" class="form-control"
                                     id="total_amount" value="{{data[55]}}">
-                            </div>
-                            <h4 class="w-100 mb-2 mt-4">Special Measurement For Digital Surfacing</h4>
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">BVD</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="bvd_mm" value="{{data[28]}}">
-                                <!--Enter BVD in mm -->
-
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">FFA</label>
-                                <!-- <label for="exampleFormControlInput1" class="form-label">Face from Angle</label> -->
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="face_angle" value="{{data[29]}}">
-                                <!--Enter Face from Angle-->
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">PA</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="pantoscopic_Angle" value="{{data[30]}}">
-                                <!--pantoscopic_Angle-->
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">NRD</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control" name="nrd"
-                                    value="{{data[31]}}">
-                                <!--Enter NRD(Near Reading Distance)-->
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Decentr.</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="decentration" value="{{data[32]}}">
-                                <!--Enter Decentration mm-->
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">CT or ET</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="center_edge" value="{{data[33]}}">
-                                <!--Enter Center Thickness or Edge Thickness-->
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <!-- <label for="exampleFormControlInput1" class="form-label">Frame Size Horizontal
-                                    mm</label> -->
-                                <label for="exampleFormControlInput1" class="form-label">FS Horizontal</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="frame_size_h" value="{{data[34]}}">
-                                <!--Enter Frame Size Horizontal mm-->
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">FS Vertical</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control" name="frame_size_v" value="{{data[56]}}">
-                            </div>
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">FS Diagonal</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control" name="frame_size_d" value="{{data[57]}}">
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">OC Height</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="oc_height" value="{{data[35]}}">
-                                <!--Enter OC Height-->
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Occupation</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="occupation" value="{{data[38]}}">
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Driving %</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="driving" value="{{data[39]}}">
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Computer %</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="computer" value="{{data[40]}}">
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Reading %</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="reading" value="{{data[41]}}">
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Mobile %</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="mobile" value="{{data[42]}}">
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Gaming %</label>
-                                <input  style="max-width: 50%;" type="text" class="form-control"
-                                    name="gaming" value="{{data[43]}}">
-                            </div>
+                            </div>=
 
 
 
@@ -343,7 +239,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <a href="/view-stock-orders" class="btn btn-danger">Back</a>
+                <a href="/view-stock-orders" class="btn btn-secondary">Back</a>
             </div>
         </div>
     </div>
