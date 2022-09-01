@@ -1,0 +1,141 @@
+{% extends 'layout.html' %} {% block title %}Print Card{% endblock %} {% block
+head %} {{ super() }} {% endblock %} {% block content %}
+<style>
+    td {
+      width: 38px;
+    }
+    tr {
+      text-align: center;
+    }
+  </style>
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6"></div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">All Coatings</li>
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content" >
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card card-default">
+            <div class="card-header">
+              <h3 class="card-title"><strong>Print Card</strong></h3>
+
+              <div class="card-tools">
+                <button
+                  type="button"
+                  class="btn btn-tool"
+                  data-card-widget="collapse"
+                >
+                  <i class="fas fa-minus"></i>
+                </button>
+                <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                              <i class="fas fa-times"></i>
+                          </button> -->
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" id="printableArea" style="display: block;font-size: 12px" >
+              <div class="card mb-4">
+                <div class="card-body px-0 pt-0 pb-2">
+                  <div class="row" style="margin-top: 39px; margin-left: 44px">
+                    <div class="col-sm-4">
+                      <table>
+                        <tr>
+                          <td><strong>{{data[3]}}</strong></td>
+                          <td><img width="40%" src="/static/img/sph.png" alt=""></td>
+                          <td><img width="50%" src="/static/img/cyl.png" alt=""></td>
+                          <td><img width="55%" src="/static/img/axis.png" alt=""></td>
+                          <td><img width="47%" src="/static/img/add.png" alt=""></td>
+                          <td><img width="47%" src="/static/img/prism.png" alt=""></td>
+                          <td><img width="47%" src="/static/img/base.png" alt=""></td>
+                        </tr>
+                        <tr>
+                          <td>R</td>
+                          <td>{{data[12]}}</td>
+                          <td>{{data[13]}}</td>
+                          <td>{{data[14]}}</td>
+                          <td>{{data[15]}}</td>
+                          <td style="text-align: left">{{data[16]}}</td>
+                          <td style="text-align: left">{{data[19]}}</td>
+                        </tr>
+                        <tr>
+                          <td>L</td>
+                          <td>{{data[20]}}</td>
+                          <td>{{data[21]}}</td>
+                          <td>{{data[22]}}</td>
+                          <td>{{data[23]}}</td>
+                          <td style="text-align: left">{{data[27]}}</td>
+                          <td style="text-align: left">{{data[24]}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-left: 20px; margin-top: 25px">
+                    <div class="col-sm-4">
+                      <strong>{{data[7]}}</strong>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-left: 20px;">
+                    <div class="col-sm-4">
+                      <strong>{{data[10]}}</strong>
+                    </div>
+                  </div>
+                  <div class="row" style="margin-left: 20px;">
+                    <div class="col-sm-4">
+                      <strong>{{data[5]}}</strong>
+                    </div>
+                  </div>
+                  <div class="row" style="text-align: right">
+                    <div class="col-sm-5" style="padding-right: 35px">
+                      <strong>{{data[1]}}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer" style="display: block">
+              <!-- <a href="/" class="btn btn-success">Back</a> -->
+              <button onclick="printDiv('printableArea')" class="btn btn-sm btn-success ml-2" type="button">Print Card</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock %} {%block scripts %} 
+
+<script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>{%endblock%}
+
+

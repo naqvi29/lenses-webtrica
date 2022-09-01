@@ -67,7 +67,7 @@
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Reference</label>
                                     {% if copy %}
-                                    <select disabled name="reference" onchange="referenceselect()" id="reference"
+                                    <select readonly name="reference" onchange="referenceselect()" id="reference"
                                         class="form-control">
                                         <option selected value="{{rx_orders[0]}}">{{rx_orders[3]}}</option>
                                     </select>

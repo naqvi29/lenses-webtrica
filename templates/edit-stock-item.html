@@ -58,7 +58,11 @@
                                     <label for="exampleFormControlInput1" class="form-label">Income Account</label>
                                     <select type="text" class="form-control" name="income_account">
                                         {% for i in income_accounts %}
+                                        {% if i[0] == data[10]%}
+                                        <option selected value="{{i[0]}}">{{i[1]}}</option>
+                                        {%else%}
                                         <option value="{{i[0]}}">{{i[1]}}</option>
+                                        {%endif%}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -66,7 +70,11 @@
                                     <label for="exampleFormControlInput1" class="form-label">Expense Account</label>
                                     <select type="text" class="form-control" name="expense_account">
                                         {% for i in expense_accounts %}
+                                        {% if i[0] == data[11]%}
+                                        <option selected value="{{i[0]}}">{{i[1]}}</option>
+                                        {%else%}
                                         <option value="{{i[0]}}">{{i[1]}}</option>
+                                        {%endif%}
                                         {% endfor %}
                                     </select>
                                 </div>

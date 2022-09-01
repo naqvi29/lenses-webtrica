@@ -26,7 +26,8 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title"><strong>Rx Sales Invoice # {{rx_invoices[0]}}</strong></h3>
+                        <h3 class="card-title"><strong>Rx Sales Invoice # {{rx_invoices[0]}}</strong>
+                            <button onclick="printDiv('printableArea')" class="btn btn-sm btn-success ml-4" type="button">Print Invoice</button></h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -38,7 +39,7 @@
                         </div>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body" style="display: block;">
+                    <div id="printableArea"  class="card-body" style="display: block;">
                         <div class="row">
                             
                             <form class="py-4 px-5 row" action="#" method="POST"
@@ -244,6 +245,11 @@
                                     {% endfor %}
 
                                 </select> -->
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Discount %</label>
+                                <input disabled onchange="qty_unitP_changed()"  type="text" step="any" name="discount" class="form-control"
+                                    id="discount" value="{{rx_invoices[56]}}">
                             </div>
                             <div class="col-md-3 mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Total Amount</label>
@@ -505,5 +511,17 @@
     </div>
 </section>
 <!-- /.content -->
+<script>
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
+  </script>
 
 {% endblock %}

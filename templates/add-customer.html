@@ -46,31 +46,40 @@
                     <div class="row g-4">
                       <div class="col-md-12 mb-2">
                         <label for="exampleFormControlInput1" class="form-label">Customer Name</label>
-                        <input type="text" class="form-control" name="customer_name" placeholder="Customer Name" value="">
+                        <input type="text" class="form-control" name="customer_name" placeholder="Customer Name" value="" required>
+                      </div>
+                      <div class="col-md-12 mb-2">
+                        <label for="exampleFormControlInput1" class="form-label">Username</label>
+                        <input type="text" class="form-control" name="user_name" placeholder="Username" value="" required>
                       </div>
       
                       <div class="col-md-12 mb-2">
                         <label for="exampleFormControlInput1" class="form-label">Customer Email</label>
-                        <input type="email" class="form-control" name="customer_email" placeholder="Customer Name" value="">
+                        <input type="email" class="form-control" name="customer_email" placeholder="Customer Email" value="">
                       </div>
       
                       <div class="col-md-12 mb-2">
                         <label for="exampleFormControlInput1" class="form-label">Customer Phone Number</label>
-                        <input type="number" class="form-control" name="customer_phone" placeholder="Customer Name" value="">
+                        <input type="number" class="form-control" name="customer_phone" placeholder="Customer Phone Number" value="">
                       </div>
       
                       <div class="col-md-12 mb-2">
                         <label for="exampleFormControlInput1" class="form-label">Customer Address</label>
-                        <input type="text" class="form-control" name="customer_address" placeholder="Customer Name" value="">
+                        <input type="text" class="form-control" name="customer_address" placeholder="Customer Address" value="">
                       </div>
 
                       <div class="col-md-12 mb-2">
                         <label for="exampleFormControlInput1" class="form-label">Select Branch</label>
-                        <select type="text" class="form-control" name="branch_id" placeholder="Select Branch">
+                        <select required type="text" class="form-control" name="branch_id" placeholder="Select Branch">
+                        {% if type == "admin"%}
+                        <option selected disabled value="">Select Branch</option>
                           {% for i in branches %}
                           <option value="{{i[0]}}">{{i[1]}}</option>
                           {% endfor %}
-
+                        {% elif type == "user"%}
+                        
+                        <option selected readonly value="{{branches[0]}}">{{branches[1]}}</option>
+                          {%endif%}
                         </select>
                       </div>
 

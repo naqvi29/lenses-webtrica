@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% block title %}Edit {{type | capitalize}} Accounts{% endblock %}
+{% block title %}Edit {{type2 | capitalize}} Accounts{% endblock %}
 {% block content %}
 <div class="content-header">
   <div class="container-fluid">
@@ -10,7 +10,7 @@
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
-          <li class="breadcrumb-item active">Edit {{type | capitalize}} Accounts</li>
+          <li class="breadcrumb-item active">Edit {{type2 | capitalize}} Accounts</li>
         </ol>
       </div><!-- /.col -->
     </div><!-- /.row -->
@@ -27,7 +27,7 @@
         <div class="card mb-4">
           <div class="card card-default">
             <div class="card-header">
-              <h3 class="card-title"><strong>Edit {{type | capitalize}} Accounts</strong></h3>
+              <h3 class="card-title"><strong>Edit {{type2 | capitalize}} Accounts</strong></h3>
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -42,7 +42,7 @@
             <div class="card-body" style="display: block;">
               <div class="card mb-4">
                 <div class="card-body px-0 pt-0 pb-2">
-                  <form class="py-4 px-5" action="/edit-bank-and-cash-accounts/{{type}}/{{data[0]}}" method="POST" enctype="multipart/form-data">
+                  <form class="py-4 px-5" action="/edit-bank-and-cash-accounts/{{type2}}/{{data[0]}}" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
                     <div class="row g-4">
                       <div class="col-md-3">
@@ -74,7 +74,7 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer" style="display: block;">              
-            <a href="/view-{{type}}-accounts" class="btn btn-success">Back</a>
+            <a href="/view-{{type2}}-accounts" class="btn btn-success">Back</a>
             </div>
           </div>
 

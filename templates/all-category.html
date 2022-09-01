@@ -4,12 +4,11 @@ head %} {{ super() }} {% endblock %} {% block content %}
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">All Category</h1>
       </div>
       <!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
           <li class="breadcrumb-item active">All Category</li>
         </ol>
       </div>
@@ -26,48 +25,74 @@ head %} {{ super() }} {% endblock %} {% block content %}
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
+        
         <div class="card mb-4">
-          <div class="card-body px-0 pt-0 pb-2">
-            <!-- <h3 class="m-4 mb-3">All Category</h3> -->
-            <div class="table-responsive">
-              <table id="example" class="nowrap table table-hover align-middle table-bordered">
-                <thead class="bg-dark text-white text-center">
-                  <tr>
-                    <th>ID</th>
-                    <th>Category Name</th>
-                    <th>Category Description</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for i in categories %}
-                  <tr class="text-center">
-                    <td>{{i[0]}}</td>
-                    <td>{{i[1]}}</td>
-                    <td>{{i[2]}}</td>
-                    <td>
-                      <div class="btn-group">
-                      <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-category/{{i[0]}}">Edit</a>
-                        <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/delete-category/{{i[0]}}">
-                          Del
-                        </a>
-                      </div>
-                    </div>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+          <div class="card card-default">
+            <div class="card-header">
+              <h3 class="card-title"><strong>All Category</strong></h3>
+
+              <div class="card-tools">
+                <button
+                  type="button"
+                  class="btn btn-tool"
+                  data-card-widget="collapse"
+                >
+                  <i class="fas fa-minus"></i>
+                </button>
+                <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                          <i class="fas fa-times"></i>
+                      </button> -->
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="display: block">
+              <div class="card mb-4">
+                <div class="card-body px-0 pt-0 pb-2">
+                  <div class="table-responsive">
+                    <table id="example" class="nowrap table table-hover align-middle table-bordered">
+                      <thead class="bg-dark text-white text-center">
+                        <tr>
+                          <th>ID</th>
+                          <th>Category Name</th>
+                          <th>Category Description</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in categories %}
+                        <tr class="text-center">
+                          <td>{{i[0]}}</td>
+                          <td>{{i[1]}}</td>
+                          <td>{{i[2]}}</td>
+                          <td>
+                            <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                              <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-category/{{i[0]}}">Edit</a>
+                              <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/delete-category/{{i[0]}}">
+                                Del
+                              </a>
+                            </div>
+                          </div>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer" style="display: block">
+              <a href="add-category" class="btn btn-success">Add Category</a>
             </div>
           </div>
         </div>
-      </div>
-      <div class="d-flex justify-content-end">
-        <a href="add-category" class="btn btn-danger">Add Category</a>
+
+        
       </div>
     </div>
   </div>

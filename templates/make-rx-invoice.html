@@ -67,7 +67,7 @@
                                 <div class="col-md-2 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Reference</label>
                                     {% if copy %}
-                                    <select disabled name="reference" onchange="referenceselect()" id="reference"
+                                    <select readonly name="reference" onchange="referenceselect()" id="reference"
                                         class="form-control">
                                         <option value="{{rx_orders[0]}}">{{rx_orders[3]}}</option>
                                     </select>
@@ -560,6 +560,7 @@
         console.log("change")
         let e = document.getElementById("customerSelect");
         let customer_id = e.value;
+        
         // ajax 
         $.ajax({
             type: 'POST',
@@ -740,6 +741,8 @@ $.ajax({
         lense_type.value = array[7].replace("'", "").replace("'", "");
         let customer = document.getElementById("customer");
         customer.value = array[5].replace("'", "").replace("'", "");
+        let customer_id = document.getElementById("customer_id");
+        customer_id.value = array[4].replace("'", "").replace("'", "");
         let billing_address = document.getElementById("billing_address");
         billing_address.value = array[8].replace("'", "").replace("'", "");
         let item_idd = document.getElementById("item_idd");
@@ -828,6 +831,7 @@ $.ajax({
         od_pd.value = array[53].replace("'", "").replace("'", "");
         let os_pd = document.getElementById("os_pd")
         os_pd.value = array[54].replace("'", "").replace("'", "");
+        od_pd.value = array[53].replace("'", "").replace("'", "");
         // .. 
 
         // let Qty = document.getElementById('qty').value;

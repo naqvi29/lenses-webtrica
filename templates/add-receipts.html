@@ -76,7 +76,7 @@
                         <div class="col-md-3" id="rx_invoices" >
                           <label for="exampleFormControlInput1" class="form-label"><span style="color: red;">*</span>invoice #</label>
                           <span id="paid_by_name">
-                                <select class="form-control"  name="rx_invoice" id="rx_invoice">
+                                <select class="form-control"  name="rx_invoice" id="rx_invoice" onchange="func4()">
                                 </select>  
                             </span>
                           </div>
@@ -96,43 +96,22 @@
                           </select>                  
                       </div>
                       <div class="col-md-9">
-                        <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                        <select name="exp_account" class="form-control" id="">
-                          <option value="Accounting feesExpenses">Accounting feesExpenses</option>
-                          <option value="Accounts receivable">Accounts receivable</option>
-                          <option value="Advertising and promotion">Advertising and promotion</option>
-                          <option value="Bank charges">Bank charges</option>
-                          <option value="Capital gains on investments">Capital gains on investments</option>
-                          <option value="Computer equipment">Computer equipment</option>
-                          <option value="Donations">Donations</option>
-                          <option value="Electricity">Electricity</option>
-                          <option value="Employee clearing account">Employee clearing account</option>
-                          <option value="Entertainment">Entertainment</option>
-                          <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
-                          <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
-                          <option value="Interest received">Interest received</option>
-                          <option value="Inventory - cost">Inventory - cost</option>
-                          <option value="Inventory - sales">Inventory - sales</option>
-                          <option value="Inventory on hand">Inventory on hand</option>
-                          <option value="Legal fees">Legal fees</option>
-                          <option value="Motor vehicle expenses">Motor vehicle expenses</option>
-                          <option value="Printing and stationery">Printing and stationery</option>
-                          <option value="Rent">Rent</option>
-                          <option value="Repairs and maintenance">Repairs and maintenance</option>
-                          <option value="Retained earnings">Retained earnings</option>
-                          <option value="Sales">Sales</option>
-                          <option value="Telephone">Telephone</option>
-                        </select>
+                        <label for="exampleFormControlInput1" class="form-label">Income Account</label>
+                        <select class="form-control" name="income_account" id="income_account">
+                          {% for i in income_accounts %}
+                          <option value="{{i[0]}}">{{i[1]}}</option>
+                          {% endfor %}
+                        </select> 
                       </div>
                       <div class="col-md-12">
                         <label for="exampleFormControlInput1" class="form-label">Description</label>
-                        <input type="text" class="form-control" name="desc" id="" cols="30" rows="1"
+                        <input type="text" class="form-control" name="desc" id="desc" cols="30" rows="1"
                           ></input>
                       </div>
       
                       <div class="col-md-3">
                         <label for="exampleFormControlInput1" class="form-label">Amount</label>
-                        <input class="form-control" type="number" name="amount" id="">
+                        <input class="form-control" type="number" name="amount" id="total_amount">
                       </div>
       
                       <div class="mt-4 col-md-12 text-center">
@@ -179,7 +158,7 @@
                         
                       <label for="exampleFormControlInput1" class="form-label"><span style="color: red;">*</span>invoice #</label>
                     <span id="paid_by_name">
-                      <select class="form-control"  name="customer_invoice" id="customer_invoice">
+                      <select class="form-control"  name="customer_invoice" id="customer_invoice" onchange="func4()">
                         {% for i in rx_invoices %}
                         <option value="{{i[0]}}">{{i[0]}}</option>
                         <option value="{{i[0]}}">{{i[0]}}</option>
@@ -230,13 +209,27 @@
     
     var select3 = document.getElementById('customerS');
     var value3 = select3.options[select3.selectedIndex].value;
-    console.log(value3);
+    console.log("customer_id is",value3);
     $.ajax({
             type: 'POST',
             url: "/fetch-rxinvoices-by-customer",
             data: { "customer_id": value3 },
             success: function (response) {
               console.log(response);
+              var obj = JSON.parse(response);
+              console.log(obj);
+              customer_invoice_select = document.getElementById("customer_invoice");
+              if (obj.length < 1){
+                customer_invoice_select.innerHTML=`<option selected disabled>No Invoices</option>`;
+              }
+              else{
+                
+                customer_invoice_select.innerHTML=`<option disabled selected>Select Invoice</option>`;
+              }
+              for (let i = 0; i < obj.length; i++) {
+                customer_invoice_select.innerHTML+=`<option value="`+obj[i][0]+`">`+obj[i][0]+`</option>`;
+                console.log(obj[i][0])
+              }
                 // let string = response.replace("(", "");
                 // string = string.replace(")", "");
                 // string = string.replace("'", "");
@@ -246,6 +239,30 @@
                 // console.log(array);
                 // let bill_address = document.getElementById("bill_address")
                 // bill_address.value = array;
+            },
+            error: function (response) {
+                // alert the error if any error occured
+                console.log(response)
+            }
+        });
+  }
+  function func4(){
+    console.log("F4 started")
+    var select4 = document.getElementById('customer_invoice');
+    var value4 = select4.options[select4.selectedIndex].value;
+    console.log("invoice_id is",value4);
+    $.ajax({
+            type: 'POST',
+            url: "/fetch-rxinvoice-by-id",
+            data: { "invoice_id": value4 },
+            success: function (response) {
+              console.log(response);
+              var obj2 = JSON.parse(response);
+              console.log(obj2)
+              total_amount = document.getElementById("total_amount");
+              total_amount.value=obj2[2];
+              desc = document.getElementById("desc");
+              desc.value=obj2[1];
             },
             error: function (response) {
                 // alert the error if any error occured

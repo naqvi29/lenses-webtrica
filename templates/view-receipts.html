@@ -49,7 +49,6 @@
                       <thead class="bg-dark text-white" >
                         <tr>
                           <th>#</th>
-                          <th>View</th>
                           <th>Date</th>
                           <th>Paid By</th>
                           <th>Received In</th>
@@ -62,7 +61,6 @@
                         {% for i in data %}
                         <tr >
                           <td>{{loop.index}}</td>
-                          <td><a href="/generate-receipt/{{i[0]}}"><button class="btn btn-sm btn-secondary">View</button></a></td>
                           <td>{{i[1]}}</td>
                           <td>{{i[5]}}</td>
                           <td>{{i[7]}}</td>
@@ -70,16 +68,18 @@
                           <td>{{i[10]}}</td>
                           <td>
                             <div class="btn-group">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a style="display: block;" class="btn btn-sm btn-secondary mb-2 mx-2" href="/edit-receipts/{{i[0]}}">Edit</a>
-                              <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/deletepay/inout/{{i[0]}}">
-                                Del
-                              </a>
+                              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                
+                              </button>
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a style="display: block;" class="btn btn-sm btn-primary mb-2 mx-2" href="/generate-receipt/{{i[0]}}">View</a>
+                                <a style="display: block;" class="btn btn-sm btn-success mb-2 mx-2" href="/edit-receipts/{{i[0]}}">Edit</a>
+                                
+                                <a style="display: block;" class="btn btn-sm btn-danger mb-2 mx-2" href="/deletepay/inout/{{i[0]}}">Del</a>
+
+                              </div>
                             </div>
-                          </div>
+                            
                           </td>
                         </tr>
                         {% endfor %}

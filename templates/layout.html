@@ -357,6 +357,7 @@
 
 
 
+            {% if type == "admin"%}
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link">
@@ -428,6 +429,8 @@
                 </li>
               </ul> -->
             </li>
+            {% endif %}
+            {% if type =="admin"%}
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-chart-pie"></i>
@@ -457,6 +460,42 @@
                 </li>
               </ul>
             </li>
+            {% elif type=="user"%}
+            
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-chart-pie"></i>
+                <p>
+                  {% if username %}
+                  {{username}} 
+                  {% else %}
+                  User
+                  {%endif%}
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <!--<li class="nav-item">
+                  <a href="/all-branch" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Branches</p>
+                  </a>
+                </li>-->
+                <li class="nav-item">
+                  <a href="/my-account/{{userid}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>My Account</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/logout" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Logout</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            {%endif%}
           </ul>
         </nav>
         <!-- /.sidebar-menu -->

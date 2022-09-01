@@ -70,7 +70,7 @@
                                 </div> -->
                                 <div class="col-md-8 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Select Customer</label>
-                                    <select onchange="customerselect()" id="customerSelect" name="customer"
+                                    <select onchange="customerselect()" id="customerSelect" name="customer" required
                                         class="form-control">
                                         <option value="">Select Customer</option>
                                         {% for i in customers %}
@@ -90,7 +90,7 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Lense Type</label>
-                                    <select onchange="lenseselect()" id="lenseSelect" name="item_id"
+                                    <select required onchange="lenseselect()" id="lenseSelect" name="item_id"
                                         class="form-control">
                                         <option value="">Select Lense Type</option>
                                         {% for i in stock_items %}
@@ -233,6 +233,11 @@
 
                                     </select>
                                 </div> -->
+                                <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Discount %</label>
+                                    <input onchange="total_amountt()"  type="number" step="any" name="discount" class="form-control"
+                                        id="discount">
+                                </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Total Amount</label>
                                     <input type="number" step="any" name="total_amount" class="form-control"
@@ -378,6 +383,11 @@
         console.log("od_total_amount is:", od_total_amount);
         console.log("os_total_amount is:", os_total_amount);
         total_amount = od_total_amount+os_total_amount;
+
+        discount = document.getElementById("discount").value;
+        x = total_amount / 100 * discount
+        total_amount= total_amount - x
+        
         console.log("total_amount is:", total_amount);
         total_amount_input = document.getElementById("total_amount");
         total_amount_input.value=total_amount;

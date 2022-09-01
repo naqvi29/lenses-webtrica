@@ -37,9 +37,9 @@
                             <!-- <input type="button" onclick="printDiv('printableArea')" value="print a div!" />     -->
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a style="display: block;" class="btn btn-sm btn-primary mb-2 mx-2"
-                                    href="#">Sales Invoice</a>
+                                    href="/copy-stock-order-to/salesinvoice/{{stock_orders[0]}}">Sales Invoice</a>
                                 <a style="display: block;" class="btn btn-sm btn-success mb-2 mx-2"
-                                    href="#">
+                                    href="/copy-stock-order-to/purchaseinvoice/{{stock_orders[0]}}">
                                     Purchase Invoice
                                 </a>
                             </div>
@@ -224,6 +224,11 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Discount %</label>
+                                    <input disabled  type="text" name="discount" class="form-control"
+                                        id="discount" value="{{stock_orders[58]}}">
                                 </div>
 
                                 <div class="col-md-3 mb-3">

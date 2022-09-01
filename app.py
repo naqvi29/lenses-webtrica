@@ -1,5 +1,6 @@
 
 from datetime import datetime
+from distutils.log import debug
 from re import T
 from flask import Flask, render_template, request, session, jsonify
 from flask.helpers import url_for
@@ -21,7 +22,7 @@ app.config['MYSQL_DATABASE_PASSWORD'] = ''
 # app.config['MYSQL_DATABASE_PASSWORD'] = 'LAwrence1234**'
 app.config['MYSQL_DATABASE_DB'] = 'lenses'
 app.config['MYSQL_DATABASE_HOST'] = '127.0.0.1'
-app.config['MYSQL_DATABASE_PORT'] = 3307
+# app.config['MYSQL_DATABASE_PORT'] = 3307
 mysql.init_app(app)
 
 
@@ -39,7 +40,8 @@ def login():
             return render_template("login.html",error="Missing username or password!")
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("SELECT * from users where email=%s and type='admin'",(email))
+        # cursor.execute("SELECT * from users where email=%s and type='admin'",(email))
+        cursor.execute("SELECT * from users where email=%s",(email))
         data = cursor.fetchone()
         if data:
             if data[4] == password:                
@@ -64,40 +66,137 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route("/")
-def index():        
-    if 'loggedin' in session:
-        if session['type'] == 'admin':
-            conn = mysql.connect()
-            cursor =conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM customers;")
-            customers = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM users;")
-            users = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM branch;")
-            branch = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM suppliers;")
-            suppliers = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM rx_orders;")
-            rx_orders = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM rx_items;")
-            rx_items = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM rx_purchases;")
-            rx_purchases = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM rx_invoices;")
-            rx_invoices = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM stock_orders;")
-            stock_orders = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM stock_items;")
-            stock_items = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM stock_purchases;")
-            stock_purchases = cursor.fetchone()[0]
-            cursor.execute("SELECT COUNT(*) FROM stock_invoices;")
-            stock_invoices = cursor.fetchone()[0]
-            return render_template("index.html",customers=customers,users=users,branches=branch,suppliers=suppliers,rx_orders=rx_orders,rx_items=rx_items,rx_purchases=rx_purchases,rx_invoices=rx_invoices,stock_orders=stock_orders,stock_items=stock_items,stock_invoices=stock_invoices,stock_purchases=stock_purchases)
+def index():
+    try:       
+        if 'loggedin' in session:
+            if session['type'] == 'admin':
+                conn = mysql.connect()
+                cursor =conn.cursor()
+                cursor.execute("SELECT COUNT(*) FROM customers;")
+                customers = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM users;")
+                users = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM branch;")
+                branch = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM suppliers;")
+                suppliers = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM rx_orders;")
+                rx_orders = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM rx_items;")
+                rx_items = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM rx_purchases;")
+                rx_purchases = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM rx_invoices;")
+                rx_invoices = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM stock_orders;")
+                stock_orders = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM stock_items;")
+                stock_items = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM stock_purchases;")
+                stock_purchases = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM stock_invoices;")
+                stock_invoices = cursor.fetchone()[0]
+                cursor.execute("SELECT * from income_accounts;")
+                income_accounts = cursor.fetchall()
+                cursor.execute("SELECT * from expense_accounts;")
+                expense_accounts = cursor.fetchall()
+                all_incomes=[]
+                all_expense=[]
+                for i in income_accounts:
+                    all_incomes.append(i[3])
+                for i in expense_accounts:
+                    all_expense.append(i[3])
+                total_income = sum(all_incomes)
+                total_expense = sum(all_expense)
+                net_profit = total_income - total_expense
+
+                accounts_receivable = []
+                cursor.execute("SELECT total_amount from rx_invoices where status='pending';")
+                pending_rx_invoices = cursor.fetchall()
+                cursor.execute("SELECT total_amount from stock_invoices where status='pending';")
+                pending_stock_invoices = cursor.fetchall()
+                for i in pending_rx_invoices:
+                    accounts_receivable.append(i[0])
+                for i in pending_stock_invoices:
+                    accounts_receivable.append(i[0])
+                accounts_receivable = sum(accounts_receivable)
+
+                # for cash assets 
+                cash_accounts_balance = []
+                cursor.execute("SELECT actual_balance from cash_accounts;")
+                data = cursor.fetchall()
+                for i in data:
+                    cash_accounts_balance.append(i[0])
+                cash_equivalents = sum(cash_accounts_balance)
+                return render_template("index.html",customers=customers,users=users,branches=branch,suppliers=suppliers,rx_orders=rx_orders,rx_items=rx_items,rx_purchases=rx_purchases,rx_invoices=rx_invoices,stock_orders=stock_orders,stock_items=stock_items,stock_invoices=stock_invoices,stock_purchases=stock_purchases,type=session['type'],income_accounts=income_accounts,expense_accounts=expense_accounts,total_income=total_income,total_expense=total_expense,net_profit=net_profit,accounts_receivable=accounts_receivable,cash_equivalents=cash_equivalents,date = datetime.now().date())
+            elif session['type'] == 'user':
+                conn = mysql.connect()
+                cursor =conn.cursor()
+                cursor.execute("SELECT COUNT(*) FROM customers where user_id=%s;",session['userid'])
+                customers = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM users;")
+                users = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM branch;")
+                branch = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM suppliers;")
+                suppliers = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM rx_orders where user_id=%s;;",session['userid'])
+                rx_orders = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM rx_items where user_id=%s;;",session['userid'])
+                rx_items = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM rx_purchases where user_id=%s;;",session['userid'])
+                rx_purchases = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM rx_invoices where user_id=%s;;",session['userid'])
+                rx_invoices = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM stock_orders where user_id=%s;;",session['userid'])
+                stock_orders = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM stock_items where user_id=%s;;",session['userid'])
+                stock_items = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM stock_purchases where user_id=%s;;",session['userid'])
+                stock_purchases = cursor.fetchone()[0]
+                cursor.execute("SELECT COUNT(*) FROM stock_invoices where user_id=%s;;",session['userid'])
+                stock_invoices = cursor.fetchone()[0]
+                cursor.execute("SELECT * from income_accounts where user_id=%s;",session['userid'])
+                income_accounts = cursor.fetchall()
+                cursor.execute("SELECT * from expense_accounts where user_id=%s;",session['userid'])
+                expense_accounts = cursor.fetchall()
+
+                all_incomes=[]
+                all_expense=[]
+                for i in income_accounts:
+                    all_incomes.append(i[3])
+                for i in expense_accounts:
+                    all_expense.append(i[3])
+                total_income = sum(all_incomes)
+                total_expense = sum(all_expense)
+                net_profit = total_income - total_expense
+
+                accounts_receivable = []
+                cursor.execute("SELECT total_amount from rx_invoices where status='pending' and user_id=%s;",(session['userid']))
+                pending_rx_invoices = cursor.fetchall()
+                cursor.execute("SELECT total_amount from stock_invoices where status='pending' and user_id=%s;",(session['userid']))
+                pending_stock_invoices = cursor.fetchall()
+                for i in pending_rx_invoices:
+                    accounts_receivable.append(i[0])
+                for i in pending_stock_invoices:
+                    accounts_receivable.append(i[0])
+                accounts_receivable = sum(accounts_receivable)
+
+                # for cash assets 
+                cash_accounts_balance = []
+                cursor.execute("SELECT actual_balance from cash_accounts where user_id=%s;",session['userid'])
+                data = cursor.fetchall()
+                for i in data:
+                    cash_accounts_balance.append(i[0])
+                cash_equivalents = sum(cash_accounts_balance)
+
+                return render_template("index.html",customers=customers,users=users,branches=branch,suppliers=suppliers,rx_orders=rx_orders,rx_items=rx_items,rx_purchases=rx_purchases,rx_invoices=rx_invoices,stock_orders=stock_orders,stock_items=stock_items,stock_invoices=stock_invoices,stock_purchases=stock_purchases,type=session['type'],username=session['name'],userid=session['userid'],income_accounts=income_accounts,expense_accounts=expense_accounts,total_income=total_income,total_expense=total_expense,net_profit=net_profit,accounts_receivable=accounts_receivable,cash_equivalents=cash_equivalents,date = datetime.now().date())
+            else:
+                return redirect(url_for('login'))
         else:
-             return redirect(url_for('login'))
-    else:
-        return redirect(url_for('login'))
+            return redirect(url_for('login'))    
+    except Exception as e:
+        return render_template("500.html",error=str(e))
 
 @app.route("/add-category", methods=['GET','POST'])
 def add_category():
@@ -108,8 +207,8 @@ def add_category():
         cursor =conn.cursor()
         cursor.execute("INSERT INTO categories (name, description) VALUES (%s,%s);",(name,desc))
         conn.commit()
-        return redirect(url_for("add_category"))
-    return render_template("add-category.html")
+        return redirect(url_for("all_category"))
+    return render_template("add-category.html",type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-category/<string:id>", methods=['GET','POST'])
 def edit_category(id):
@@ -120,13 +219,13 @@ def edit_category(id):
         cursor =conn.cursor()
         cursor.execute("UPDATE categories SET name=%s,description=%s WHERE id=%s; ",(name,desc,id))
         conn.commit()
-        return redirect(url_for("all_category"))
+        return redirect(url_for("all_category"),type=session['type'],username=session['name'],userid=session['userid'])
         
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT * from categories where id=%s",(id))
     data = cursor.fetchone()
-    return render_template("edit-category.html",data=data)
+    return render_template("edit-category.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/add-treatment", methods=['GET','POST'])
@@ -139,7 +238,7 @@ def add_treatment():
         cursor.execute("INSERT INTO treatments (name, description) VALUES (%s,%s);",(name,desc))
         conn.commit()
         return redirect(url_for("view_treatments"))
-    return render_template("add-treatment.html")
+    return render_template("add-treatment.html",type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-treatment/<string:id>", methods=['GET','POST'])
 def edit_treatment(id):
@@ -155,7 +254,7 @@ def edit_treatment(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from treatments where id=%s",(id))
     data = cursor.fetchone()
-    return render_template("edit-treatment.html",data=data)
+    return render_template("edit-treatment.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/add-tints-of-service", methods=['GET','POST'])
@@ -168,7 +267,7 @@ def add_tints_of_service():
         cursor.execute("INSERT INTO tints_of_services (name, description) VALUES (%s,%s);",(name,desc))
         conn.commit()
         return redirect(url_for("view_tints_of_services"))
-    return render_template("add-tints-of-service.html")
+    return render_template("add-tints-of-service.html",type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-tints-of-service/<string:id>", methods=['GET','POST'])
 def edit_tints_of_service(id):
@@ -185,7 +284,7 @@ def edit_tints_of_service(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from tints_of_services where id=%s",(id))
     data = cursor.fetchone()
-    return render_template("edit-tints-of-service.html",data=data)
+    return render_template("edit-tints-of-service.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/all-category")
 def all_category():
@@ -193,7 +292,7 @@ def all_category():
     cursor =conn.cursor()
     cursor.execute("SELECT * from categories")
     categories = cursor.fetchall()
-    return render_template("all-category.html",categories=categories)
+    return render_template("all-category.html",categories=categories,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-treatments")
 def view_treatments():
@@ -201,7 +300,7 @@ def view_treatments():
     cursor =conn.cursor()
     cursor.execute("SELECT * from treatments")
     treatments = cursor.fetchall()
-    return render_template("view-treatments.html",treatments=treatments)
+    return render_template("view-treatments.html",treatments=treatments,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-tints-of-services")
 def view_tints_of_services():
@@ -209,7 +308,7 @@ def view_tints_of_services():
     cursor =conn.cursor()
     cursor.execute("SELECT * from tints_of_services")
     tints_of_services = cursor.fetchall()
-    return render_template("view-tints-of-services.html",tints_of_services=tints_of_services)
+    return render_template("view-tints-of-services.html",tints_of_services=tints_of_services,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/delete-category/<string:id>")
 def delete_category(id):
@@ -273,8 +372,8 @@ def add_brand():
         cursor =conn.cursor()
         cursor.execute("INSERT INTO brands (name, description) VALUES (%s,%s);",(name,desc))
         conn.commit()
-        return redirect(url_for("add_brand"))
-    return render_template("add-brand.html")
+        return redirect(url_for("all_brand"))
+    return render_template("add-brand.html",type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-brand/<string:id>",methods=['GET','POST'])
 def edit_brand(id):
@@ -290,7 +389,7 @@ def edit_brand(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from brands where id=%s",(id))
     data = cursor.fetchone()
-    return render_template("edit-brand.html",data=data)
+    return render_template("edit-brand.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/all-brand")
@@ -299,7 +398,7 @@ def all_brand():
     cursor =conn.cursor()
     cursor.execute("SELECT * from brands")
     brands = cursor.fetchall()
-    return render_template("all-brand.html",brands=brands)
+    return render_template("all-brand.html",brands=brands,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/delete-brand/<string:id>")
 def delete_brand(id):
@@ -333,7 +432,7 @@ def add_new_lense_type():
     brands = cursor.fetchall()
     cursor.execute("SELECT * from categories")
     categories = cursor.fetchall()
-    return render_template("add-new-lense-type.html",categories=categories,brands=brands)
+    return render_template("add-new-lense-type.html",categories=categories,brands=brands,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/all-lense-types")
 def all_lense_types():
@@ -342,7 +441,7 @@ def all_lense_types():
     cursor.execute("select lense_types.id, lense_types.name, lense_types.description,categories.name AS category,brands.name AS brand,lense_types.left_right_pair from lense_types INNER JOIN categories ON lense_types.lense_category_id=categories.id INNER JOIN brands On lense_types.lense_brand_id=brands.id;")
     lense_types = cursor.fetchall()
     print(lense_types)
-    return render_template("all-lense-types.html",lense_types=lense_types)
+    return render_template("all-lense-types.html",lense_types=lense_types,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/delete-lense-type/<string:id>")
 def delete_lense_type(id):
@@ -370,7 +469,7 @@ def add_pricing_qty():
     cursor =conn.cursor()
     cursor.execute("SELECT * from lense_types")
     lense = cursor.fetchall()
-    return render_template("add-pricing-qty.html",lense=lense)
+    return render_template("add-pricing-qty.html",lense=lense,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-all-pricing")
 def all_pricing():
@@ -378,7 +477,7 @@ def all_pricing():
     cursor =conn.cursor()
     cursor.execute("SELECT * from pricing;")
     pricing = cursor.fetchall()
-    return render_template("all-pricing.html", pricing= pricing)
+    return render_template("all-pricing.html", pricing= pricing,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/delete-pricing/<string:id>")
 def delete_pricing(id):
@@ -392,6 +491,7 @@ def delete_pricing(id):
 def add_customer():
     if request.method=='POST':
         customer_name= request.form.get("customer_name")
+        user_name= request.form.get("user_name")
         customer_email= request.form.get("customer_email")
         customer_phone= request.form.get("customer_phone")
         customer_address= request.form.get("customer_address")
@@ -405,7 +505,7 @@ def add_customer():
         cursor.execute("SELECT name from branch where id=%s",(branch_id))        
         branch_name = cursor.fetchone()[0]
 
-        cursor.execute("INSERT INTO customers (name, email,phone,address,branch_id,branch_name,credit_limit) VALUES (%s,%s,%s,%s,%s,%s,%s);",(customer_name,customer_email,customer_phone,customer_address,branch_id,branch_name,credit_limit))
+        cursor.execute("INSERT INTO customers (name, email,phone,address,branch_id,branch_name,credit_limit,user_id,user_name) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s);",(customer_name,customer_email,customer_phone,customer_address,branch_id,branch_name,credit_limit,session['userid'],user_name))
         conn.commit()
         return redirect(url_for("all_customers"))
     conn = mysql.connect()
@@ -414,12 +514,19 @@ def add_customer():
     customers = cursor.fetchall()
     cursor.execute("SELECT * from branch")
     branches = cursor.fetchall()
-    return render_template("add-customer.html",customers=customers,branches=branches)
+    if session['type']=='admin':        
+        cursor.execute("SELECT * from branch")
+        branches = cursor.fetchall()
+    elif session['type']=='user':        
+        cursor.execute("SELECT branch_id,branch from users where id=%s",(session['userid']))
+        branches = cursor.fetchone()
+    return render_template("add-customer.html",customers=customers,branches=branches,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-customer/<string:id>", methods=['GET','POST'])
 def edit_customer(id):
     if request.method=='POST':
         customer_name= request.form.get("customer_name")
+        user_name= request.form.get("user_name")
         customer_email= request.form.get("customer_email")
         customer_phone= request.form.get("customer_phone")
         customer_address= request.form.get("customer_address")
@@ -433,7 +540,7 @@ def edit_customer(id):
         cursor.execute("SELECT name from branch where id=%s",(branch_id))        
         branch_name = cursor.fetchone()[0]
 
-        cursor.execute("UPDATE customers SET name=%s,email=%s,phone=%s,address=%s,branch_id=%s,branch_name=%s,credit_limit=%s WHERE id=%s; ",(customer_name,customer_email,customer_phone,customer_address,branch_id,branch_name,credit_limit,id))
+        cursor.execute("UPDATE customers SET name=%s,email=%s,phone=%s,address=%s,branch_id=%s,branch_name=%s,credit_limit=%s,user_name=%s WHERE id=%s; ",(customer_name,customer_email,customer_phone,customer_address,branch_id,branch_name,credit_limit,user_name,id))
         conn.commit()
         return redirect(url_for("all_customers"))
     conn = mysql.connect()
@@ -443,15 +550,18 @@ def edit_customer(id):
     data = cursor.fetchone()
     cursor.execute("SELECT * from branch")
     branches = cursor.fetchall()
-    return render_template("edit-customer.html",data=data,branches=branches)
+    return render_template("edit-customer.html",data=data,branches=branches,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-all-customers")
 def all_customers():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from customers;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from customers;")
+    else:
+        cursor.execute("SELECT * from customers where user_id=%s;",(session['userid']))
     customers = cursor.fetchall()
-    return render_template("all-customers.html", customers= customers)
+    return render_template("all-customers.html", customers= customers,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/delete-customer/<string:id>")
@@ -480,7 +590,9 @@ def make_rx_order():
         # description = request.form.get("dsc")
         description = None
         
-        treatment = request.form.get("treatment")
+        treatment_id = request.form.get("treatment")
+        cursor.execute("SELECT name from treatments where id=%s",(treatment_id))
+        treatment = cursor.fetchone()[0]
         tint_service = request.form.get("tint_service")
 
         od_size = request.form.get("od_size")
@@ -536,14 +648,14 @@ def make_rx_order():
         gaming = request.form.get("gaming")
         status = "pending"
         total_amount = request.form.get("total_amount")
-
+        discount = request.form.get("discount")
         cursor.execute("SELECT name from customers where id=%s",(customer_id))
         customer_name = cursor.fetchone()
         customer_name = customer_name[0]
         cursor.execute("SELECT lense_type from rx_items where id=%s",(item_id))
         item_name = cursor.fetchone()
 
-        cursor.execute("SELECT income_account from rx_items where id=%s",(item_id))
+        cursor.execute("SELECT income_account_id from rx_items where id=%s",(item_id))
         income_account_id = cursor.fetchone()
         income_account_id = income_account_id[0]
         
@@ -551,7 +663,7 @@ def make_rx_order():
         income_account_name = cursor.fetchone()
         income_account_name = income_account_name[0]
 
-        cursor.execute("SELECT expense_account from rx_items where id=%s",(item_id))
+        cursor.execute("SELECT expense_account_id from rx_items where id=%s",(item_id))
         expense_account_id = cursor.fetchone()
         expense_account_id = expense_account_id[0]
         
@@ -561,7 +673,7 @@ def make_rx_order():
 
         item_name = item_name[0]
         order_number = None
-        cursor.execute("INSERT INTO rx_orders (date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,income_account_id,expense_account_id,income_account_name,expense_account_name) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,income_account_id,expense_account_id,income_account_name,expense_account_name))
+        cursor.execute("INSERT INTO rx_orders (date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,income_account_id,expense_account_id,income_account_name,expense_account_name,treatment_id,discount,user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,income_account_id,expense_account_id,income_account_name,expense_account_name,treatment_id,discount,session['userid']))
         
 
         conn.commit()
@@ -578,25 +690,21 @@ def make_rx_order():
         return redirect(url_for("view_rx_orders"))
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from customers;")
-    customers = cursor.fetchall()
-    # customers2=[]    
-    # for i in customers:
-    #     dict = {}
-    #     dict.update({"customerid":i[0],"customer_name":i[1],"billing_address":i[4]})
-    #     customers2.append(dict)
-    cursor.execute("SELECT * from rx_items;")
-    rx_items = cursor.fetchall()
+    if session['type']=="admin":
+        cursor.execute("SELECT * from customers;")
+        customers = cursor.fetchall()        
+        cursor.execute("SELECT * from rx_items;")
+        rx_items = cursor.fetchall()
+    elif session['type']=="user":
+        cursor.execute("SELECT * from customers where user_id=%s;",(session['userid']))
+        customers = cursor.fetchall()
+        cursor.execute("SELECT * from rx_items where user_id=%s;",(session['userid']))
+        rx_items = cursor.fetchall()
     cursor.execute("SELECT * from treatments;")
     treatments = cursor.fetchall()
     cursor.execute("SELECT * from tints_of_services;")
     tints_of_services = cursor.fetchall()
-    # todo write query which fetch the id of last inserted row in rx_orders
-    
-    # cursor.execute("select id from rx_orders ORDER BY id DESC LIMIT 1;;")
-    # last_row_id = cursor.fetchone()
-    # reference = last_row_id[0]+1
-    return render_template("make-rx-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services)
+    return render_template("make-rx-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/make-stock-order", methods=['GET','POST'])
 def make_stock_order():
@@ -672,6 +780,7 @@ def make_stock_order():
         gaming = None
         status = "pending"
         total_amount = request.form.get("total_amount")
+        discount = request.form.get("discount")
 
         cursor.execute("SELECT name from customers where id=%s",(customer_id))
         customer_name = cursor.fetchone()
@@ -682,7 +791,7 @@ def make_stock_order():
         item_name = item_name[0]
         print("item name is: ",item_name)
         order_number = None
-        cursor.execute("INSERT INTO stock_orders (date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d))
+        cursor.execute("INSERT INTO stock_orders (date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,discount,user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,order_number,customer_id,customer_name,item_id,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,discount,session['userid']))
         
 
         conn.commit()
@@ -699,25 +808,24 @@ def make_stock_order():
         return redirect(url_for("view_stock_orders"))
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from customers;")
-    customers = cursor.fetchall()
-    # customers2=[]    
-    # for i in customers:
-    #     dict = {}
-    #     dict.update({"customerid":i[0],"customer_name":i[1],"billing_address":i[4]})
-    #     customers2.append(dict)
-    cursor.execute("SELECT * from stock_items;")
-    stock_items = cursor.fetchall()
+    
+    if session['type']=="admin":
+        cursor.execute("SELECT * from customers;")
+        customers = cursor.fetchall()        
+        cursor.execute("SELECT * from stock_items;")
+        stock_items = cursor.fetchall()
+    elif session['type']=="user":
+        cursor.execute("SELECT * from customers where user_id=%s;",(session['userid']))
+        customers = cursor.fetchall()
+        cursor.execute("SELECT * from stock_items where user_id=%s;",(session['userid']))
+        stock_items = cursor.fetchall()
+
     cursor.execute("SELECT * from treatments;")
     treatments = cursor.fetchall()
     cursor.execute("SELECT * from tints_of_services;")
     tints_of_services = cursor.fetchall()
-    # todo write query which fetch the id of last inserted row in rx_orders
-    
-    # cursor.execute("select id from rx_orders ORDER BY id DESC LIMIT 1;;")
-    # last_row_id = cursor.fetchone()
-    # reference = last_row_id[0]+1
-    return render_template("make-stock-order.html",customers=customers,stock_items=stock_items,treatments=treatments,tints_of_services=tints_of_services)
+
+    return render_template("make-stock-order.html",customers=customers,stock_items=stock_items,treatments=treatments,tints_of_services=tints_of_services,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/edit-rxorder/<string:id>", methods=['GET','POST'])
@@ -733,8 +841,9 @@ def edit_rxorder(id):
         billing_address = request.form.get("billing_address")
         # description = request.form.get("dsc")
         description = None
-        
-        treatment = request.form.get("treatment")
+        treatment_id = request.form.get("treatment")
+        cursor.execute("SELECT name from treatments where id=%s",(treatment_id))
+        treatment = cursor.fetchone()[0]
         tint_service = request.form.get("tint_service")
 
         od_size = request.form.get("od_size")
@@ -802,7 +911,7 @@ def edit_rxorder(id):
         # temp    
 
         
-        cursor.execute("UPDATE rx_orders SET date=%s, reference=%s, order_number=%s,customer_name=%s, item_name=%s,billing_address=%s, description=%s,treatment=%s, tint_service=%s,od_sph=%s, od_cyl=%s,od_axis=%s, od_add=%s,od_base=%s, od_fh=%s,od_prism_no=%s, od_prism_detail=%s,os_sph=%s, os_cyl=%s,os_axis=%s, os_add=%s,os_base=%s, os_fh=%s,os_prism_no=%s, os_prism_detail=%s,bvd_mm=%s, face_angle=%s,pantoscopic_Angle=%s, nrd=%s, decentration=%s,center_edge=%s, frame_size_h=%s,oc_height=%s, od1=%s,os1=%s, occupation=%s,driving=%s, computer=%s,reading=%s, mobile=%s,gaming=%s,status=%s,od_size=%s,os_size=%s,od_cost_price=%s,od_sales_price=%s,od_qty=%s,os_cost_price=%s,os_sales_price=%s,os_qty=%s,od_pd=%s,os_pd=%s,total_amount=%s,frame_size_v=%s,frame_size_d=%s WHERE id=%s; ",(date,reference,order_number,customer_name,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,id))
+        cursor.execute("UPDATE rx_orders SET date=%s, reference=%s, order_number=%s,customer_name=%s, item_name=%s,billing_address=%s, description=%s,treatment=%s, tint_service=%s,od_sph=%s, od_cyl=%s,od_axis=%s, od_add=%s,od_base=%s, od_fh=%s,od_prism_no=%s, od_prism_detail=%s,os_sph=%s, os_cyl=%s,os_axis=%s, os_add=%s,os_base=%s, os_fh=%s,os_prism_no=%s, os_prism_detail=%s,bvd_mm=%s, face_angle=%s,pantoscopic_Angle=%s, nrd=%s, decentration=%s,center_edge=%s, frame_size_h=%s,oc_height=%s, od1=%s,os1=%s, occupation=%s,driving=%s, computer=%s,reading=%s, mobile=%s,gaming=%s,status=%s,od_size=%s,os_size=%s,od_cost_price=%s,od_sales_price=%s,od_qty=%s,os_cost_price=%s,os_sales_price=%s,os_qty=%s,od_pd=%s,os_pd=%s,total_amount=%s,frame_size_v=%s,frame_size_d=%s,treatment_id=%s WHERE id=%s; ",(date,reference,order_number,customer_name,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,treatment_id,id))
         
 
         conn.commit()
@@ -824,7 +933,7 @@ def edit_rxorder(id):
     # cursor.execute("select id from rx_orders ORDER BY id DESC LIMIT 1;;")
     # last_row_id = cursor.fetchone()
     # reference = last_row_id[0]+1
-    return render_template("edit-rx-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services,data=data)
+    return render_template("edit-rx-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services,data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-stock-order/<string:id>", methods=['GET','POST'])
 def edit_stock_order(id):
@@ -835,7 +944,10 @@ def edit_stock_order(id):
         reference = request.form.get("reference")
         order_number = request.form.get("order_number")
         customer_name = request.form.get("customer")
-        item_name = request.form.get("item_name")
+        item_id = request.form.get("item_id")
+        
+        cursor.execute("SELECT lense_type from stock_items where id=%s;",(item_id))
+        item_name = cursor.fetchone()[0]
         billing_address = request.form.get("billing_address")
         # description = request.form.get("dsc")
         description = None
@@ -896,6 +1008,7 @@ def edit_stock_order(id):
         gaming = None
         status = "pending"
         total_amount = request.form.get("total_amount")
+        discount = request.form.get("discount")
 
         # cursor.execute("SELECT name from customers where id=%s",(customer_id))
         # customer_name = cursor.fetchone()
@@ -908,7 +1021,7 @@ def edit_stock_order(id):
         # temp    
 
         
-        cursor.execute("UPDATE stock_orders SET date=%s, reference=%s, order_number=%s,customer_name=%s, item_name=%s,billing_address=%s, description=%s,treatment=%s, tint_service=%s,od_sph=%s, od_cyl=%s,od_axis=%s, od_add=%s,od_base=%s, od_fh=%s,od_prism_no=%s, od_prism_detail=%s,os_sph=%s, os_cyl=%s,os_axis=%s, os_add=%s,os_base=%s, os_fh=%s,os_prism_no=%s, os_prism_detail=%s,bvd_mm=%s, face_angle=%s,pantoscopic_Angle=%s, nrd=%s, decentration=%s,center_edge=%s, frame_size_h=%s,oc_height=%s, od1=%s,os1=%s, occupation=%s,driving=%s, computer=%s,reading=%s, mobile=%s,gaming=%s,status=%s,od_size=%s,os_size=%s,od_cost_price=%s,od_sales_price=%s,od_qty=%s,os_cost_price=%s,os_sales_price=%s,os_qty=%s,od_pd=%s,os_pd=%s,total_amount=%s,frame_size_v=%s,frame_size_d=%s WHERE id=%s; ",(date,reference,order_number,customer_name,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,id))
+        cursor.execute("UPDATE stock_orders SET date=%s, reference=%s, order_number=%s,customer_name=%s, item_name=%s,billing_address=%s, description=%s,treatment=%s, tint_service=%s,od_sph=%s, od_cyl=%s,od_axis=%s, od_add=%s,od_base=%s, od_fh=%s,od_prism_no=%s, od_prism_detail=%s,os_sph=%s, os_cyl=%s,os_axis=%s, os_add=%s,os_base=%s, os_fh=%s,os_prism_no=%s, os_prism_detail=%s,bvd_mm=%s, face_angle=%s,pantoscopic_Angle=%s, nrd=%s, decentration=%s,center_edge=%s, frame_size_h=%s,oc_height=%s, od1=%s,os1=%s, occupation=%s,driving=%s, computer=%s,reading=%s, mobile=%s,gaming=%s,status=%s,od_size=%s,os_size=%s,od_cost_price=%s,od_sales_price=%s,od_qty=%s,os_cost_price=%s,os_sales_price=%s,os_qty=%s,od_pd=%s,os_pd=%s,total_amount=%s,frame_size_v=%s,frame_size_d=%s,discount=%s,item_id=%s WHERE id=%s; ",(date,reference,order_number,customer_name,item_name,billing_address,description,treatment,tint_service,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_no,od_prism_detail,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_no,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,od1,os1,occupation,driving,computer,reading,mobile,gaming,status,od_size,os_size,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,total_amount,frame_size_v,frame_size_d,discount,item_id,id))
         
 
         conn.commit()
@@ -917,8 +1030,8 @@ def edit_stock_order(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from customers;")
     customers = cursor.fetchall()
-    cursor.execute("SELECT * from rx_items;")
-    rx_items = cursor.fetchall()
+    cursor.execute("SELECT * from stock_items;")
+    stock_items = cursor.fetchall()
     cursor.execute("SELECT * from treatments;")
     treatments = cursor.fetchall()
     cursor.execute("SELECT * from tints_of_services;")
@@ -930,7 +1043,7 @@ def edit_stock_order(id):
     # cursor.execute("select id from rx_orders ORDER BY id DESC LIMIT 1;;")
     # last_row_id = cursor.fetchone()
     # reference = last_row_id[0]+1
-    return render_template("edit-stock-order.html",customers=customers,rx_items=rx_items,treatments=treatments,tints_of_services=tints_of_services,data=data)
+    return render_template("edit-stock-order.html",customers=customers,stock_items=stock_items,treatments=treatments,tints_of_services=tints_of_services,data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/make-rx-purchase", methods=['GET','POST'])
@@ -1009,7 +1122,7 @@ def make_rx_purchase():
         reading = request.form.get("reading")
         mobile = request.form.get("mobile")
         gaming = request.form.get("gaming")  
-        cursor.execute("INSERT INTO rx_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total_amount,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total_amount,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service))
+        cursor.execute("INSERT INTO rx_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total_amount,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service,user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total_amount,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service,session['userid']))
         conn.commit()
 
         # now fetch supplier bal 
@@ -1049,7 +1162,7 @@ def make_rx_purchase():
     rx_items = cursor.fetchall()
     cursor.execute("SELECT * from rx_orders;")
     rx_orders = cursor.fetchall()
-    return render_template("make-rx-purchase.html",suppliers=suppliers,rx_items=rx_items,rx_orders=rx_orders)
+    return render_template("make-rx-purchase.html",suppliers=suppliers,rx_items=rx_items,rx_orders=rx_orders,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/make-stock-purchase", methods=['GET','POST'])
 def make_stock_purchase():
@@ -1092,7 +1205,7 @@ def make_stock_purchase():
         od_prism_detail = request.form.get("od_prism_detail")
         od_pd = request.form.get("od_pd")
         od_cost_price = request.form.get("od_cost_price")
-        od_sales_price = request.form.get("od_sales_price")
+        od_sales_price = None
         od_qty = request.form.get("od_qty")
         
         os_size = request.form.get("os_size")
@@ -1108,7 +1221,7 @@ def make_stock_purchase():
         os_prism_detail = request.form.get("os_prism_detail")
         os_pd = request.form.get("os_pd")
         os_cost_price = request.form.get("os_cost_price")
-        os_sales_price = request.form.get("os_sales_price")
+        os_sales_price = None
         os_qty = request.form.get("os_qty")
         
         bvd_mm = request.form.get("bvd_mm")
@@ -1127,7 +1240,7 @@ def make_stock_purchase():
         reading = request.form.get("reading")
         mobile = request.form.get("mobile")
         gaming = request.form.get("gaming")  
-        cursor.execute("INSERT INTO stock_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total_amount,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total_amount,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service))
+        cursor.execute("INSERT INTO stock_purchases (issue_date, due_date, reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total_amount,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service,user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, supplier_id, supplier_name, description, item_id, item_name, exp_account, item_qty, cost_price, total_amount,status,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service,session['userid']))
         conn.commit()
 
         # now fetch supplier bal 
@@ -1167,7 +1280,7 @@ def make_stock_purchase():
     rx_items = cursor.fetchall()
     cursor.execute("SELECT * from stock_orders;")
     stock_orders = cursor.fetchall()
-    return render_template("make-stock-purchase.html",suppliers=suppliers,rx_items=rx_items,stock_orders=stock_orders)
+    return render_template("make-stock-purchase.html",suppliers=suppliers,rx_items=rx_items,stock_orders=stock_orders,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/edit-rx-purchase/<string:id>", methods=['GET','POST'])
@@ -1303,7 +1416,7 @@ def edit_rx_purchase(id):
     rx_items = cursor.fetchall()
     cursor.execute("SELECT * from rx_purchases where id=%s;",(id))
     data = cursor.fetchone()
-    return render_template("edit-rx-purchase.html",suppliers=suppliers,rx_items=rx_items,data=data)
+    return render_template("edit-rx-purchase.html",suppliers=suppliers,rx_items=rx_items,data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-stock-purchase/<string:id>", methods=['GET','POST'])
 def edit_stock_purchase(id):
@@ -1347,7 +1460,7 @@ def edit_stock_purchase(id):
         od_prism_detail = request.form.get("od_prism_detail")
         od_pd = request.form.get("od_pd")
         od_cost_price = request.form.get("od_cost_price")
-        od_sales_price = request.form.get("od_sales_price")
+        od_sales_price = None
         od_qty = request.form.get("od_qty")
         
         os_size = request.form.get("os_size")
@@ -1363,7 +1476,7 @@ def edit_stock_purchase(id):
         os_prism_detail = request.form.get("os_prism_detail")
         os_pd = request.form.get("os_pd")
         os_cost_price = request.form.get("os_cost_price")
-        os_sales_price = request.form.get("os_sales_price")
+        os_sales_price = None
         os_qty = request.form.get("os_qty")
         
         bvd_mm = request.form.get("bvd_mm")
@@ -1438,7 +1551,7 @@ def edit_stock_purchase(id):
     rx_items = cursor.fetchall()
     cursor.execute("SELECT * from stock_purchases where id=%s;",(id))
     data = cursor.fetchone()
-    return render_template("edit-stock-purchase.html",suppliers=suppliers,rx_items=rx_items,data=data)
+    return render_template("edit-stock-purchase.html",suppliers=suppliers,rx_items=rx_items,data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/make-rx-invoice", methods=['GET','POST'])
@@ -1455,6 +1568,7 @@ def make_rx_invoice():
         billing_address = request.form.get("billing_address")
         # description = request.form.get("dsc")
         description = None 
+        status = "pending"
         item_id = request.form.get("item_idd")
         item_name = request.form.get("item_name")
         # exp_account = request.form.get("exp_account")
@@ -1464,6 +1578,7 @@ def make_rx_invoice():
         item_qty = None
         sales_price = None
         total_amount = request.form.get("total_amount")
+        discount = None
             
             
         treatment = request.form.get("treatment")
@@ -1514,7 +1629,7 @@ def make_rx_invoice():
         reading = request.form.get("reading")
         mobile = request.form.get("mobile")
         gaming = request.form.get("gaming")  
-        cursor.execute("INSERT INTO rx_invoices (issue_date, due_date, reference, customer_id, customer_name,billing_address, description, item_id, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, customer_id, customer_name,billing_address, description, item_id, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service))
+        cursor.execute("INSERT INTO rx_invoices (issue_date, due_date, reference, customer_id, customer_name,billing_address, description, item_id, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service,discount,user_id,status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, customer_id, customer_name,billing_address, description, item_id, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service,discount,session['userid'],status))
         conn.commit()
 
         # now change order status to ready 
@@ -1551,7 +1666,7 @@ def make_rx_invoice():
     rx_items = cursor.fetchall()
     cursor.execute("SELECT * from rx_orders;")
     rx_orders = cursor.fetchall()
-    return render_template("make-rx-invoice.html",customers=customers,rx_items=rx_items,rx_orders=rx_orders)
+    return render_template("make-rx-invoice.html",customers=customers,rx_items=rx_items,rx_orders=rx_orders,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/make-stock-invoice", methods=['GET','POST'])
 def make_stock_invoice():
@@ -1563,6 +1678,7 @@ def make_stock_invoice():
         reference = request.form.get("reference")
         print("reference is: ",reference)
         customer_id = request.form.get("customer_id")
+        
         customer_name = request.form.get("customer_name")
         billing_address = request.form.get("billing_address")
         # description = request.form.get("dsc")
@@ -1571,25 +1687,27 @@ def make_stock_invoice():
         item_name = request.form.get("item_name")
         # exp_account = request.form.get("exp_account")
         exp_account = None
+        status = "pending"
         # item_qty = request.form.get("qty")
         # sales_price = request.form.get("sales_price")
         item_qty = None
         sales_price = None
         total_amount = request.form.get("total_amount")
+        discount = None
             
             
-        treatment = request.form.get("treatment")
-        tint_service = request.form.get("tint_service")
+        treatment = None
+        tint_service = None
 
         od_size = request.form.get("od_size")
         od_sph = request.form.get("od_sph")
         od_cyl = request.form.get("od_cyl")
         od_axis = request.form.get("od_axis")
         od_add = request.form.get("od_add")
-        od_base = request.form.get("od_base")
-        od_fh = request.form.get("od_fh")
-        od_prism_detail = request.form.get("od_prism_detail")
-        od_pd = request.form.get("od_pd")
+        od_base = None
+        od_fh = None
+        od_prism_detail = None
+        od_pd = None
         od_cost_price = request.form.get("od_cost_price")
         od_sales_price = request.form.get("od_sales_price")
         od_qty = request.form.get("od_qty")
@@ -1599,34 +1717,34 @@ def make_stock_invoice():
         os_cyl = request.form.get("os_cyl")
         os_axis = request.form.get("os_axis")
         os_add = request.form.get("os_add")
-        os_base = request.form.get("os_base")
-        os_fh = request.form.get("os_fh")
+        os_base = None
+        os_fh = None
         # os_prism_no = request.form.get("os_prism_no")
         
         os_prism_no = None
-        os_prism_detail = request.form.get("os_prism_detail")
-        os_pd = request.form.get("os_pd")
+        os_prism_detail = None
+        os_pd = None
         os_cost_price = request.form.get("os_cost_price")
         os_sales_price = request.form.get("os_sales_price")
         os_qty = request.form.get("os_qty")
         
-        bvd_mm = request.form.get("bvd_mm")
-        face_angle = request.form.get("face_angle")
-        pantoscopic_Angle = request.form.get("pantoscopic_Angle")
-        nrd = request.form.get("nrd")
-        decentration = request.form.get("decentration")
-        center_edge = request.form.get("center_edge")
-        frame_size_h = request.form.get("frame_size_h")
-        frame_size_v = request.form.get("frame_size_v")
-        frame_size_d = request.form.get("frame_size_d")
-        oc_height = request.form.get("oc_height")
-        occupation = request.form.get("occupation")
-        driving = request.form.get("driving")
-        computer = request.form.get("computer")
-        reading = request.form.get("reading")
-        mobile = request.form.get("mobile")
-        gaming = request.form.get("gaming")  
-        cursor.execute("INSERT INTO stock_invoices (issue_date, due_date, reference, customer_id, customer_name,billing_address, description, item_id, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, customer_id, customer_name,billing_address, description, item_id, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service))
+        bvd_mm = None
+        face_angle = None
+        pantoscopic_Angle = None
+        nrd = None
+        decentration = None
+        center_edge = None
+        frame_size_h = None
+        frame_size_v = None
+        frame_size_d = None
+        oc_height = None
+        occupation = None
+        driving = None
+        computer = None
+        reading = None
+        mobile = None
+        gaming = None
+        cursor.execute("INSERT INTO stock_invoices (issue_date, due_date, reference, customer_id, customer_name,billing_address, description, item_id, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service,discount,user_id,status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(issue_date,due_date ,reference, customer_id, customer_name,billing_address, description, item_id, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,frame_size_h,oc_height,occupation,driving,computer,reading,mobile,gaming,od_cost_price,od_sales_price,od_qty,os_cost_price,os_sales_price,os_qty,od_pd,os_pd,frame_size_v,frame_size_d,treatment,tint_service,discount,session['userid'],status))
         conn.commit()
 
         # now change order status to ready 
@@ -1663,7 +1781,7 @@ def make_stock_invoice():
     rx_items = cursor.fetchall()
     cursor.execute("SELECT * from stock_orders;")
     stock_orders = cursor.fetchall()
-    return render_template("make-stock-invoice.html",customers=customers,rx_items=rx_items,stock_orders=stock_orders)
+    return render_template("make-stock-invoice.html",customers=customers,rx_items=rx_items,stock_orders=stock_orders,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/edit-rx-invoice/<string:id>", methods=['GET','POST'])
@@ -1686,6 +1804,7 @@ def edit_rx_invoice(id):
         # sales_price = request.form.get("sales_price")
         sales_price = None
         total_amount = request.form.get("total_amount")
+        discount = None
             
             
         treatment = request.form.get("treatment")
@@ -1752,7 +1871,7 @@ def edit_rx_invoice(id):
         # cursor.execute("UPDATE rx_invoices SET issue_date=%s,due_date=%s,reference=%s,customer_name=%s,billing_address=%s,description=%s,item_name=%s,exp_account=%s,item_qty=%s,sales_price=%s,total=%s,od_size=%s,od_sph=%s,od_cyl=%s,od_axis=%s,od_add=%s,od_base=%s,od_fh=%s,os_size=%s,os_sph=%s,os_cyl=%s,os_axis=%s,os_add=%s,os_base=%s,os_fh=%s,os_prism_detail=%s,od_prism_detail=%s WHERE id=%s; ",(issue_date,due_date ,reference,  customer_name, billing_address, description, item_name, exp_account, item_qty, sales_price, total,od_size,od_sph ,od_cyl ,od_axis ,od_add , od_base,od_fh , os_size,os_sph ,os_cyl, os_axis,os_add , os_base,os_fh,os_prism_detail, od_prism_detail,id))
         # conn.commit()
 
-        cursor.execute("UPDATE rx_invoices SET issue_date=%s,due_date=%s,reference=%s,customer_name=%s,billing_address=%s,description=%s,item_name=%s,exp_account=%s,item_qty=%s,sales_price=%s,total_amount=%s,od_size=%s,od_sph=%s,od_cyl=%s,od_axis=%s,od_add=%s,od_base=%s,od_fh=%s,od_prism_detail=%s,os_size=%s,os_sph=%s,os_cyl=%s,os_axis=%s,os_add=%s,os_base=%s,os_fh=%s,os_prism_detail=%s,bvd_mm=%s,face_angle=%s,pantoscopic_Angle=%s,nrd=%s,decentration=%s,center_edge=%s,oc_height=%s,occupation=%s,driving=%s,computer=%s,reading=%s,mobile=%s,gaming=%s,od_sales_price=%s,od_qty=%s,os_sales_price=%s,os_qty=%s,od_pd=%s,os_pd=%s,frame_size_h=%s,frame_size_v=%s,frame_size_d=%s,treatment=%s,tint_service=%s WHERE id=%s; ",(issue_date,due_date ,reference, customer_name,billing_address, description, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,oc_height,occupation,driving,computer,reading,mobile,gaming,od_sales_price,od_qty,os_sales_price,os_qty,od_pd,os_pd,frame_size_h,frame_size_v,frame_size_d,treatment,tint_service,id))
+        cursor.execute("UPDATE rx_invoices SET issue_date=%s,due_date=%s,reference=%s,customer_name=%s,billing_address=%s,description=%s,item_name=%s,exp_account=%s,item_qty=%s,sales_price=%s,total_amount=%s,od_size=%s,od_sph=%s,od_cyl=%s,od_axis=%s,od_add=%s,od_base=%s,od_fh=%s,od_prism_detail=%s,os_size=%s,os_sph=%s,os_cyl=%s,os_axis=%s,os_add=%s,os_base=%s,os_fh=%s,os_prism_detail=%s,bvd_mm=%s,face_angle=%s,pantoscopic_Angle=%s,nrd=%s,decentration=%s,center_edge=%s,oc_height=%s,occupation=%s,driving=%s,computer=%s,reading=%s,mobile=%s,gaming=%s,od_sales_price=%s,od_qty=%s,os_sales_price=%s,os_qty=%s,od_pd=%s,os_pd=%s,frame_size_h=%s,frame_size_v=%s,frame_size_d=%s,treatment=%s,tint_service=%s,discount=%s WHERE id=%s; ",(issue_date,due_date ,reference, customer_name,billing_address, description, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,oc_height,occupation,driving,computer,reading,mobile,gaming,od_sales_price,od_qty,os_sales_price,os_qty,od_pd,os_pd,frame_size_h,frame_size_v,frame_size_d,treatment,tint_service,id,discount))
         
         conn.commit()
 
@@ -1780,7 +1899,7 @@ def edit_rx_invoice(id):
     rx_items = cursor.fetchall()
     cursor.execute("SELECT * from rx_invoices where id=%s;",(id))
     data = cursor.fetchone()
-    return render_template("edit-rx-invoice.html",customers=customers,rx_items=rx_items,data=data)
+    return render_template("edit-rx-invoice.html",customers=customers,rx_items=rx_items,data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/edit-stock-invoice/<string:id>", methods=['GET','POST'])
@@ -1803,20 +1922,21 @@ def edit_stock_invoice(id):
         # sales_price = request.form.get("sales_price")
         sales_price = None
         total_amount = request.form.get("total_amount")
+        discount = None
             
             
-        treatment = request.form.get("treatment")
-        tint_service = request.form.get("tint_service")
+        treatment = None
+        tint_service = None
 
         od_size = request.form.get("od_size")
         od_sph = request.form.get("od_sph")
         od_cyl = request.form.get("od_cyl")
         od_axis = request.form.get("od_axis")
         od_add = request.form.get("od_add")
-        od_base = request.form.get("od_base")
-        od_fh = request.form.get("od_fh")
-        od_prism_detail = request.form.get("od_prism_detail")
-        od_pd = request.form.get("od_pd")
+        od_base = None
+        od_fh = None
+        od_prism_detail = None
+        od_pd = None
         od_cost_price = request.form.get("od_cost_price")
         od_sales_price = request.form.get("od_sales_price")
         od_qty = request.form.get("od_qty")
@@ -1826,33 +1946,33 @@ def edit_stock_invoice(id):
         os_cyl = request.form.get("os_cyl")
         os_axis = request.form.get("os_axis")
         os_add = request.form.get("os_add")
-        os_base = request.form.get("os_base")
-        os_fh = request.form.get("os_fh")
+        os_base = None
+        os_fh = None
         # os_prism_no = request.form.get("os_prism_no")
         
         os_prism_no = None
-        os_prism_detail = request.form.get("os_prism_detail")
-        os_pd = request.form.get("os_pd")
+        os_prism_detail = None
+        os_pd = None
         os_cost_price = request.form.get("os_cost_price")
         os_sales_price = request.form.get("os_sales_price")
         os_qty = request.form.get("os_qty")
         
-        bvd_mm = request.form.get("bvd_mm")
-        face_angle = request.form.get("face_angle")
-        pantoscopic_Angle = request.form.get("pantoscopic_Angle")
-        nrd = request.form.get("nrd")
-        decentration = request.form.get("decentration")
-        center_edge = request.form.get("center_edge")
-        frame_size_h = request.form.get("frame_size_h")
-        frame_size_v = request.form.get("frame_size_v")
-        frame_size_d = request.form.get("frame_size_d")
-        oc_height = request.form.get("oc_height")
-        occupation = request.form.get("occupation")
-        driving = request.form.get("driving")
-        computer = request.form.get("computer")
-        reading = request.form.get("reading")
-        mobile = request.form.get("mobile")
-        gaming = request.form.get("gaming")
+        bvd_mm = None
+        face_angle = None
+        pantoscopic_Angle = None
+        nrd = None
+        decentration = None
+        center_edge = None
+        frame_size_h = None
+        frame_size_v = None
+        frame_size_d = None
+        oc_height = None
+        occupation = None
+        driving = None
+        computer = None
+        reading = None
+        mobile = None 
+        gaming = None
         # cursor.execute("SELECT name from customers where id=%s",(customer_id))
         # customer_name = cursor.fetchone()
         # customer_name = customer_name[0]
@@ -1869,7 +1989,7 @@ def edit_stock_invoice(id):
         # cursor.execute("UPDATE rx_invoices SET issue_date=%s,due_date=%s,reference=%s,customer_name=%s,billing_address=%s,description=%s,item_name=%s,exp_account=%s,item_qty=%s,sales_price=%s,total=%s,od_size=%s,od_sph=%s,od_cyl=%s,od_axis=%s,od_add=%s,od_base=%s,od_fh=%s,os_size=%s,os_sph=%s,os_cyl=%s,os_axis=%s,os_add=%s,os_base=%s,os_fh=%s,os_prism_detail=%s,od_prism_detail=%s WHERE id=%s; ",(issue_date,due_date ,reference,  customer_name, billing_address, description, item_name, exp_account, item_qty, sales_price, total,od_size,od_sph ,od_cyl ,od_axis ,od_add , od_base,od_fh , os_size,os_sph ,os_cyl, os_axis,os_add , os_base,os_fh,os_prism_detail, od_prism_detail,id))
         # conn.commit()
 
-        cursor.execute("UPDATE stock_invoices SET issue_date=%s,due_date=%s,reference=%s,customer_name=%s,billing_address=%s,description=%s,item_name=%s,exp_account=%s,item_qty=%s,sales_price=%s,total_amount=%s,od_size=%s,od_sph=%s,od_cyl=%s,od_axis=%s,od_add=%s,od_base=%s,od_fh=%s,od_prism_detail=%s,os_size=%s,os_sph=%s,os_cyl=%s,os_axis=%s,os_add=%s,os_base=%s,os_fh=%s,os_prism_detail=%s,bvd_mm=%s,face_angle=%s,pantoscopic_Angle=%s,nrd=%s,decentration=%s,center_edge=%s,oc_height=%s,occupation=%s,driving=%s,computer=%s,reading=%s,mobile=%s,gaming=%s,od_sales_price=%s,od_qty=%s,os_sales_price=%s,os_qty=%s,od_pd=%s,os_pd=%s,frame_size_h=%s,frame_size_v=%s,frame_size_d=%s,treatment=%s,tint_service=%s WHERE id=%s; ",(issue_date,due_date ,reference, customer_name,billing_address, description, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,oc_height,occupation,driving,computer,reading,mobile,gaming,od_sales_price,od_qty,os_sales_price,os_qty,od_pd,os_pd,frame_size_h,frame_size_v,frame_size_d,treatment,tint_service,id))
+        cursor.execute("UPDATE stock_invoices SET issue_date=%s,due_date=%s,reference=%s,customer_name=%s,billing_address=%s,description=%s,item_name=%s,exp_account=%s,item_qty=%s,sales_price=%s,total_amount=%s,od_size=%s,od_sph=%s,od_cyl=%s,od_axis=%s,od_add=%s,od_base=%s,od_fh=%s,od_prism_detail=%s,os_size=%s,os_sph=%s,os_cyl=%s,os_axis=%s,os_add=%s,os_base=%s,os_fh=%s,os_prism_detail=%s,bvd_mm=%s,face_angle=%s,pantoscopic_Angle=%s,nrd=%s,decentration=%s,center_edge=%s,oc_height=%s,occupation=%s,driving=%s,computer=%s,reading=%s,mobile=%s,gaming=%s,od_sales_price=%s,od_qty=%s,os_sales_price=%s,os_qty=%s,od_pd=%s,os_pd=%s,frame_size_h=%s,frame_size_v=%s,frame_size_d=%s,treatment=%s,tint_service=%s,discount=%s WHERE id=%s; ",(issue_date,due_date ,reference, customer_name,billing_address, description, item_name, exp_account, item_qty, sales_price, total_amount,od_size,od_sph,od_cyl,od_axis,od_add,od_base,od_fh,od_prism_detail,os_size,os_sph,os_cyl,os_axis,os_add,os_base,os_fh,os_prism_detail,bvd_mm,face_angle,pantoscopic_Angle,nrd,decentration,center_edge,oc_height,occupation,driving,computer,reading,mobile,gaming,od_sales_price,od_qty,os_sales_price,os_qty,od_pd,os_pd,frame_size_h,frame_size_v,frame_size_d,treatment,tint_service,discount,id))
         
         conn.commit()
 
@@ -1897,7 +2017,7 @@ def edit_stock_invoice(id):
     rx_items = cursor.fetchall()
     cursor.execute("SELECT * from stock_invoices where id=%s;",(id))
     data = cursor.fetchone()
-    return render_template("edit-stock-invoice.html",customers=customers,rx_items=rx_items,data=data)
+    return render_template("edit-stock-invoice.html",customers=customers,rx_items=rx_items,data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 
@@ -1915,7 +2035,7 @@ def add_supplier():
         cursor.execute("INSERT INTO suppliers (name, email, phone,address,description,actual_bal) VALUES (%s,%s,%s,%s,%s,%s);",(name,email,phone,address,desc,starting_bal))
         conn.commit()
         return redirect(url_for("add_supplier"))
-    return render_template("add-supplier.html")
+    return render_template("add-supplier.html",type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-supplier/<string:id>",methods=['GET','POST'])
 def edit_supplier(id):
@@ -1934,7 +2054,7 @@ def edit_supplier(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from suppliers where id=%s",(id))
     data = cursor.fetchone()
-    return render_template("edit-supplier.html",data=data)
+    return render_template("edit-supplier.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/all-suppliers")
 def all_suppliers():
@@ -1942,7 +2062,7 @@ def all_suppliers():
     cursor =conn.cursor()
     cursor.execute("SELECT * from suppliers;")
     suppliers = cursor.fetchall()
-    return render_template("all-suppliers.html", suppliers= suppliers)
+    return render_template("all-suppliers.html", suppliers= suppliers,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/delete-suppliers/<string:id>")
 def delete_suppliers(id):
@@ -1986,15 +2106,15 @@ def delete_stock_purchase(id):
 
 @app.route("/add-sale-receipt")
 def add_sale_receipt():
-    return render_template("add-sale-receipt.html")
+    return render_template("add-sale-receipt.html",type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/add-sale-order")
 def add_sale_order():
-    return render_template("add-sale-order.html")
+    return render_template("add-sale-order.html",type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/add-purchase-order")
 def add_purchase_order():
-    return render_template("add-purchase-order.html")
+    return render_template("add-purchase-order.html",type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/add-branch",methods=['GET','POST'])
 def add_branch():
@@ -2008,12 +2128,12 @@ def add_branch():
         cursor =conn.cursor()
         cursor.execute("INSERT INTO branch (name, phone,address,security_code) VALUES (%s,%s,%s,%s);",(name,phone,address,security_code))
         conn.commit()
-        return redirect(url_for("add_branch"))
+        return redirect(url_for("all_branch"))
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT * from branch")
     branch = cursor.fetchall()
-    return render_template("add-branch.html",branch=branch)
+    return render_template("add-branch.html",branch=branch,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-branch/<string:id>",methods=['GET','POST'])
 def edit_branch(id):
@@ -2032,7 +2152,7 @@ def edit_branch(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from branch where id=%s",(id))
     data = cursor.fetchone()
-    return render_template("edit-branch.html",data=data)
+    return render_template("edit-branch.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/all-branch")
 def all_branch():
@@ -2040,7 +2160,7 @@ def all_branch():
     cursor =conn.cursor()
     cursor.execute("SELECT * from branch;")
     branch = cursor.fetchall()
-    return render_template("all-branch.html", branch= branch)
+    return render_template("all-branch.html", branch= branch,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/delete-branch/<string:id>")
 def delete_branch(id):
@@ -2055,7 +2175,7 @@ def add_user():
     if request.method=='POST':
         name= request.form.get("name")
         email= request.form.get("email")
-        branch= request.form.get("branch")
+        branch_id= request.form.get("branch")
         password= request.form.get("password")
         confirm_password= request.form.get("confirm_password")
         security_code= request.form.get("security_code")
@@ -2063,6 +2183,9 @@ def add_user():
         
         conn = mysql.connect()
         cursor =conn.cursor()
+        
+        cursor.execute("SELECT name from branch where id=%s",(branch_id))
+        branch = cursor.fetchone()[0]
         cursor.execute("SELECT * from users where email=%s",(email))
         exist = cursor.fetchone()
         if exist:            
@@ -2079,23 +2202,27 @@ def add_user():
             return render_template("add-user.html",error="Passwords doesn't match",branch=branch)
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("INSERT INTO users (name, email,branch,password,security_code,type) VALUES (%s,%s,%s,%s,%s,%s);",(name,email,branch,password,security_code,type))
+        cursor.execute("INSERT INTO users (name, email,branch,password,security_code,type,branch_id) VALUES (%s,%s,%s,%s,%s,%s,%s);",(name,email,branch,password,security_code,type,branch_id))
         conn.commit()
-        return redirect(url_for("add_user"))
+        return redirect(url_for("all_users"))
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT * from branch")
     branch = cursor.fetchall()
-    return render_template("add-user.html",branch=branch)
+    return render_template("add-user.html",branch=branch,type=session['type'],username=session['name'],userid=session['userid'])
 @app.route("/edit-user/<string:id>",methods=['GET','POST'])
 def edit_user(id):
     if request.method=='POST':
         name= request.form.get("name")
         email= request.form.get("email")
-        branch= request.form.get("branch")
         password= request.form.get("password")
         confirm_password= request.form.get("confirm_password")
         security_code= request.form.get("security_code")
+        branch_id= request.form.get("branch")        
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("SELECT name from branch where id=%s",(branch_id))
+        branch = cursor.fetchone()[0]
         type = "user"
         
         if password != confirm_password:            
@@ -2108,7 +2235,7 @@ def edit_user(id):
             return render_template("edit-user.html",error="Passwords doesn't match",branch=branch,data=data)
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("UPDATE users set name=%s, email=%s,branch=%s,password=%s,security_code=%s where id=%s;",(name,email,branch,password,security_code,id))
+        cursor.execute("UPDATE users set name=%s, email=%s,branch=%s,password=%s,security_code=%s,branch_id=%s where id=%s;",(name,email,branch,password,security_code,branch_id,id))
         conn.commit()
         return redirect(url_for("all_users"))
     conn = mysql.connect()
@@ -2117,7 +2244,7 @@ def edit_user(id):
     branch = cursor.fetchall()
     cursor.execute("SELECT * from users where id=%s",(id))
     data = cursor.fetchone()
-    return render_template("edit-user.html",branch=branch,data=data)
+    return render_template("edit-user.html",branch=branch,data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/all-users")
@@ -2126,7 +2253,7 @@ def all_users():
     cursor =conn.cursor()
     cursor.execute("SELECT * from users;")
     users = cursor.fetchall()
-    return render_template("all-users.html", users= users)
+    return render_template("all-users.html", users= users,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/delete-user/<string:id>")
 def delete_user(id):
@@ -2141,49 +2268,67 @@ def delete_user(id):
 def view_rx_orders():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from rx_orders;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from rx_orders;")
+    else:
+        cursor.execute("SELECT * from rx_orders where user_id=%s;",(session['userid']))
     rx_orders = cursor.fetchall()
-    return render_template("view-rx-orders.html", rx_orders= rx_orders)
+    return render_template("view-rx-orders.html", rx_orders= rx_orders,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-stock-orders")
 def view_stock_orders():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from stock_orders;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from stock_orders;")
+    else:
+        cursor.execute("SELECT * from stock_orders where user_id=%s;",(session['userid']))
     stock_orders = cursor.fetchall()
-    return render_template("view-stock-orders.html", stock_orders= stock_orders)
+    return render_template("view-stock-orders.html", stock_orders= stock_orders,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-rx-purchase")
 def view_rx_purchase():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from rx_purchases;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from rx_purchases;")
+    else:
+        cursor.execute("SELECT * from rx_purchases where user_id=%s;",(session['userid']))
     rx_purchases = cursor.fetchall()
-    return render_template("view-rx-purchase.html", rx_purchases= rx_purchases)
+    return render_template("view-rx-purchase.html", rx_purchases= rx_purchases,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-stock-purchase")
 def view_stock_purchase():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from stock_purchases;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from stock_purchases;")
+    else:
+        cursor.execute("SELECT * from stock_purchases where user_id=%s;",(session['userid']))
     stock_purchases = cursor.fetchall()
-    return render_template("view-stock-purchase.html", stock_purchases= stock_purchases)
+    return render_template("view-stock-purchase.html", stock_purchases= stock_purchases,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-rx-invoice")
 def view_rx_invoice():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from rx_invoices;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from rx_invoices;")
+    else:
+        cursor.execute("SELECT * from rx_invoices where user_id=%s;",(session['userid']))
     rx_invoices = cursor.fetchall()
-    return render_template("view-rx-invoice.html", rx_invoices= rx_invoices)
+    return render_template("view-rx-invoice.html", rx_invoices= rx_invoices,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-stock-invoice")
 def view_stock_invoice():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from stock_invoices;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from stock_invoices;")
+    else:
+        cursor.execute("SELECT * from stock_invoices where user_id=%s;",(session['userid']))
     stock_invoices = cursor.fetchall()
-    return render_template("view-stock-invoice.html", stock_invoices= stock_invoices)
+    return render_template("view-stock-invoice.html", stock_invoices= stock_invoices,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/delete-rxorder/<string:id>")
 def delete_rxorder(id):
@@ -2205,46 +2350,65 @@ def delete_stock_order(id):
 def view_receipts():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from inoutreceipts;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from inoutreceipts;")
+    else:
+        cursor.execute("SELECT * from inoutreceipts where user_id=%s;",(session['userid']))
     data = cursor.fetchall()
-    return render_template("view-receipts.html",data=data)
+    return render_template("view-receipts.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-bank-accounts")
 def view_bank_accounts():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from bank_accounts;")
+    
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from bank_accounts;")
+    else:
+        cursor.execute("SELECT * from bank_accounts where user_id=%s;",(session['userid']))
     data = cursor.fetchall()
-    return render_template("view-bank-accounts.html",data=data)
+    return render_template("view-bank-accounts.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 @app.route("/view-income-accounts")
 def view_income_accounts():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from income_accounts;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from income_accounts;")
+    else:
+        cursor.execute("SELECT * from income_accounts where user_id=%s;",(session['userid']))
     data = cursor.fetchall()
-    return render_template("view-income-accounts.html",data=data)
+    return render_template("view-income-accounts.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 @app.route("/view-expense-accounts")
 def view_expense_accounts():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from expense_accounts;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from expense_accounts;")
+    else:
+        cursor.execute("SELECT * from expense_accounts where user_id=%s;",(session['userid']))
     data = cursor.fetchall()
-    return render_template("view-expense-accounts.html",data=data)
+    return render_template("view-expense-accounts.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 @app.route("/view-cash-accounts")
 def view_cash_accounts():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from cash_accounts;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from cash_accounts;")
+    else:
+        cursor.execute("SELECT * from cash_accounts where user_id=%s;",(session['userid']))
     data = cursor.fetchall()
-    return render_template("view-cash-accounts.html",data=data)
+    return render_template("view-cash-accounts.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-payments")
 def view_payments():
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from payments;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from payments;")
+    else:
+        cursor.execute("SELECT * from payments where user_id=%s;",(session['userid']))
     data = cursor.fetchall()
-    return render_template("view-payments.html",data=data)
+    return render_template("view-payments.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/add-receipts", methods=['GET','POST'])
 def add_receipts():
@@ -2258,50 +2422,123 @@ def add_receipts():
             paid_by_account_name = request.form.get("other_name")
             paid_by_account_id= None
         elif paid_by_account_type=="customer":
-            paid_by_account_id = request.form.get("customer")           
+            paid_by_account_id = request.form.get("customer") 
+            if request.form.get("customer_invoice"):
+                customer_invoice = request.form.get("customer_invoice")
             cursor.execute("SELECT name from customers where id=%s",(paid_by_account_id))
             customer = cursor.fetchone()
             paid_by_account_name = customer[0]
+
+            cursor.execute("Select * from rx_invoices WHERE id=%s; ",(customer_invoice))
+            rx_invoice = cursor.fetchone()
+            cursor.execute("Select * from stock_invoices WHERE id=%s; ",(customer_invoice))
+            stock_invoice = cursor.fetchone()
+            # check wherate the invoice is for stock or rx         
+            if rx_invoice:
+                invoice_type = "rx"
+            elif stock_invoice:
+                invoice_type = "stock"
+            else:
+                invoice_type = None
         elif paid_by_account_type=="supplier":
             paid_by_account_id = request.form.get("supplier")             
             cursor.execute("SELECT name from suppliers where id=%s",(paid_by_account_id))
             supplier = cursor.fetchone()
             paid_by_account_name = supplier[0]
-        received_in_account_id= request.form.get("received_in_account")                     
-        cursor.execute("SELECT name from bank_accounts where id=%s",(received_in_account_id))
+        received_in_type= request.form.get("received_in_type")
+        
+        received_in_account_id= request.form.get("received_in_account") 
+        if received_in_type =="bank":                    
+            cursor.execute("SELECT name from bank_accounts where id=%s",(received_in_account_id))
+        elif received_in_type =="cash":                    
+            cursor.execute("SELECT name from cash_accounts where id=%s",(received_in_account_id))
         # cursor.execute("SELECT name from bankandcashaccounts where id=%s",(received_in_account_id))
         received_in_account_name = cursor.fetchone()
         received_in_account_name=received_in_account_name[0]
         description= request.form.get("desc")
-        exp_account= request.form.get("exp_account")
-        print(exp_account)
+        income_account_id= request.form.get("income_account")                     
+        cursor.execute("SELECT name from income_accounts where id=%s",(income_account_id))
+        income_account_name = cursor.fetchone()[0]
         print(description)
         total_amount= float(request.form.get("amount"))
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("INSERT INTO inoutreceipts (date,reference,paid_by_account_type, paid_by_account_id, paid_by_account_name, received_in_account_id, 	received_in_account_name, description, exp_account, total_amount) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,paid_by_account_type,paid_by_account_id,paid_by_account_name,received_in_account_id,received_in_account_name,description,exp_account,total_amount))
-        conn.commit()
-        cursor.execute("SELECT actual_balance from bank_accounts where id=%s",(received_in_account_id))
-        # cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(received_in_account_id))
+                             
+        if paid_by_account_type=="customer":
+            cursor.execute("INSERT INTO inoutreceipts (date,reference,paid_by_account_type, paid_by_account_id, paid_by_account_name, received_in_account_id, 	received_in_account_name, description, income_account_name, total_amount,income_account_id,branch_id,user_id,invoice_id,invoice_type) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,paid_by_account_type,paid_by_account_id,paid_by_account_name,received_in_account_id,received_in_account_name,description,income_account_name,total_amount,income_account_id,None,session['userid'],customer_invoice,invoice_type))
+            conn.commit()
+        else:
+            cursor.execute("INSERT INTO inoutreceipts (date,reference,paid_by_account_type, paid_by_account_id, paid_by_account_name, received_in_account_id, 	received_in_account_name, description, income_account_name, total_amount,income_account_id,branch_id,user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,paid_by_account_type,paid_by_account_id,paid_by_account_name,received_in_account_id,received_in_account_name,description,income_account_name,total_amount,income_account_id,None,session['userid']))
+            conn.commit()
+         
+        if received_in_type =="bank": 
+            cursor.execute("SELECT actual_balance from bank_accounts where id=%s",(received_in_account_id))
+            actual_balance = cursor.fetchone()
+            actual_balance=actual_balance[0]
+            update_balance = actual_balance + total_amount
+            cursor.execute("UPDATE bank_accounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
+            conn.commit()
+        elif received_in_type =="cash": 
+            cursor.execute("SELECT actual_balance from cash_accounts where id=%s",(received_in_account_id))
+            actual_balance = cursor.fetchone()
+            actual_balance=actual_balance[0]
+            update_balance = actual_balance + total_amount
+            cursor.execute("UPDATE cash_accounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
+            conn.commit()
+        
+        cursor.execute("SELECT actual_balance from income_accounts where id=%s",(income_account_id))
         actual_balance = cursor.fetchone()
         actual_balance=actual_balance[0]
         update_balance = actual_balance + total_amount
-        cursor.execute("UPDATE bank_accounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
-        # cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,received_in_account_id))
+        cursor.execute("UPDATE income_accounts SET actual_balance=%s WHERE id=%s; ",(update_balance,income_account_id))
         conn.commit()
-        return redirect(url_for("add_receipts"))
+        
+        
+        if paid_by_account_type=="customer":
+            # now update invoice status to paid
+            if rx_invoice:
+                # update status to paid         
+                cursor.execute("UPDATE rx_invoices SET status='paid' WHERE id=%s; ",(customer_invoice))
+                conn.commit()
+                # now upadet ordertoo             
+                cursor.execute("Select reference from rx_invoices WHERE id=%s; ",(customer_invoice))
+                order_id = cursor.fetchone()[0]       
+                cursor.execute("UPDATE rx_orders SET status='paid' WHERE id=%s; ",(order_id))
+                conn.commit()
+            elif stock_invoice:
+                # update status to paid         
+                cursor.execute("UPDATE stock_invoices SET status='paid' WHERE id=%s; ",(customer_invoice))
+                conn.commit()
+                # now upadet ordertoo             
+                cursor.execute("Select reference from rx_invoices WHERE id=%s; ",(customer_invoice))
+                order_id = cursor.fetchone()[0]
+                cursor.execute("UPDATE stock_orders SET status='paid' WHERE id=%s; ",(order_id))
+                conn.commit() 
+
+        return redirect(url_for("view_receipts"))
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from customers")
-    customers = cursor.fetchall()
     cursor.execute("SELECT * from suppliers")
     suppliers = cursor.fetchall()
-    cursor.execute("SELECT * from bank_accounts")
-    # cursor.execute("SELECT * from bankandcashaccounts")
-    bank_accounts = cursor.fetchall()
-    cursor.execute("SELECT * from cash_accounts")
-    cash_accounts = cursor.fetchall()
-    return render_template("add-receipts.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,cash_accounts=cash_accounts)
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from customers")
+        customers = cursor.fetchall()
+        cursor.execute("SELECT * from bank_accounts")
+        bank_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from cash_accounts")
+        cash_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from income_accounts")
+        income_accounts = cursor.fetchall()
+    elif session['type'] == "user":
+        cursor.execute("SELECT * from customers where user_id=%s",session['userid'])
+        customers = cursor.fetchall()
+        cursor.execute("SELECT * from bank_accounts where user_id=%s",session['userid'])
+        bank_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from cash_accounts where user_id=%s",session['userid'])
+        cash_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from income_accounts where user_id=%s",session['userid'])
+        income_accounts = cursor.fetchall()
+    return render_template("add-receipts.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,cash_accounts=cash_accounts,income_accounts=income_accounts,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-receipts/<string:id>", methods=['GET','POST'])
 def edit_receipts(id):
@@ -2374,11 +2611,11 @@ def edit_receipts(id):
     customers = cursor.fetchall()
     cursor.execute("SELECT * from suppliers")
     suppliers = cursor.fetchall()
-    cursor.execute("SELECT * from bankandcashaccounts")
+    cursor.execute("SELECT * from bank_accounts")
     bank_accounts = cursor.fetchall()
     cursor.execute("SELECT * from inoutreceipts where id=%s",id)
     data = cursor.fetchone()
-    return render_template("edit-receipts.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,data=data)
+    return render_template("edit-receipts.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-payments/<string:id>", methods=['GET','POST'])
 def edit_payments(id):
@@ -2444,11 +2681,11 @@ def edit_payments(id):
     customers = cursor.fetchall()
     cursor.execute("SELECT * from suppliers")
     suppliers = cursor.fetchall()
-    cursor.execute("SELECT * from bankandcashaccounts")
+    cursor.execute("SELECT * from bank_accounts")
     bank_accounts = cursor.fetchall()
     cursor.execute("SELECT * from payments where id=%s",(id))
     data = cursor.fetchone()
-    return render_template("edit-payments.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,data=data)
+    return render_template("edit-payments.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/add-payments", methods=['GET','POST'])
 def add_payments():
@@ -2457,10 +2694,14 @@ def add_payments():
         cursor =conn.cursor()
         date= request.form.get("date")
         reference= request.form.get("reference")
-        paid_from_account_id= request.form.get("paid_from")             
-        cursor.execute("SELECT name from bankandcashaccounts where id=%s",(paid_from_account_id))
-        bank = cursor.fetchone()
-        paid_from_account_name = bank[0]
+        paid_from_type= request.form.get("paid_from_type")            
+        paid_from_account_id= request.form.get("paid_from_account")     
+        if paid_from_type == "bank":       
+            cursor.execute("SELECT name from bank_accounts where id=%s",(paid_from_account_id))
+        elif paid_from_type == "cash":       
+            cursor.execute("SELECT name from cash_accounts where id=%s",(paid_from_account_id))
+        account = cursor.fetchone()
+        paid_from_account_name = account[0]
         payee_type= request.form.get("payee_type")
         if payee_type=="other":
             payee__name = request.form.get("other_name")
@@ -2476,87 +2717,101 @@ def add_payments():
             supplier = cursor.fetchone()
             payee__name = supplier[0]
         description= request.form.get("desc")
-        exp_account= request.form.get("exp_account")
+        exp_account_id= request.form.get("exp_account")           
+        cursor.execute("SELECT name from expense_accounts where id=%s",(exp_account_id))
+        exp_account_name = cursor.fetchone()[0]
         total_amount= float(request.form.get("amount"))
         conn = mysql.connect()
         cursor =conn.cursor()
-        cursor.execute("INSERT INTO payments (date,reference,paid_from_account_id, paid_from_account_name, payee_type, payee_id, 	payee_name, description, exp_account, total_amount) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,paid_from_account_id,paid_from_account_name,payee_type,payee_account_id,payee__name,description,exp_account,total_amount))
+                             
+        cursor.execute("INSERT INTO payments (date,reference,paid_from_account_id, paid_from_account_name, payee_type, payee_id, 	payee_name, description, exp_account_name, total_amount,branch_id,user_id,exp_account_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",(date,reference,paid_from_account_id,paid_from_account_name,payee_type,payee_account_id,payee__name,description,exp_account_name,total_amount,None,session['userid'],exp_account_id))
         conn.commit()
-        cursor.execute("SELECT actual_balance from bankandcashaccounts where id=%s",(paid_from_account_id))
+        if paid_from_type == "bank": 
+            cursor.execute("SELECT actual_balance from bank_accounts where id=%s",(paid_from_account_id))
+            actual_balance = cursor.fetchone()
+            actual_balance=actual_balance[0]
+            update_balance = actual_balance - total_amount
+            cursor.execute("UPDATE bank_accounts SET actual_balance=%s WHERE id=%s; ",(update_balance,paid_from_account_id))
+            conn.commit()
+        elif paid_from_type == "cash": 
+            cursor.execute("SELECT actual_balance from cash_accounts where id=%s",(paid_from_account_id))
+            actual_balance = cursor.fetchone()
+            actual_balance=actual_balance[0]
+            update_balance = actual_balance - total_amount
+            cursor.execute("UPDATE cash_accounts SET actual_balance=%s WHERE id=%s; ",(update_balance,paid_from_account_id))
+            conn.commit()
+        cursor.execute("SELECT actual_balance from expense_accounts where id=%s",(exp_account_id))
         actual_balance = cursor.fetchone()
         actual_balance=actual_balance[0]
-        update_balance = actual_balance - total_amount
-        cursor.execute("UPDATE bankandcashaccounts SET actual_balance=%s WHERE id=%s; ",(update_balance,paid_from_account_id))
+        update_balance = actual_balance + total_amount
+        cursor.execute("UPDATE expense_accounts SET actual_balance=%s WHERE id=%s; ",(update_balance,exp_account_id))
         conn.commit()
         return redirect(url_for("view_payments"))
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from customers")
-    customers = cursor.fetchall()
     cursor.execute("SELECT * from suppliers")
     suppliers = cursor.fetchall()
-    # cursor.execute("SELECT * from bankandcashaccounts")
-    cursor.execute("SELECT * from bank_accounts")
-    bank_accounts = cursor.fetchall()
-    cursor.execute("SELECT * from cash_accounts")
-    cash_accounts = cursor.fetchall()
-    return render_template("add-payments.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,cash_accounts=cash_accounts)
-
-@app.route("/add-bank-accounts", methods=['GET','POST'])
-def add_bank_accounts():
-    if request.method=='POST':
-        conn = mysql.connect()
-        cursor =conn.cursor()
-        name= request.form.get("name")
-        code= request.form.get("code")
-        account_number= request.form.get("account_number")
-        starting_bal= float(request.form.get("starting_bal"))
-        conn = mysql.connect()
-        cursor =conn.cursor()
-        cursor.execute("INSERT INTO bank_accounts (name, code, actual_balance,account_number) VALUES (%s,%s,%s,%s);",(name,code,starting_bal,account_number))
-        conn.commit()
-        return redirect(url_for("view_bank_accounts"))
-    return render_template("add-bank-accounts.html")
-@app.route("/add-cash-accounts", methods=['GET','POST'])
-def add_cash_accounts():
-    if request.method=='POST':
-        conn = mysql.connect()
-        cursor =conn.cursor()
-        name= request.form.get("name")
-        code= request.form.get("code")
-        starting_bal= float(request.form.get("starting_bal"))
-        conn = mysql.connect()
-        cursor =conn.cursor()
-        cursor.execute("INSERT INTO cash_accounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
-        conn.commit()
-        return redirect(url_for("view_cash_accounts"))
-    return render_template("add-cash-accounts.html")
+    if session['type']=="admin":
+        cursor.execute("SELECT * from customers")
+        customers = cursor.fetchall()
+        cursor.execute("SELECT * from bank_accounts")
+        bank_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from cash_accounts")
+        cash_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from expense_accounts")
+        expense_accounts = cursor.fetchall()
+    elif session['type']=="user":
+        cursor.execute("SELECT * from customers where user_id=%s",(session['userid']))
+        customers = cursor.fetchall()
+        cursor.execute("SELECT * from bank_accounts where user_id=%s",(session['userid']))
+        bank_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from cash_accounts where user_id=%s",(session['userid']))
+        cash_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from expense_accounts where user_id=%s",(session['userid']))
+        expense_accounts = cursor.fetchall()
+    return render_template("add-payments.html",customers=customers,suppliers=suppliers, bank_accounts=bank_accounts,cash_accounts=cash_accounts,expense_accounts=expense_accounts,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/add-account/<string:type>", methods=['GET','POST'])
 def add_accounts(type):
-    if type != "income" and type != "expense":
+    if type != "income" and type != "expense" and type !="bank" and type !="cash":
         return "Invalid Account Type!"
     if request.method=='POST':
         conn = mysql.connect()
         cursor =conn.cursor()
         name= request.form.get("name")
         code= request.form.get("code")
-        starting_bal= float(request.form.get("starting_bal"))
+        if request.form.get("starting_bal"):
+            starting_bal= float(request.form.get("starting_bal"))
+        else:
+            starting_bal = 0
         conn = mysql.connect()
         cursor =conn.cursor()
         if type == "income":
-            cursor.execute("INSERT INTO income_accounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
+            cursor.execute("INSERT INTO income_accounts (name, code, actual_balance,user_id) VALUES (%s,%s,%s,%s);",(name,code,starting_bal,session['userid']))
             conn.commit()
             return redirect(url_for("view_income_accounts"))
         elif type == "expense":
-            cursor.execute("INSERT INTO expense_accounts (name, code, actual_balance) VALUES (%s,%s,%s);",(name,code,starting_bal))
+            cursor.execute("INSERT INTO expense_accounts (name, code, actual_balance,user_id) VALUES (%s,%s,%s,%s);",(name,code,starting_bal,session['userid']))
             conn.commit()
             return redirect(url_for("view_expense_accounts"))
+        elif type == "bank":
+            account_number= request.form.get("account_number")
+            cursor.execute("INSERT INTO bank_accounts (name, code, actual_balance,account_number,user_id) VALUES (%s,%s,%s,%s,%s);",(name,code,starting_bal,account_number,session['userid']))
+            conn.commit()
+            return redirect(url_for("view_bank_accounts"))
+        elif type == "cash":
+            cursor.execute("INSERT INTO cash_accounts (name, code, actual_balance,user_id) VALUES (%s,%s,%s,%s);",(name,code,starting_bal,session['userid']))
+            conn.commit()
+            return redirect(url_for("view_cash_accounts"))
     
     if type == "income":
-        return render_template("add-income-accounts.html")
+        return render_template("add-income-accounts.html",type=session['type'],username=session['name'],userid=session['userid'])
     elif type == "expense":
-        return render_template("add-expense-accounts.html")
+        return render_template("add-expense-accounts.html",type=session['type'],username=session['name'],userid=session['userid'])
+    elif type == "bank":
+        return render_template("add-bank-accounts.html",type=session['type'],username=session['name'],userid=session['userid'])
+    elif type == "cash":
+        return render_template("add-cash-accounts.html",type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-bank-and-cash-accounts/<string:type>/<string:id>", methods=['GET','POST'])
 def edit_bank_and_cash_accounts(type,id):
@@ -2596,7 +2851,7 @@ def edit_bank_and_cash_accounts(type,id):
     elif type=="expense":  
         cursor.execute("Select * from expense_accounts where id=%s",(id))   
     data = cursor.fetchone()
-    return render_template("edit-bank-and-cash-accounts.html",data=data,type=type)
+    return render_template("edit-bank-and-cash-accounts.html",data=data,type2=type,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/deletepay/<string:type>/<int:id>")
 def deletepay(type,id):
@@ -2632,9 +2887,13 @@ def view_rx_inventory():
     conn = mysql.connect()
     cursor =conn.cursor()
     # cursor.execute("SELECT * from rx_items;")
-    cursor.execute("SELECT * from rx_items INNER JOIN income_accounts ON rx_items.income_account = income_accounts.id INNER JOIN expense_accounts ON rx_items.expense_account = expense_accounts.id;")
+    # cursor.execute("SELECT * from rx_items INNER JOIN income_accounts ON rx_items.income_account_id = income_accounts.id INNER JOIN expense_accounts ON rx_items.expense_account_id = expense_accounts.id;")
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from rx_items;")
+    else:
+        cursor.execute("SELECT * from rx_items where user_id=%s;",(session['userid']))
     data = cursor.fetchall()
-    return render_template("view-rx-inventory.html",data=data)
+    return render_template("view-rx-inventory.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-stock-items")
 def view_stock_items():
@@ -2643,7 +2902,7 @@ def view_stock_items():
     # cursor.execute("SELECT * from rx_items;")
     cursor.execute("SELECT * from stock_items INNER JOIN income_accounts ON stock_items.income_account = income_accounts.id INNER JOIN expense_accounts ON stock_items.expense_account = expense_accounts.id;")
     data = cursor.fetchall()
-    return render_template("view-stock-items.html",data=data)
+    return render_template("view-stock-items.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/view-stock-inventory/<string:type>/<string:item_id>", methods=["GET", "POST"])
 def view_stock_inventory(type,item_id):
@@ -2707,7 +2966,7 @@ def view_stock_inventory(type,item_id):
         cursor =conn.cursor()
         cursor.execute("SELECT last_updated from stock_items where id=%s;",(item_id))
         last_updated = cursor.fetchone()[0]
-        return render_template("stock_inventory.html",today=date, records = records,item_id=item_id, records2 = records2,last_updated=last_updated)
+        return render_template("stock_inventory.html",today=date, records = records,item_id=item_id, records2 = records2,last_updated=last_updated,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/generate-rx-purchase/<int:id>")
@@ -2716,7 +2975,7 @@ def generate_rx_purchase(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from rx_purchases where id=%s;",(id))
     rx_purchases = cursor.fetchone()
-    return render_template("generate-rx-purchase.html", rx_purchases= rx_purchases)
+    return render_template("generate-rx-purchase.html", rx_purchases= rx_purchases,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/generate-stock-purchase/<int:id>")
 def generate_stock_purchase(id):
@@ -2724,7 +2983,7 @@ def generate_stock_purchase(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from stock_purchases where id=%s;",(id))
     stock_purchases = cursor.fetchone()
-    return render_template("generate-stock-purchase.html", stock_purchases= stock_purchases)
+    return render_template("generate-stock-purchase.html", stock_purchases= stock_purchases,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/generate-supplier/<int:id>")
 def generate_supplier(id):
@@ -2732,7 +2991,7 @@ def generate_supplier(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from suppliers where id=%s;",(id))
     supplier = cursor.fetchone()
-    return render_template("generate-supplier.html", supplier= supplier)
+    return render_template("generate-supplier.html", supplier= supplier,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/generate-receipt/<int:id>")
 def generate_receipt(id):
@@ -2740,7 +2999,7 @@ def generate_receipt(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from inoutreceipts where id=%s;",(id))
     receipt = cursor.fetchone()
-    return render_template("generate-receipt.html", receipt= receipt)
+    return render_template("generate-receipt.html", receipt= receipt,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/generate-payment/<int:id>")
 def generate_payment(id):
@@ -2748,7 +3007,7 @@ def generate_payment(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from payments where id=%s;",(id))
     payment = cursor.fetchone()
-    return render_template("generate-payment.html", payment=payment)
+    return render_template("generate-payment.html", payment=payment,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/generate-rx-invoice/<int:id>")
 def generate_rx_invoice(id):
@@ -2756,7 +3015,7 @@ def generate_rx_invoice(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from rx_invoices where id=%s;",(id))
     rx_invoices = cursor.fetchone()
-    return render_template("generate-rx-invoice.html", rx_invoices= rx_invoices)
+    return render_template("generate-rx-invoice.html", rx_invoices= rx_invoices,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/generate-stock-invoice/<int:id>")
 def generate_stock_invoice(id):
@@ -2764,7 +3023,7 @@ def generate_stock_invoice(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from stock_invoices where id=%s;",(id))
     stock_invoices = cursor.fetchone()
-    return render_template("generate-stock-invoice.html", stock_invoices= stock_invoices)
+    return render_template("generate-stock-invoice.html", stock_invoices= stock_invoices,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/generate-customer/<int:id>")
 def generate_customer(id):
@@ -2772,7 +3031,7 @@ def generate_customer(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from customers where id=%s;",(id))
     customer = cursor.fetchone()
-    return render_template("generate-customer.html", customer= customer)
+    return render_template("generate-customer.html", customer= customer,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/generate-rx-order/<int:id>")
 def generate_rx_order(id):
@@ -2780,14 +3039,14 @@ def generate_rx_order(id):
     cursor =conn.cursor()
     cursor.execute("SELECT * from rx_orders where id=%s;",(id))
     rx_orders = cursor.fetchone()
-    return render_template("generate-rx-order.html", rx_orders= rx_orders)
+    return render_template("generate-rx-order.html", rx_orders= rx_orders,type=session['type'],username=session['name'],userid=session['userid'])
 @app.route("/generate-stock-order/<int:id>")
 def generate_stock_order(id):
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT * from stock_orders where id=%s;",(id))
     stock_orders = cursor.fetchone()
-    return render_template("generate-stock-order.html", stock_orders= stock_orders)
+    return render_template("generate-stock-order.html", stock_orders= stock_orders,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/generate-rx-item/<int:id>")
 def generate_rx_item(id):
@@ -2800,7 +3059,7 @@ def generate_rx_item(id):
     income_account = cursor.fetchone()[0]
     cursor.execute("SELECT name from expense_accounts where id=%s;",(rx_items[11]))
     expense_account = cursor.fetchone()[0]
-    return render_template("generate-rx-item.html", rx_items= rx_items,income_account=income_account,expense_account=expense_account)
+    return render_template("generate-rx-item.html", rx_items= rx_items,income_account=income_account,expense_account=expense_account,type=session['type'],username=session['name'],userid=session['userid'])
     
 
 
@@ -2822,8 +3081,13 @@ def add_rx_item():
         unit_name = request.form.get("unit_name")
         purchase_price = request.form.get("purchase_price")
         sales_price = request.form.get("sales_price")
-        income_account = request.form.get("income_account")
-        expense_account = request.form.get("expense_account")
+        income_account_id = request.form.get("income_account")
+        expense_account_id = request.form.get("expense_account")
+        
+        cursor.execute("SELECT name from income_accounts where id=%s;",(income_account_id))
+        income_account_name = cursor.fetchone()[0]
+        cursor.execute("SELECT name from expense_accounts where id=%s;",(expense_account_id))
+        expense_account_name = cursor.fetchone()[0]
         # qty = request.form.get("qty")
         qty = None
         # service_cost = request.form.get("service_cost")
@@ -2832,17 +3096,23 @@ def add_rx_item():
         total_cost = None
         if not lense_type and not unit_name and not purchase_price and not sales_price and not qty and not service_cost and not total_cost:
             return "Oops! Something is missing"      
-        cursor.execute("INSERT INTO rx_items (item_code, lense_type, unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account))
+        cursor.execute("INSERT INTO rx_items (item_code, lense_type, unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account_id,expense_account_id,income_account_name,expense_account_name,user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account_id,expense_account_id,income_account_name,expense_account_name,session['userid']))
         conn.commit()
         return redirect(url_for("view_rx_inventory"))
     
     conn = mysql.connect()
     cursor =conn.cursor()
-    cursor.execute("SELECT * from income_accounts;")
-    income_accounts = cursor.fetchall()
-    cursor.execute("SELECT * from expense_accounts;")
-    expense_accounts = cursor.fetchall()
-    return render_template("add-rx-item.html",income_accounts=income_accounts,expense_accounts=expense_accounts)
+    if session['type']=="admin":
+        cursor.execute("SELECT * from income_accounts;")
+        income_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from expense_accounts;")
+        expense_accounts = cursor.fetchall()
+    elif session['type']=="user":
+        cursor.execute("SELECT * from income_accounts where user_id=%s;",(session['userid']))
+        income_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from expense_accounts where user_id=%s;",(session['userid']))
+        expense_accounts = cursor.fetchall()
+    return render_template("add-rx-item.html",income_accounts=income_accounts,expense_accounts=expense_accounts,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/add-stock-item", methods=['GET','POST'])
 def add_stock_item():
@@ -2872,17 +3142,23 @@ def add_stock_item():
         total_cost = None
         if not lense_type and not unit_name and not purchase_price and not sales_price and not qty and not service_cost and not total_cost:
             return "Oops! Something is missing"      
-        cursor.execute("INSERT INTO stock_items (item_code, lense_type, unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account))
+        cursor.execute("INSERT INTO stock_items (item_code, lense_type, unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account,user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account,expense_account,session['userid']))
         conn.commit()
         return redirect(url_for("view_stock_items"))
     
     conn = mysql.connect()
-    cursor =conn.cursor()
-    cursor.execute("SELECT * from income_accounts;")
-    income_accounts = cursor.fetchall()
-    cursor.execute("SELECT * from expense_accounts;")
-    expense_accounts = cursor.fetchall()
-    return render_template("add-stock-item.html",income_accounts=income_accounts,expense_accounts=expense_accounts)
+    cursor =conn.cursor()    
+    if session['type']=="admin":
+        cursor.execute("SELECT * from income_accounts;")
+        income_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from expense_accounts;")
+        expense_accounts = cursor.fetchall()    
+    elif session['type']=="user":
+        cursor.execute("SELECT * from income_accounts where user_id=%s;",(session['userid']))
+        income_accounts = cursor.fetchall()
+        cursor.execute("SELECT * from expense_accounts where user_id=%s;",(session['userid']))
+        expense_accounts = cursor.fetchall()
+    return render_template("add-stock-item.html",income_accounts=income_accounts,expense_accounts=expense_accounts,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-rx-inventory/<string:id>", methods=['GET','POST'])
 def edit_rx_inventory(id):
@@ -2904,9 +3180,16 @@ def edit_rx_inventory(id):
         qty = request.form.get("qty")
         service_cost = request.form.get("service_cost")
         total_cost = request.form.get("total_cost") 
+        income_account_id = request.form.get("income_account") 
+        expense_account_id = request.form.get("expense_account") 
+        
+        cursor.execute("SELECT name from income_accounts where id=%s;",(income_account_id))
+        income_account_name = cursor.fetchone()[0]
+        cursor.execute("SELECT name from expense_accounts where id=%s;",(expense_account_id))
+        expense_account_name = cursor.fetchone()[0]
         if not lense_type and not unit_name and not purchase_price and not sales_price and not qty and not service_cost and not total_cost:
             return "Oops! Something is missing"   
-        cursor.execute("UPDATE rx_items SET item_code=%s,lense_type=%s,unit_name=%s,purchase_price=%s,sales_price=%s,qty=%s,service_cost=%s,description=%s,total_cost=%s WHERE id=%s; ",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,id))
+        cursor.execute("UPDATE rx_items SET item_code=%s,lense_type=%s,unit_name=%s,purchase_price=%s,sales_price=%s,qty=%s,service_cost=%s,description=%s,total_cost=%s,income_account_id=%s,expense_account_id=%s,income_account_name=%s,expense_account_name=%s WHERE id=%s; ",(item_code,lense_type ,unit_name, purchase_price, sales_price, qty, service_cost, description, total_cost,income_account_id,expense_account_id,income_account_name,expense_account_name,id))
         conn.commit()
         return redirect(url_for("view_rx_inventory"))
     conn = mysql.connect()
@@ -2918,7 +3201,7 @@ def edit_rx_inventory(id):
     income_accounts = cursor.fetchall()
     cursor.execute("SELECT * from expense_accounts;")
     expense_accounts = cursor.fetchall()
-    return render_template("edit-rx-item.html",data=data,income_accounts=income_accounts,expense_accounts=expense_accounts)
+    return render_template("edit-rx-item.html",data=data,income_accounts=income_accounts,expense_accounts=expense_accounts,type=session['type'],username=session['name'],userid=session['userid'])
 
 @app.route("/edit-stock-inventory/<string:id>", methods=['GET','POST'])
 def edit_stock_inventory(id):
@@ -2954,7 +3237,7 @@ def edit_stock_inventory(id):
     income_accounts = cursor.fetchall()
     cursor.execute("SELECT * from expense_accounts;")
     expense_accounts = cursor.fetchall()
-    return render_template("edit-stock-item.html",data=data,income_accounts=income_accounts,expense_accounts=expense_accounts)
+    return render_template("edit-stock-item.html",data=data,income_accounts=income_accounts,expense_accounts=expense_accounts,type=session['type'],username=session['name'],userid=session['userid'])
 
 
 @app.route("/fetch-billing-address",methods=["POST"])
@@ -3030,15 +3313,69 @@ def fetch_item_price_stock():
     # print("data is: ",data[0])
     return str(resp)
 
+import json
 @app.route("/fetch-rxinvoices-by-customer",methods=["POST"])
 def fetch_rxinvoices_by_customer():
-    import json
     customer_id = request.form.get("customer_id")
     print(customer_id)
     conn = mysql.connect()
     cursor =conn.cursor()
     cursor.execute("SELECT id,description,total_amount from rx_invoices where customer_id=%s",(customer_id))
-    data = cursor.fetchall()
+    
+    rxdata = cursor.fetchall()
+    cursor.execute("SELECT id,description,total_amount from stock_invoices where customer_id=%s",(customer_id))
+    data = []
+    stockdata = cursor.fetchall()
+    for i in rxdata:
+        data.append(i)
+    for i in stockdata:
+        data.append(i)
+    print(data)
+
+    # print(data)
+    #((10, 'desc', 2340.0), (15, None, 2340.0), (16, None, 20.0))
+    resp = json.dumps(data)
+    # print(resp)
+    # [[10, "desc", 2340.0], [15, null, 2340.0], [16, null, 20.0]]
+    # resp = [data[0],data[1]]
+    # print(resp)
+    return str(resp)
+
+@app.route("/fetch-rxpurchases-by-supplier",methods=["POST"])
+def fetch_rxpurchases_by_supplier():
+    supplier_id = request.form.get("supplier_id")
+    print(supplier_id)
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT id,description,total_amount from rx_purchases where supplier_id=%s",(supplier_id))
+    
+    rxdata = cursor.fetchall()
+    cursor.execute("SELECT id,description,total_amount from stock_purchases where supplier_id=%s",(supplier_id))
+    data = []
+    stockdata = cursor.fetchall()
+    for i in rxdata:
+        data.append(i)
+    for i in stockdata:
+        data.append(i)
+    print(data)
+
+    # print(data)
+    #((10, 'desc', 2340.0), (15, None, 2340.0), (16, None, 20.0))
+    resp = json.dumps(data)
+    # print(resp)
+    # [[10, "desc", 2340.0], [15, null, 2340.0], [16, null, 20.0]]
+    # resp = [data[0],data[1]]
+    # print(resp)
+    return str(resp)
+
+@app.route("/fetch-rxinvoice-by-id",methods=["POST"])
+def fetch_rxinvoice_by_id():
+    invoice_id = request.form.get("invoice_id")
+    print(invoice_id)
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    cursor.execute("SELECT id,description,total_amount from rx_invoices where id=%s",(invoice_id))
+    data = cursor.fetchone()
     print(data)
     resp = json.dumps(data)
     print(resp)
@@ -3055,7 +3392,7 @@ def update_rxorder_status(id,status):
         conn.commit()
         return redirect(url_for("view_rx_orders"))
     except Exception as e:
-        return str(e)
+        return render_template("500.html",error=str(e))
 
 @app.route("/update-stock-order-status/<string:id>/<string:status>")
 def update_stock_order_status(id,status):
@@ -3066,7 +3403,7 @@ def update_stock_order_status(id,status):
         conn.commit()
         return redirect(url_for("view_stock_orders"))
     except Exception as e:
-        return str(e)
+        return render_template("500.html",error=str(e))
 
 @app.route("/copy-rxorder-to/<string:type>/<string:order_id>")
 def copy_rxorder_to_sales_purchase_invoice(type,order_id):
@@ -3080,7 +3417,7 @@ def copy_rxorder_to_sales_purchase_invoice(type,order_id):
             rx_items = cursor.fetchall()
             cursor.execute("SELECT * from rx_orders where id=%s;",(order_id))
             rx_orders = cursor.fetchone()
-            return render_template("make-rx-purchase.html",suppliers=suppliers,rx_items=rx_items,rx_orders=rx_orders,copy=True)
+            return render_template("make-rx-purchase.html",suppliers=suppliers,rx_items=rx_items,rx_orders=rx_orders,copy=True,type=session['type'],username=session['name'],userid=session['userid'])
         elif type == "salesinvoice":
             conn = mysql.connect()
             cursor =conn.cursor()
@@ -3090,11 +3427,106 @@ def copy_rxorder_to_sales_purchase_invoice(type,order_id):
             rx_items = cursor.fetchall()
             cursor.execute("SELECT * from rx_orders where id=%s;",(order_id))
             rx_orders = cursor.fetchone()
-            return render_template("make-rx-invoice.html",customers=customers,rx_items=rx_items,rx_orders=rx_orders,copy=True)
+            return render_template("make-rx-invoice.html",customers=customers,rx_items=rx_items,rx_orders=rx_orders,copy=True,type=session['type'],username=session['name'],userid=session['userid'])
     except Exception as e:
-        return str(e)
+        return render_template("500.html",error=str(e))
 
+@app.route("/copy-stock-order-to/<string:type>/<string:order_id>")
+def copy_stock_order_to_sales_purchase_invoice(type,order_id):
+    try:
+        if type == "purchaseinvoice":
+            conn = mysql.connect()
+            cursor =conn.cursor()
 
+            cursor.execute("SELECT * from suppliers;")
+            suppliers = cursor.fetchall()
+            cursor.execute("SELECT * from stock_orders where id=%s;",(order_id))
+            stock_orders = cursor.fetchone()
+            return render_template("make-stock-purchase.html",suppliers=suppliers,stock_orders=stock_orders,copy=True,type=session['type'],username=session['name'],userid=session['userid'])
+        elif type == "salesinvoice":
+            conn = mysql.connect()
+            cursor =conn.cursor()
+            cursor.execute("SELECT * from customers;")
+            customers = cursor.fetchall()
+            cursor.execute("SELECT * from stock_orders where id=%s;",(order_id))
+            stock_orders = cursor.fetchone()
+            return render_template("make-stock-invoice.html",customers=customers,stock_orders=stock_orders,copy=True,type=session['type'],username=session['name'],userid=session['userid'])
+    except Exception as e:
+        return render_template("500.html",error=str(e))
+
+@app.route("/my-account/<string:userid>",methods=['GET','POST'])
+def my_account(userid):
+    try:
+        if request.method == "POST":
+            name= request.form.get("name")
+            email= request.form.get("email")
+            password= request.form.get("password")
+            confirm_password= request.form.get("confirm_password")
+            security_code= request.form.get("security_code")
+            branch_id= request.form.get("branch")        
+            conn = mysql.connect()
+            cursor =conn.cursor()
+            cursor.execute("SELECT name from branch where id=%s",(branch_id))
+            branch = cursor.fetchone()[0]
+            type = "user"
+            
+            if password != confirm_password:            
+                conn = mysql.connect()
+                cursor =conn.cursor()
+                cursor.execute("SELECT * from branch")
+                branch = cursor.fetchall()
+                cursor.execute("SELECT * from users where id=%s",(id))
+                data = cursor.fetchone()
+                return render_template("edit-user.html",error="Passwords doesn't match",branch=branch,data=data)
+            conn = mysql.connect()
+            cursor =conn.cursor()
+            cursor.execute("UPDATE users set name=%s, email=%s,branch=%s,password=%s,security_code=%s,branch_id=%s where id=%s;",(name,email,branch,password,security_code,branch_id,userid))
+            conn.commit()
+            return redirect("/my-account/"+userid)
+
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("SELECT * from users where id=%s;",(userid))
+        user = cursor.fetchone()
+        cursor.execute("SELECT * from branch;")
+        branch = cursor.fetchall()
+        return render_template('my-account.html',data=user,branch=branch,type=session['type'],username=session['name'],userid=session['userid'])
+    except Exception as e:
+        return render_template("500.html",error=str(e))
+
+# Report 
+@app.route("/view-income-sales/<string:account_id>")
+def view_income_sales(account_id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from inoutreceipts where income_account_id=%s;",(account_id))
+    else:
+        cursor.execute("SELECT * from inoutreceipts where income_account_id=%s and user_id=%s;",(account_id,session['userid']))
+    data = cursor.fetchall()
+    return render_template("view-income-sales.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
+
+@app.route("/view-expense-sales/<string:account_id>")
+def view_expense_sales(account_id):
+    conn = mysql.connect()
+    cursor =conn.cursor()
+    if session['type'] == "admin":
+        cursor.execute("SELECT * from payments where exp_account_id=%s;",(account_id))
+    else:
+        cursor.execute("SELECT * from payments where exp_account_id=%s and user_id=%s;",(account_id,session['userid']))
+    data = cursor.fetchall()
+    return render_template("view-expense-sales.html",data=data,type=session['type'],username=session['name'],userid=session['userid'])
+
+@app.route("/print-card/<string:order_id>")
+def print_card(order_id):
+    try:
+        conn = mysql.connect()
+        cursor =conn.cursor()
+        cursor.execute("SELECT * from rx_orders where id=%s;",(order_id))
+        data = cursor.fetchone()
+        return render_template("print-card.html",data=data)
+    except Exception as e:
+        return render_template("500.html",error=str(e))
 
 
 

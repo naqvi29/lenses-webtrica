@@ -5,7 +5,6 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Edit Payment</h1>
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -23,116 +22,138 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <div class="card mb-4">
-          <div class="card-body px-0 pt-0 pb-2">
-            <!-- <h3 class="m-4 mb-0">Add Ingoing or Outgoing Receipts</h3> -->
-            <form class="py-4 px-5" action="/edit-payments/{{data[0]}}" method="POST" enctype="multipart/form-data">
-              <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
-              <div class="row g-4">
-                <div class="col-md-3">
-                  <label for="exampleFormControlInput1" class="form-label">Date </label>
-                  <input id="datebox" type="date" class="form-control" name="date" value="{{data[1]}}">
-                                <!-- <script>
-                                    Date.prototype.toDateInputValue = (function () {
-                                        var local = new Date(this);
-                                        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-                                        return local.toJSON().slice(0, 10);
-                                    });
-                                    document.getElementById('datebox').value = new Date().toDateInputValue();
-                                </script> -->
-                </div>
-                <div class="col-md-9">
-                  <label for="exampleFormControlInput1" class="form-label">Reference</label>
-                  <input type="text" class="form-control" name="reference"  value="{{data[2]}}">
-                </div>
-                <div class="col-md-12" >
-                  <label for="exampleFormControlInput1" class="form-label">Paid From </label>
-                  <!-- <input type="text" class="form-control" name="paid_from" id=""  value="{{data[4]}}"> -->
-                    <select class="form-control" name="paid_from" id="contact">
-                      {% for i in bank_accounts %}
-                      <option value="{{i[0]}}">{{i[1]}}</option>
-                      {% endfor %}
-                    </select>                  
-                </div>
-                <div class="col-md-3" >
-                  <label for="exampleFormControlInput1" class="form-label">Payee</label>
-                  <!-- <input type="text" class="form-control" name="payee_type" id=""  value="{{data[5]}}"> -->
-                    <select class="form-control"  name="payee_type" id="payee_type" onchange="changevalueofpaidbytype()">
-                      {% if data[5] == "other" %}
-                      <option selected value="other">Other</option>
-                      <option value="customer">Customer</option>
-                      <option value="supplier">Supplier</option>
-                      {% elif data[5] == "customer" %}
-                      <option value="other">Other</option>
-                      <option selected value="customer">Customer</option>
-                      <option value="supplier">Supplier</option>
-                      {% elif data[5] == "supplier" %}
-                      <option value="other">Other</option>
-                      <option value="customer">Customer</option>
-                      <option selected value="supplier">Supplier</option>
-                      {% endif %}
-                    </select>   
-                </div> 
-                <div class="col-md-9">
-                  <label for="exampleFormControlInput1" class="form-label"></label>
-                  <span id="payee_name">
-                      <input type="text" class="form-control" name="other_name" value="{{data[7]}}">
-                    </span>
+        <div class="card card-default">
+          <div class="card-header">
+            <h3 class="card-title"><strong>Edit Payment</strong></h3>
+
+            <div class="card-tools">
+              <button
+                type="button"
+                class="btn btn-tool"
+                data-card-widget="collapse"
+              >
+                <i class="fas fa-minus"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button> -->
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body" style="display: block">
+            <div class="row">
+            
+              <form class="py-4 px-5" action="/edit-payments/{{data[0]}}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+                <div class="row g-4">
+                  <div class="col-md-3">
+                    <label for="exampleFormControlInput1" class="form-label">Date </label>
+                    <input id="datebox" type="date" class="form-control" name="date" value="{{data[1]}}">
+                                  <!-- <script>
+                                      Date.prototype.toDateInputValue = (function () {
+                                          var local = new Date(this);
+                                          local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                                          return local.toJSON().slice(0, 10);
+                                      });
+                                      document.getElementById('datebox').value = new Date().toDateInputValue();
+                                  </script> -->
                   </div>
-                <div class="col-md-9">
-                  <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                  
-                  <input type="text" class="form-control" name="exp_account" value="{{data[9]}}">
-                  <!-- <select name="exp_account" class="form-control" id="">
-                    <option value="Accounting feesExpenses">Accounting feesExpenses</option>
-                    <option value="Accounts receivable">Accounts receivable</option>
-                    <option value="Advertising and promotion">Advertising and promotion</option>
-                    <option value="Bank charges">Bank charges</option>
-                    <option value="Capital gains on investments">Capital gains on investments</option>
-                    <option value="Computer equipment">Computer equipment</option>
-                    <option value="Donations">Donations</option>
-                    <option value="Electricity">Electricity</option>
-                    <option value="Employee clearing account">Employee clearing account</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
-                    <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
-                    <option value="Interest received">Interest received</option>
-                    <option value="Inventory - cost">Inventory - cost</option>
-                    <option value="Inventory - sales">Inventory - sales</option>
-                    <option value="Inventory on hand">Inventory on hand</option>
-                    <option value="Legal fees">Legal fees</option>
-                    <option value="Motor vehicle expenses">Motor vehicle expenses</option>
-                    <option value="Printing and stationery">Printing and stationery</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Repairs and maintenance">Repairs and maintenance</option>
-                    <option value="Retained earnings">Retained earnings</option>
-                    <option value="Sales">Sales</option>
-                    <option value="Telephone">Telephone</option>
-                  </select> -->
+                  <div class="col-md-9">
+                    <label for="exampleFormControlInput1" class="form-label">Reference</label>
+                    <input type="text" class="form-control" name="reference"  value="{{data[2]}}">
+                  </div>
+                  <div class="col-md-12" >
+                    <label for="exampleFormControlInput1" class="form-label">Paid From </label>
+                    <!-- <input type="text" class="form-control" name="paid_from" id=""  value="{{data[4]}}"> -->
+                      <select class="form-control" name="paid_from" id="contact">
+                        {% for i in bank_accounts %}
+                        <option value="{{i[0]}}">{{i[1]}}</option>
+                        {% endfor %}
+                      </select>                  
+                  </div>
+                  <div class="col-md-3" >
+                    <label for="exampleFormControlInput1" class="form-label">Payee</label>
+                    <!-- <input type="text" class="form-control" name="payee_type" id=""  value="{{data[5]}}"> -->
+                      <select class="form-control"  name="payee_type" id="payee_type" onchange="changevalueofpaidbytype()">
+                        {% if data[5] == "other" %}
+                        <option selected value="other">Other</option>
+                        <option value="customer">Customer</option>
+                        <option value="supplier">Supplier</option>
+                        {% elif data[5] == "customer" %}
+                        <option value="other">Other</option>
+                        <option selected value="customer">Customer</option>
+                        <option value="supplier">Supplier</option>
+                        {% elif data[5] == "supplier" %}
+                        <option value="other">Other</option>
+                        <option value="customer">Customer</option>
+                        <option selected value="supplier">Supplier</option>
+                        {% endif %}
+                      </select>   
+                  </div> 
+                  <div class="col-md-9">
+                    <label for="exampleFormControlInput1" class="form-label"></label>
+                    <span id="payee_name">
+                        <input type="text" class="form-control" name="other_name" value="{{data[7]}}">
+                      </span>
+                    </div>
+                  <div class="col-md-9">
+                    <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
+                    
+                    <input type="text" class="form-control" name="exp_account" value="{{data[9]}}">
+                    <!-- <select name="exp_account" class="form-control" id="">
+                      <option value="Accounting feesExpenses">Accounting feesExpenses</option>
+                      <option value="Accounts receivable">Accounts receivable</option>
+                      <option value="Advertising and promotion">Advertising and promotion</option>
+                      <option value="Bank charges">Bank charges</option>
+                      <option value="Capital gains on investments">Capital gains on investments</option>
+                      <option value="Computer equipment">Computer equipment</option>
+                      <option value="Donations">Donations</option>
+                      <option value="Electricity">Electricity</option>
+                      <option value="Employee clearing account">Employee clearing account</option>
+                      <option value="Entertainment">Entertainment</option>
+                      <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
+                      <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
+                      <option value="Interest received">Interest received</option>
+                      <option value="Inventory - cost">Inventory - cost</option>
+                      <option value="Inventory - sales">Inventory - sales</option>
+                      <option value="Inventory on hand">Inventory on hand</option>
+                      <option value="Legal fees">Legal fees</option>
+                      <option value="Motor vehicle expenses">Motor vehicle expenses</option>
+                      <option value="Printing and stationery">Printing and stationery</option>
+                      <option value="Rent">Rent</option>
+                      <option value="Repairs and maintenance">Repairs and maintenance</option>
+                      <option value="Retained earnings">Retained earnings</option>
+                      <option value="Sales">Sales</option>
+                      <option value="Telephone">Telephone</option>
+                    </select> -->
+                  </div>
+                  <div class="col-md-12">
+                    <label for="exampleFormControlInput1" class="form-label">Description</label>
+                    <input type="text" class="form-control" name="desc" id="" cols="30" rows="1"
+                    value="{{data[8]}}"></input>
+                  </div>
+  
+                  <div class="col-md-3">
+                    <label for="exampleFormControlInput1" class="form-label">Amount</label>
+                    <input class="form-control" type="number" name="amount" id="" value="{{data[10]}}">
+                  </div>
+  
+                  <div class="mt-4 col-md-12 text-center">
+                    <button type="submit" class="btn btn-success my_btn01 w-50">Update</button>
+                  </div>
+  
                 </div>
-                <div class="col-md-12">
-                  <label for="exampleFormControlInput1" class="form-label">Description</label>
-                  <input type="text" class="form-control" name="desc" id="" cols="30" rows="1"
-                  value="{{data[8]}}"></input>
-                </div>
-
-                <div class="col-md-3">
-                  <label for="exampleFormControlInput1" class="form-label">Amount</label>
-                  <input class="form-control" type="number" name="amount" id="" value="{{data[10]}}">
-                </div>
-
-                <div class="mt-4 col-md-12">
-                  <button type="submit" class="btn my_btn01 w-100"
-                    style="background:purple; color:white">Update</button>
-                </div>
-
-              </div>
-            </form>
+              </form>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer" style="display: block">
+            <a href="/view-payments" class="btn btn-dark">Back</a>
           </div>
         </div>
-        <div class="d-flex justify-content-end">
-          <a href="/view-payments" class="btn btn-danger">Back</a>
-        </div>
+
+
+
       </div>
     </div>
 

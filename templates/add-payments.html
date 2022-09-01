@@ -68,7 +68,8 @@
                       </div>
                       <div class="col-md-6" >
                         <label for="exampleFormControlInput1" class="form-label">Paid From Account <span style="color: red;">*</span></label>
-                          <select class="form-control" name="paid_from_account" id="paid_from_account">
+                          <select class="form-control" name="paid_from_account" id="paid_from_account" required>
+                            <option value="" selected style="font-style:oblique;">Select Paid From Account</option>
                             {% for i in bank_accounts %}
                             <option value="{{i[0]}}">{{i[1]}}</option>
                             {% endfor %}
@@ -90,32 +91,12 @@
                         </div>
                       <div class="col-md-9">
                         <label for="exampleFormControlInput1" class="form-label">Exp Account</label>
-                        <select name="exp_account" class="form-control" id="">
-                          <option value="Accounting feesExpenses">Accounting feesExpenses</option>
-                          <option value="Accounts receivable">Accounts receivable</option>
-                          <option value="Advertising and promotion">Advertising and promotion</option>
-                          <option value="Bank charges">Bank charges</option>
-                          <option value="Capital gains on investments">Capital gains on investments</option>
-                          <option value="Computer equipment">Computer equipment</option>
-                          <option value="Donations">Donations</option>
-                          <option value="Electricity">Electricity</option>
-                          <option value="Employee clearing account">Employee clearing account</option>
-                          <option value="Entertainment">Entertainment</option>
-                          <option value="GOS SHAFAY SOFTWARE">GOS SHAFAY SOFTWARE</option>
-                          <option value="INAYAT/SHARIQ PROFIT">INAYAT/SHARIQ PROFIT</option>
-                          <option value="Interest received">Interest received</option>
-                          <option value="Inventory - cost">Inventory - cost</option>
-                          <option value="Inventory - sales">Inventory - sales</option>
-                          <option value="Inventory on hand">Inventory on hand</option>
-                          <option value="Legal fees">Legal fees</option>
-                          <option value="Motor vehicle expenses">Motor vehicle expenses</option>
-                          <option value="Printing and stationery">Printing and stationery</option>
-                          <option value="Rent">Rent</option>
-                          <option value="Repairs and maintenance">Repairs and maintenance</option>
-                          <option value="Retained earnings">Retained earnings</option>
-                          <option value="Sales">Sales</option>
-                          <option value="Telephone">Telephone</option>
-                        </select>
+                        <select class="form-control" name="exp_account" id="exp_account" required>
+                          <option value="" selected style="font-style:oblique;">Select Exp Account</option>
+                          {% for i in expense_accounts %}
+                          <option value="{{i[0]}}">{{i[1]}}</option>
+                          {% endfor %}
+                        </select>  
                       </div>
                       <div class="col-md-12">
                         <label for="exampleFormControlInput1" class="form-label">Description</label>
@@ -160,7 +141,8 @@
             div = document.getElementById("payee_name");
             div.innerHTML=``
             div.innerHTML =`
-                        <select class="form-control" name="customer" id="">
+                        <select class="form-control" name="customer" id="" required>
+                        <option value="" selected style="font-style:oblique;">Select Customer</option>
                       {% for i in customers %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
                       {% endfor %}
@@ -170,7 +152,8 @@
             div = document.getElementById("payee_name");
             div.innerHTML=``
             div.innerHTML =`
-                        <select class="form-control" name="supplier" id="">
+                        <select class="form-control" name="supplier" required>
+                      <option value="" selected style="font-style:oblique;">Select Supplier</option>id="">
                       {% for i in suppliers %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
                       {% endfor %}
@@ -191,6 +174,7 @@
             div = document.getElementById("paid_from_account");
             div.innerHTML=``
             div.innerHTML =`
+            <option value="" selected style="font-style:oblique;">Select Bank Account</option>id="">
                       {% for i in bank_accounts %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
                       {% endfor %}   `
@@ -199,6 +183,7 @@
             div = document.getElementById("paid_from_account");
             div.innerHTML=``
             div.innerHTML =`
+            <option value="" selected style="font-style:oblique;">Select Cash Account</option>id="">
             {% for i in cash_accounts %}
                       <option value="{{i[0]}}">{{i[1]}}</option>
                       {% endfor %}  `

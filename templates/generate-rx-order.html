@@ -34,6 +34,7 @@
                                 Copy To
                             </button>
                             <button onclick="printDiv('printableArea')" class="btn btn-sm btn-success ml-2" type="button">Print Order</button>
+                            <a href="/print-card/{{rx_orders[0]}}"class="btn btn-sm btn-warning ml-2" type="button">Print Card</class=></a>
                             <!-- <input type="button" onclick="printDiv('printableArea')" value="print a div!" />     -->
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a style="display: block;" class="btn btn-sm btn-primary mb-2 mx-2"
@@ -250,6 +251,11 @@
                                     </select> -->
                                     <input disabled type="text" name="tint_service" class="form-control"
                                         value="{{rx_orders[11]}}">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Discount</label>
+                                    <input disabled  type="text" name="discount" class="form-control"
+                                        id="discount" value="{{rx_orders[63]}} %">
                                 </div>
                                 <div class="col-md-3 mb-3">
                                     <label for="exampleFormControlInput1" class="form-label">Total Amount</label>

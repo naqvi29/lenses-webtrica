@@ -1,0 +1,124 @@
+{% extends 'layout.html' %}
+{% block title %}My Account{% endblock %}
+{% block content %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+      </div><!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">My Account</li>
+        </ol>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<!-- alert -->
+{% if error %}
+<div class="alert alert-success">
+  <strong>Oops!</strong>{{error}}.
+</div>
+{% endif %}
+<!-- alert  -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-default">
+          <div class="card-header">
+            <h3 class="card-title"><strong>My Account</strong></h3>
+
+            <div class="card-tools">
+              <button
+                type="button"
+                class="btn btn-tool"
+                data-card-widget="collapse"
+              >
+                <i class="fas fa-minus"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button> -->
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body" style="display: block">
+            <div class="row">
+            
+              <form class="py-4 px-5" action="/my-account/{{data[0]}}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="zL1epAM5DGDFLcdIzIXUoMFhjerZ6JjV7lHZUGLj">
+                <div class="row g-4">
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">User Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="User Name" value="{{data[1]}}">
+                  </div>
+  
+  
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">User Email</label>
+                    <input type="text" class="form-control" name="email" placeholder="User Email" value="{{data[2]}}">
+                  </div>
+  
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Select Branch</label>
+                    <select name="branch" class="form-control" id="" required>
+                      <option selected disabled value="">Select Branch</option>
+                      {% for i in branch %}
+                        {% if i[0]==data[7] %}
+                          <option selected value={{i[0]}}>{{i[1]}}</option>
+                        {% else %}
+                          <option value="{{i[0]}}">{{i[1]}}</option>
+                                                                   
+                        {%endif%}  
+                      {% endfor %}
+                    </select>
+                  </div>
+  
+  
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Password</label>
+                    <input type="text" class="form-control" name="password" placeholder="Password" value="{{data[4]}}">
+                  </div>
+  
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Confirm Password</label>
+                    <input type="confirm_password" class="form-control" name="confirm_password"
+                      placeholder="Brand Security Code" value="{{data[4]}}" >
+                  </div>
+  
+                  <div class="col-md-12 mb-2">
+                    <label for="exampleFormControlInput1" class="form-label">Security Code</label>
+                    <input type="text" class="form-control" name="security_code" placeholder="User Security Code"
+                      value="{{data[5]}}">
+                  </div>
+  
+                  <div class="mt-4 col-md-12 text-center">
+                    <button type="submit" class="btn btn-success my_btn01 w-50">Update</button>
+                  </div>
+  
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer" style="display: block">
+            <a href="/" class="btn btn-dark">Back</a>
+          </div>
+        </div>
+
+
+
+        
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock %}
